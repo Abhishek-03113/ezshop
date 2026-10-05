@@ -1,0 +1,23 @@
+{
+  "name": "@ezshop/catalog",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./cheerio": "./src/page/cheerio-page.ts",
+    "./dom": "./src/page/dom-page.ts",
+    "./testing": "./src/testing/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "fixtures:refresh": "bun scripts/refresh-page-fixtures.ts"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "domhandler": "^6.0.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "happy-dom": "^20.14.5"
+  }
+}
