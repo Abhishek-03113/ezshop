@@ -25,6 +25,7 @@ export class FakeSiteExtractor implements SiteExtractor {
       url: pageUrl,
       title: page.findAll("h1")[0]?.text() ?? "untitled",
       brand: null,
+      category: null,
       price: null,
       listPrice: null,
       availability: null,

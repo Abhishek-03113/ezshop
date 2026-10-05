@@ -8,6 +8,7 @@ export function buildSampleSnapshot(overrides: Partial<ProductSnapshot> = {}): P
     url: "https://www.amazon.in/dp/B0FQG1YHYR",
     title: "Apple iPhone 17 512 GB",
     brand: "Apple",
+    category: null,
     price: { amount: 124900, currency: "INR" },
     listPrice: null,
     availability: null,

@@ -2,6 +2,7 @@ import { firstAttr, firstText, type PageNode } from "../../page/page-node.ts";
 import type { ProductSnapshot } from "../../product-snapshot.ts";
 import { textOrNull } from "../../text/normalize-text.ts";
 import { ProductPageError } from "../product-page-error.ts";
+import { amazonBreadcrumbLabels, categoryFromCrumbs } from "../shared/breadcrumb-category.ts";
 import { findSpecValue } from "../shared/spec-lookup.ts";
 import type { SiteExtractor } from "../site-extractor.ts";
 import { extractAmazonHighlights } from "./amazon-highlights.ts";
@@ -48,6 +49,7 @@ export function extractAmazonProduct(page: PageNode, ref: AmazonProductRef, capt
     url: canonicalAmazonUrl(asin),
     title,
     brand: findSpecValue(specGroups, "Brand") ?? extractBylineBrand(page),
+    category: categoryFromCrumbs(amazonBreadcrumbLabels(page), title),
     price: extractAmazonPrice(page),
     listPrice: extractAmazonListPrice(page),
     availability: firstText(page, ["#availability"]),

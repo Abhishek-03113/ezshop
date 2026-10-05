@@ -1,6 +1,7 @@
 import type { PageNode } from "../../page/page-node.ts";
 import type { ProductSnapshot } from "../../product-snapshot.ts";
 import { ProductPageError } from "../product-page-error.ts";
+import { categoryFromCrumbs, jsonLdBreadcrumbLabels } from "../shared/breadcrumb-category.ts";
 import { readJsonLdProduct, type JsonLdProduct } from "../shared/json-ld-product.ts";
 import { findSpecValue } from "../shared/spec-lookup.ts";
 import type { SiteExtractor } from "../site-extractor.ts";
@@ -41,6 +42,7 @@ export function extractFlipkartProduct(page: PageNode, ref: FlipkartProductRef, 
     url: ref.canonicalUrl,
     title: product.name,
     brand: findSpecValue(specGroups, "Brand") ?? product.brand,
+    category: categoryFromCrumbs(jsonLdBreadcrumbLabels(page), product.name),
     price: product.price,
     listPrice: null,
     availability: product.availability,

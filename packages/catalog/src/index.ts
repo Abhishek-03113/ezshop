@@ -1,4 +1,5 @@
 export * from "./product-snapshot.ts";
+export type { CatalogComparisonDetail, CatalogComparisonSummary } from "./comparison-types.ts";
 export {
   describeSupportedProductUrls,
   extractProductSnapshot,

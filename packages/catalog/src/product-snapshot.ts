@@ -40,6 +40,8 @@ export const ProductSnapshotSchema = z.object({
   url: z.url(),
   title: z.string().min(1),
   brand: z.string().min(1).nullable(),
+  // Rows stored before categories existed lack the key; default keeps them readable.
+  category: z.string().min(1).nullable().default(null),
   price: MoneySchema.nullable(),
   listPrice: MoneySchema.nullable(),
   availability: z.string().min(1).nullable(),
@@ -72,6 +74,7 @@ export interface CatalogProductSummary {
   source: ProductSource;
   title: string;
   brand: string | null;
+  category: string | null;
   price: Money | null;
   imageUrl: string | null;
   updatedAt: string;
