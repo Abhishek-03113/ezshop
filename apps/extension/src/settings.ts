@@ -9,10 +9,12 @@ export interface ExtensionSettings {
   autoOpenSheet: boolean;
   /** True once the user pressed "Got it" on the first-run screen. */
   firstRunDismissed: boolean;
+  /** The comparison Quick Look and "Add to ezshop" offer first; null until the user picks or creates one. */
+  lastComparisonId: string | null;
 }
 
 const SETTINGS_KEY = "ezshop.settings";
-const DEFAULT_SETTINGS: ExtensionSettings = { autoOpenSheet: true, firstRunDismissed: false };
+const DEFAULT_SETTINGS: ExtensionSettings = { autoOpenSheet: true, firstRunDismissed: false, lastComparisonId: null };
 
 function parseSettings(stored: unknown): ExtensionSettings {
   if (typeof stored !== "object" || stored === null) return DEFAULT_SETTINGS;
@@ -21,6 +23,7 @@ function parseSettings(stored: unknown): ExtensionSettings {
     autoOpenSheet: typeof fields.autoOpenSheet === "boolean" ? fields.autoOpenSheet : DEFAULT_SETTINGS.autoOpenSheet,
     firstRunDismissed:
       typeof fields.firstRunDismissed === "boolean" ? fields.firstRunDismissed : DEFAULT_SETTINGS.firstRunDismissed,
+    lastComparisonId: typeof fields.lastComparisonId === "string" ? fields.lastComparisonId : null,
   };
 }
 
@@ -43,6 +46,14 @@ export class SettingsStore {
 
   async setAutoOpenSheet(autoOpenSheet: boolean): Promise<void> {
     await this.update({ autoOpenSheet });
+  }
+
+  async lastComparisonId(): Promise<string | null> {
+    return (await this.load()).lastComparisonId;
+  }
+
+  async setLastComparisonId(lastComparisonId: string): Promise<void> {
+    await this.update({ lastComparisonId });
   }
 
   async dismissFirstRun(): Promise<void> {

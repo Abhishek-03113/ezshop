@@ -34,6 +34,9 @@ export const ICONS = {
   },
   alert: { viewBox: "0 0 24 24", shapes: [circle(9), path("M12 7.5v5.5M12 16.5v.01")] },
   spinner: { viewBox: "0 0 24 24", shapes: [circle(9), path("M21 12a9 9 0 0 0-9-9")] },
+  close: { viewBox: "0 0 24 24", shapes: [path("M6 6l12 12M18 6L6 18")] },
+  plus: { viewBox: "0 0 24 24", shapes: [path("M12 5v14M5 12h14")] },
+  chevronDown: { viewBox: "0 0 24 24", shapes: [path("M6 9l6 6 6-6")] },
   pending: { viewBox: "0 0 24 24", shapes: [circle(8)] },
 } as const satisfies Record<string, IconDefinition>;
 
