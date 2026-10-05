@@ -1,0 +1,49 @@
+# Local PoC on an 8 GB machine: prebuilt images + tight memory caps.
+# Budget (hard limits): api 2.25G (measured peak ~1.9G: 6 Node procs x ~390MB) + playwright 1G + rabbitmq 320M + postgres 256M + redis 96M ≈ 3.9G
+services:
+  api:
+    image: ghcr.io/firecrawl/firecrawl:latest
+    build: !reset null
+    cpus: 2.0
+    mem_limit: 2304m
+    memswap_limit: 2304m
+    environment:
+      NUQ_WORKER_COUNT: 1          # default is 5 separate Node processes
+      NUM_WORKERS_PER_QUEUE: 1
+      CRAWL_CONCURRENT_REQUESTS: 1
+      MAX_CONCURRENT_JOBS: 1
+      BROWSER_POOL_SIZE: 1
+      NODE_OPTIONS: --max-old-space-size=512  # inherited by every harness child process
+
+  playwright-service:
+    image: ghcr.io/firecrawl/playwright-service:latest
+    build: !reset null
+    cpus: 1.5
+    mem_limit: 1024m
+    memswap_limit: 1024m
+    environment:
+      MAX_CONCURRENT_PAGES: 1
+      BLOCK_MEDIA: "true"          # skip images/video/fonts while rendering
+    tmpfs: !override
+      - /tmp/.cache:noexec,nosuid,size=256m
+
+  nuq-postgres:
+    image: ghcr.io/firecrawl/nuq-postgres:latest
+    build: !reset null
+    mem_limit: 256m
+    command: >
+      postgres -c shared_buffers=32MB -c work_mem=2MB -c maintenance_work_mem=16MB
+               -c effective_cache_size=64MB -c max_connections=30
+    shm_size: 64m
+
+  rabbitmq:
+    image: rabbitmq:3-alpine       # drop the management UI plugin
+    mem_limit: 320m
+    environment:
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "+S 1:1 +A 2 +sbwt none"  # 1 scheduler, no busy-wait
+    volumes:
+      - ./poc/rabbitmq.conf:/etc/rabbitmq/conf.d/90-poc.conf:ro
+
+  redis:
+    mem_limit: 96m
+    command: redis-server --bind 0.0.0.0 --maxmemory 64mb --maxmemory-policy allkeys-lru --save ""
