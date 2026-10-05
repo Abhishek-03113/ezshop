@@ -1,24 +1,30 @@
 {
   "manifest_version": 3,
   "name": "ezshop capture",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Sends the product page you are viewing (Amazon.in, Flipkart) to ezshop as a clean spec sheet.",
   "action": {
-    "default_title": "Send this product to ezshop",
-    "default_popup": "popup.html"
+    "default_title": "Quick Look: compare this page with your saved products"
   },
   "background": {
     "service_worker": "background.js",
     "type": "module"
   },
-  "permissions": ["activeTab", "scripting", "storage"],
-  "host_permissions": [],
+  "permissions": ["activeTab", "scripting", "storage", "contextMenus", "offscreen"],
+  "host_permissions": ["https://www.amazon.in/*", "https://www.flipkart.com/*"],
   "commands": {
     "_execute_action": {
       "suggested_key": {
         "default": "Alt+Shift+E"
       },
-      "description": "Send this product to ezshop"
+      "description": "Toggle ezshop Quick Look"
     }
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.amazon.in/*", "https://www.flipkart.com/*"],
+      "js": ["link-alt-click.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }

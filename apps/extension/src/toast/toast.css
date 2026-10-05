@@ -1,0 +1,124 @@
+/* In-page toasts (QuickLook.dc.html / LinkCapture.dc.html B2). Tokens prepended by build.ts. */
+:host {
+  all: initial;
+  position: fixed;
+  top: 64px;
+  right: 20px;
+  z-index: 2147483647;
+  font-family: var(--ez-font-sans);
+  color: var(--ez-label);
+}
+* {
+  box-sizing: border-box;
+}
+:focus-visible {
+  outline: 2px solid var(--ez-blue);
+  outline-offset: 2px;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-12);
+}
+.toast {
+  display: flex;
+  gap: var(--ez-space-12);
+  align-items: flex-start;
+  width: 340px;
+  max-width: calc(100vw - 40px);
+  padding: 12px 12px 12px 14px;
+  background: var(--ez-bar);
+  backdrop-filter: blur(20px);
+  border-radius: var(--ez-radius-md);
+  box-shadow:
+    var(--ez-shadow-lift),
+    0 0 0 1px var(--ez-separator);
+  animation: slide-in 180ms ease-out;
+}
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+}
+.toast-badge {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ez-radius-full);
+}
+.toast-icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.toast-badge-spin {
+  color: var(--ez-blue);
+  background: var(--ez-blue-soft);
+}
+.toast-badge-spin .toast-icon {
+  animation: spin 900ms linear infinite;
+}
+.toast-badge-ok {
+  background: var(--ez-green-soft);
+  color: var(--ez-green-text);
+}
+.toast-badge-fail {
+  background: var(--ez-red);
+  color: var(--ez-on-accent);
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.toast-text {
+  flex: 1;
+  min-width: 0;
+}
+.toast-title,
+.toast-detail {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.toast-title {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  /* Link text on Amazon search results is the whole listing title; two lines is enough to recognise it. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.toast-detail {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--ez-label-secondary);
+}
+.toast-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+}
+.toast-action {
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ez-blue-hover);
+  cursor: pointer;
+}
+.toast-action:hover {
+  text-decoration: underline;
+}
