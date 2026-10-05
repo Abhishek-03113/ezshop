@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Local configuration and secrets (.env.example is the template)
+.env
+.env.*
+!.env.example
+
+# Upstream Firecrawl checkout; our overrides live in infra/firecrawl/
+/firecrawl/
+
+# Research evidence: traces, HARs, screenshots and saved browser state (contains session cookies)
+/research/out/
+
+# Claude Code per-user settings
+.claude/settings.local.json
+
+# Editor / OS noise
+.DS_Store
+*.log
+.idea/
+.vscode/

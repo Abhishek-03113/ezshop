@@ -1,0 +1,25 @@
+{
+  "name": "ezshop",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "test": "bun test ./packages ./apps",
+    "typecheck": "bun run --filter '*' typecheck",
+    "format": "prettier --write packages apps --ignore-path .prettierignore",
+    "db:up": "docker compose up -d postgres",
+    "dev:api": "bun run --cwd apps/api dev",
+    "dev:web": "bun run --cwd apps/web dev",
+    "build:extension": "bun run --cwd apps/extension build",
+    "fixtures:capture": "bun --env-file=.env apps/api/scripts/capture-page-fixture.ts",
+    "fixtures:refresh": "bun run --cwd packages/catalog fixtures:refresh"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "prettier": "^3.9.9",
+    "typescript": "^5.9.3"
+  }
+}
