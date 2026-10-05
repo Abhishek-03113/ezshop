@@ -1,0 +1,100 @@
+/*
+ * ezshop design tokens, shared by apps/web, apps/landing and the extension popup.
+ * Values come from the "Apple HIG" design system (claude.ai/artifact/TiFCULRVtSBGMNiXwdaHtM).
+ * --ez-label-secondary is darkened from the HIG's rgba(60,60,67,0.6) because that value is only
+ * ~3.4:1 on white, below the 4.5:1 floor for small body text.
+ */
+:root {
+  color-scheme: light dark;
+
+  --ez-font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --ez-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --ez-blue: #007aff;
+  --ez-blue-hover: #0062cc;
+  --ez-blue-soft: rgba(0, 122, 255, 0.1);
+  --ez-green: #34c759;
+  --ez-green-text: #1f7a35;
+  --ez-green-soft: rgba(52, 199, 89, 0.16);
+  --ez-orange: #ff9500;
+  --ez-red: #ff3b30;
+
+  --ez-label: #000000;
+  --ez-label-strong-secondary: #3c3c43;
+  --ez-label-secondary: #6e6e73;
+  --ez-placeholder: #8e8e93;
+  --ez-on-accent: #ffffff;
+
+  --ez-surface: #ffffff;
+  --ez-surface-grouped: #f2f2f7;
+  --ez-surface-raised: #ffffff;
+  /* Grouped panels inside a plain surface; unlike --ez-surface-grouped it stays visible on black in dark mode. */
+  --ez-surface-panel: #f2f2f7;
+  --ez-fill: #e9e9ee;
+  --ez-fill-strong: #e3e3e8;
+  --ez-skeleton: #d1d1d6;
+  --ez-separator: rgba(60, 60, 67, 0.12);
+  --ez-border: rgba(60, 60, 67, 0.22);
+  --ez-bar: rgba(255, 255, 255, 0.82);
+  --ez-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --ez-shadow-lift: 0 12px 32px rgba(0, 0, 0, 0.1);
+
+  --ez-space-4: 4px;
+  --ez-space-8: 8px;
+  --ez-space-12: 12px;
+  --ez-space-16: 16px;
+  --ez-space-20: 20px;
+  --ez-space-24: 24px;
+  --ez-space-32: 32px;
+
+  --ez-radius-xs: 4px;
+  --ez-radius-sm: 8px;
+  --ez-radius-control: 12px;
+  --ez-radius-md: 14px;
+  --ez-radius-lg: 20px;
+  --ez-radius-xl: 28px;
+  --ez-radius-full: 999px;
+
+  --ez-control-height: 44px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ez-blue: #0a84ff;
+    --ez-blue-hover: #409cff;
+    --ez-blue-soft: rgba(10, 132, 255, 0.18);
+    --ez-green: #30d158;
+    --ez-green-text: #30d158;
+    --ez-green-soft: rgba(48, 209, 88, 0.18);
+    --ez-orange: #ff9f0a;
+    --ez-red: #ff453a;
+
+    --ez-label: #ffffff;
+    --ez-label-strong-secondary: rgba(235, 235, 245, 0.8);
+    --ez-label-secondary: rgba(235, 235, 245, 0.6);
+    --ez-placeholder: rgba(235, 235, 245, 0.3);
+
+    --ez-surface: #000000;
+    --ez-surface-grouped: #000000;
+    --ez-surface-raised: #1c1c1e;
+    --ez-surface-panel: #1c1c1e;
+    --ez-fill: #2c2c2e;
+    --ez-fill-strong: #3a3a3c;
+    --ez-skeleton: #3a3a3c;
+    --ez-separator: rgba(84, 84, 88, 0.65);
+    --ez-border: rgba(84, 84, 88, 0.9);
+    --ez-bar: rgba(28, 28, 30, 0.82);
+    --ez-shadow-card: none;
+    --ez-shadow-lift: 0 12px 32px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

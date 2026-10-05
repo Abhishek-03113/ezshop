@@ -1,0 +1,11 @@
+{
+  "name": "@ezshop/ui-tokens",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tokens.css": "./src/tokens.css"
+  },
+  "scripts": {
+    "typecheck": "true"
+  }
+}
