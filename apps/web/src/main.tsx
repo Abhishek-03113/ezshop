@@ -1,0 +1,22 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RouterProvider } from "@tanstack/react-router";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { createProductsClient } from "./api/products-client.ts";
+import { createEzshopRouter } from "./router.tsx";
+import "./styles.css";
+
+// Composition root for the browser: real fetch, same-origin API (Vite proxies /api in dev).
+const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 30_000 } } });
+const router = createEzshopRouter({ queryClient, productsClient: createProductsClient(fetch.bind(window), "") });
+
+const rootElement = document.getElementById("root");
+if (rootElement === null) throw new Error('Missing <div id="root"> in index.html; expected the Vite entry markup');
+
+createRoot(rootElement).render(
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  </StrictMode>,
+);
