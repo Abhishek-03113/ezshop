@@ -1,0 +1,16 @@
+{
+  "name": "@ezshop/extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun build.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ezshop/catalog": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.3.4",
+    "happy-dom": "^20.14.5"
+  }
+}
