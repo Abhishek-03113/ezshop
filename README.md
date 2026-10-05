@@ -27,11 +27,16 @@ bun run build:extension  # → apps/extension/dist
 ```
 
 Load the extension: `chrome://extensions` → Developer mode → **Load unpacked** → `apps/extension/dist` (Chrome 120+).
-Open an Amazon.in or Flipkart product page and click the ezshop toolbar button (or press **Alt+Shift+E**): the popup
-opens and captures the page straight away. The first time, it shows a short welcome screen; click **Got it** to capture.
-The toolbar badge still shows `…` while working, `✓` on success, `!` on failure and `?` on a page it can't read.
-On success the spec sheet opens in a new tab, unless you turn off **Open sheet automatically** in the popup
-(saved via the `storage` permission), in which case the popup shows the saved product and an **Open spec sheet** button.
+Click the ezshop toolbar button (or press **Alt+Shift+E**) on any page to open **Quick Look**: a temporary overlay
+of your last-used comparison, drawn over the page. On a product page, that page appears as a highlighted
+**This page** column you can compare before saving. Press **Return** (or click **Add**) to add it, **←/→** to switch
+comparison, and **Esc** or click outside to close. On pages the extension can't script (`chrome://`, the web store),
+the button opens the classic capture popup instead.
+
+To save a product without opening it, right-click a product link on Amazon.in or Flipkart → **Add to ezshop** →
+pick a comparison, **Library only** or **New comparison…**. **Alt+click** on a product link adds it to the
+last-used comparison. The page is fetched with your cookies and parsed in an offscreen document. Toasts on the
+page show progress (with **Quick Look** / **Undo**), and the toolbar badge counts links still loading.
 
 Point the extension at another stack with `EZSHOP_API_URL=… EZSHOP_WEB_URL=… bun run build:extension`;
 the API host permission in the built manifest follows `EZSHOP_API_URL`.
@@ -88,5 +93,9 @@ Code rules live in `.claude/skills/clean-code/SKILL.md`, which `CLAUDE.md` loads
 |---|---|---|---|
 | POST | `/api/snapshots` | `ProductSnapshot` | From the extension; validated by zod, upserted by (source, ASIN) |
 | POST | `/api/imports` | `{ "url": "…" }` | Scrape the URL via Firecrawl, then extract it |
-| GET | `/api/products` | | Summaries, newest first |
+| GET | `/api/products?q=` | | Summaries, newest first; `q` searches title, brand, category and specs |
 | GET | `/api/products/:id` | | Full snapshot |
+| GET | `/api/products/:id/comparisons` | | Comparisons containing the product |
+| GET / POST | `/api/comparisons` | `{ "name", "productIds"? }` | List (newest first) / create |
+| GET / PATCH / DELETE | `/api/comparisons/:id` | `{ "name" }` | Detail with products / rename / delete |
+| PUT / DELETE | `/api/comparisons/:id/products/:productId` | | Add (idempotent) / remove a product |
