@@ -22,4 +22,15 @@ describe("cheerio and DOM adapters", () => {
   test("DOM document root has no attributes", () => {
     expect(wrapDomDocument(domFromHtml(SAMPLE)).attr("id")).toBeNull();
   });
+
+  // Regression: Amazon nests page-state JSON in a <script> inside #availability.
+  const WITH_SCRIPT = `<div id="availability"><span>In stock</span><script>{"asin":"B09XS7JWHH"}</script><style>.a{}</style></div>`;
+
+  test("cheerio: text skips script and style content", () => {
+    expect(parseHtmlPage(WITH_SCRIPT).findAll("#availability")[0]?.text()).toBe("In stock");
+  });
+
+  test("DOM: text skips script and style content", () => {
+    expect(wrapDomDocument(domFromHtml(WITH_SCRIPT)).findAll("#availability")[0]?.text()).toBe("In stock");
+  });
 });

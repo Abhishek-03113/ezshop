@@ -1,7 +1,7 @@
 import { load, type Cheerio, type CheerioAPI } from "cheerio";
 import type { AnyNode } from "domhandler";
 import { normalizeText } from "../text/normalize-text.ts";
-import type { PageNode } from "./page-node.ts";
+import { NON_TEXT_SELECTOR, type PageNode } from "./page-node.ts";
 
 class CheerioPageNode implements PageNode {
   constructor(
@@ -10,7 +10,9 @@ class CheerioPageNode implements PageNode {
   ) {}
 
   text(): string {
-    return normalizeText(this.selection.text());
+    const visible = this.selection.clone();
+    visible.find(NON_TEXT_SELECTOR).remove();
+    return normalizeText(visible.text());
   }
 
   attr(name: string): string | null {

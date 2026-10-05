@@ -15,6 +15,12 @@ export interface PageNode {
 }
 
 /**
+ * Elements whose content is never visible text. Amazon nests a <script> with page-state JSON
+ * inside #availability, which leaked into ProductSnapshot.availability on live imports.
+ */
+export const NON_TEXT_SELECTOR = "script, style, noscript, template";
+
+/**
  * First descendant matching the selector, or null.
  *
  * @example findFirst(root, "#productTitle")?.text()

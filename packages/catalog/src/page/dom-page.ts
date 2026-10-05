@@ -1,5 +1,5 @@
 import { normalizeText } from "../text/normalize-text.ts";
-import type { PageNode } from "./page-node.ts";
+import { NON_TEXT_SELECTOR, type PageNode } from "./page-node.ts";
 
 type DomRoot = Document | Element;
 
@@ -7,7 +7,9 @@ class DomPageNode implements PageNode {
   constructor(private readonly node: DomRoot) {}
 
   text(): string {
-    return normalizeText(this.node.textContent ?? "");
+    const visible = this.node.cloneNode(true) as DomRoot;
+    visible.querySelectorAll(NON_TEXT_SELECTOR).forEach((element) => element.remove());
+    return normalizeText(visible.textContent ?? "");
   }
 
   attr(name: string): string | null {
