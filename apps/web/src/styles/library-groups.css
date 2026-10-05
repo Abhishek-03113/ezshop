@@ -1,0 +1,223 @@
+/* Library: search + group toolbar, grouped sections, selection ticks and the floating selection bar. */
+.library-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.library-search,
+.filter-field {
+  display: flex;
+  align-items: center;
+  gap: var(--ez-space-8);
+  padding: 0 12px;
+  border-radius: 10px;
+  color: var(--ez-label-secondary);
+}
+.library-search {
+  flex: 1 1 320px;
+  height: 40px;
+  background: var(--ez-surface-raised);
+  box-shadow: 0 0 0 1px var(--ez-border);
+}
+.library-search:focus-within,
+.filter-field:focus-within {
+  box-shadow:
+    0 0 0 3px var(--ez-blue-soft),
+    0 0 0 1px var(--ez-blue);
+}
+.library-search input,
+.filter-field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  color: var(--ez-label);
+}
+.library-search kbd {
+  font-family: inherit;
+  font-size: 12px;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--ez-surface-grouped);
+  border: 1px solid var(--ez-border);
+  color: var(--ez-label-strong-secondary);
+}
+.toolbar-button {
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ez-surface-raised);
+  box-shadow: 0 0 0 1px var(--ez-border);
+  color: var(--ez-label);
+  font-size: 15px;
+  cursor: pointer;
+}
+.toolbar-button[aria-expanded="true"] {
+  box-shadow: 0 0 0 2px var(--ez-blue);
+}
+.toolbar-button strong {
+  font-weight: 600;
+}
+.library-notice {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ez-green-text);
+}
+
+.group-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-12);
+  margin-top: var(--ez-space-8);
+}
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.group-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ez-label);
+  cursor: pointer;
+}
+.group-toggle h2 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+}
+.chevron {
+  display: inline-flex;
+  color: var(--ez-label-strong-secondary);
+  transition: transform 0.15s;
+}
+.chevron.collapsed {
+  transform: rotate(-90deg);
+}
+.group-action {
+  margin-left: auto;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--ez-radius-full);
+  background: var(--ez-blue-soft);
+  color: var(--ez-blue-hover);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.group-action:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.card-frame {
+  position: relative;
+  flex: 1;
+  display: flex;
+  border-radius: var(--ez-radius-lg);
+}
+.card-frame.selected {
+  box-shadow: 0 0 0 3px var(--ez-blue);
+}
+.card-frame .product-card {
+  box-shadow: none;
+}
+.card-tick {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+}
+.card-tick-circle {
+  width: 26px;
+  height: 26px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  background: var(--ez-bar);
+  border: 1.5px solid var(--ez-placeholder);
+  color: var(--ez-on-accent);
+}
+.card-frame.selected .card-tick-circle {
+  background: var(--ez-blue);
+  border-color: var(--ez-blue);
+}
+.card-tick input:focus-visible + .card-tick-circle {
+  outline: 3px solid var(--ez-blue);
+  outline-offset: 2px;
+}
+
+.selection-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: calc(100% - 32px);
+  box-sizing: border-box;
+  padding: 8px 8px 8px 20px;
+  border-radius: var(--ez-radius-lg);
+  background: var(--ez-bar);
+  backdrop-filter: saturate(180%) blur(20px);
+  box-shadow:
+    var(--ez-shadow-lift),
+    0 0 0 1px var(--ez-separator);
+}
+.selection-count {
+  font-size: 15px;
+  font-weight: 600;
+  margin-right: 6px;
+}
+.selection-clear,
+.selection-add,
+.selection-compare {
+  height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--ez-radius-control);
+  font-size: 15px;
+  cursor: pointer;
+}
+.selection-clear {
+  background: transparent;
+  color: var(--ez-blue-hover);
+}
+.selection-add {
+  background: var(--ez-blue-soft);
+  color: var(--ez-blue-hover);
+  font-weight: 600;
+}
+.selection-compare {
+  background: var(--ez-blue);
+  color: var(--ez-on-accent);
+  font-weight: 600;
+  padding: 0 18px;
+}
+.selection-compare:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
