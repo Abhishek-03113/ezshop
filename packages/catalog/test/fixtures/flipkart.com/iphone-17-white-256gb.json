@@ -1,0 +1,515 @@
+{
+  "url": "https://www.flipkart.com/apple-iphone-17-white-256-gb/p/itm68ad8410784c7?pid=MOBHQV9YAZYYWY8A&lid=LSTMOBHQV9YAZYYWY8A6D2THC&marketplace=FLIPKART&q=iphone+17",
+  "capturedAt": "2026-10-05T06:14:28.539Z",
+  "expected": {
+    "source": "flipkart.com",
+    "externalId": "MOBHQV9YAZYYWY8A",
+    "url": "https://www.flipkart.com/apple-iphone-17-white-256-gb/p/itm68ad8410784c7?pid=MOBHQV9YAZYYWY8A",
+    "title": "Apple iPhone 17 (White, 256 GB)",
+    "brand": "Apple",
+    "price": {
+      "amount": 84999,
+      "currency": "INR"
+    },
+    "listPrice": null,
+    "availability": "Out of stock",
+    "rating": {
+      "average": 4.6,
+      "count": 28430
+    },
+    "images": [
+      "https://rukmini1.flixcart.com/image/1500/1500/xif0q/mobile/q/x/x/-original-imahqvadj2sps3vz.jpeg?q=70",
+      "https://rukmini1.flixcart.com/image/1500/1500/xif0q/mobile/m/4/y/-original-imahqvadhhdgzmgy.jpeg?q=70",
+      "https://rukmini1.flixcart.com/image/1500/1500/xif0q/mobile/i/8/r/-original-imahqvad7cbx75z4.jpeg?q=70",
+      "https://rukmini1.flixcart.com/image/1500/1500/xif0q/mobile/z/s/l/-original-imahqvadgk66ardc.jpeg?q=70",
+      "https://rukmini1.flixcart.com/image/1500/1500/xif0q/mobile/4/z/j/-original-imahqvadk3wyfgrk.jpeg?q=70"
+    ],
+    "highlights": [],
+    "specGroups": [
+      {
+        "title": "General",
+        "specs": [
+          {
+            "label": "Brand",
+            "value": "Apple"
+          },
+          {
+            "label": "In The Box",
+            "value": "Handset, USB C Charge Cable (1m), Documentation"
+          },
+          {
+            "label": "Model Number",
+            "value": "MG6K4HN/A"
+          },
+          {
+            "label": "Model Name",
+            "value": "iPhone 17"
+          },
+          {
+            "label": "Color",
+            "value": "White"
+          },
+          {
+            "label": "Browse Type",
+            "value": "Smartphones"
+          },
+          {
+            "label": "SIM Type",
+            "value": "Dual Sim"
+          },
+          {
+            "label": "Hybrid Sim Slot",
+            "value": "No"
+          },
+          {
+            "label": "Touchscreen",
+            "value": "Yes"
+          },
+          {
+            "label": "OTG Compatible",
+            "value": "No"
+          },
+          {
+            "label": "Quick Charging",
+            "value": "Yes"
+          },
+          {
+            "label": "Additional Content",
+            "value": "iOS 26"
+          },
+          {
+            "label": "Sound Enhancements",
+            "value": "Built-in Stereo Speaker"
+          },
+          {
+            "label": "Headset Present",
+            "value": "No"
+          },
+          {
+            "label": "Dolby Speakers",
+            "value": "Yes"
+          },
+          {
+            "label": "VR Compatible",
+            "value": "No"
+          },
+          {
+            "label": "Phablet",
+            "value": "No"
+          }
+        ]
+      },
+      {
+        "title": "Battery & Power Features",
+        "specs": [
+          {
+            "label": "Battery Type",
+            "value": "Lithium Ion"
+          }
+        ]
+      },
+      {
+        "title": "Dimensions",
+        "specs": [
+          {
+            "label": "Width",
+            "value": "71.5 mm (7.15 cm)"
+          },
+          {
+            "label": "Depth",
+            "value": "7.95 mm (0.8 cm)"
+          },
+          {
+            "label": "Height",
+            "value": "149.6 mm (14.96 cm)"
+          },
+          {
+            "label": "Weight",
+            "value": "177 g"
+          }
+        ]
+      },
+      {
+        "title": "Display Features",
+        "specs": [
+          {
+            "label": "Display Size",
+            "value": "16.0 cm (6.3 inch)"
+          },
+          {
+            "label": "Resolution",
+            "value": "2622 x 1206 Pixels"
+          },
+          {
+            "label": "Resolution Type",
+            "value": "Super Retina XDR Display"
+          },
+          {
+            "label": "GPU",
+            "value": "5 core GPU with Neural Accelerators"
+          },
+          {
+            "label": "Display Type",
+            "value": "All Screen OLED Display"
+          },
+          {
+            "label": "HD Game Support",
+            "value": "Yes"
+          },
+          {
+            "label": "Other Display Features",
+            "value": "Dynamic Island, Always On Display, ProMotion TechNology with Adaptive Refresh Rates Upto 120Hz, HDR Display, True Tone, Wide Color (P3), Haptic Touch, 2,000,000:1 Contrast Ratio (Typical), 1000 Nits Max Brightness (Typical): 1600 Nits Peak Brightness (HDR): 3000 Nits Peak Brightness (Outdoor): 1 Nit Minimum Brightness, Fingerprint Resistant Oleophobic Coating, Anti Reflective Coating, Support for Display of Multiple Languages and Characters Simultaneously"
+          }
+        ]
+      },
+      {
+        "title": "OS & Processor Features",
+        "specs": [
+          {
+            "label": "Operating System",
+            "value": "iOS 26"
+          },
+          {
+            "label": "Processor Brand",
+            "value": "Apple"
+          },
+          {
+            "label": "Processor Type",
+            "value": "A19 Chip, 6 Core Processor"
+          },
+          {
+            "label": "Processor Core",
+            "value": "Hexa Core"
+          },
+          {
+            "label": "Primary Clock Speed",
+            "value": "4.26 GHz"
+          },
+          {
+            "label": "Operating Frequency",
+            "value": "5G FDD 5G NR: n1/n2/n3/n5/n7/n8/n12/n14/n20/n25/n26/n28/n29/n30/n66/n70/n71/n75), 5G TDD 5G NR: n38/n40/n41/n48/n53/n77/n78/n79, 5G NR mmWave: n258/n260/n261, 4G FDD LTE: B1/B2/B3/B4/B5/B7/B8/B12/B13/B14/B17/B18/B19/B20/B25/B26/B28/B29/B30/B32/B66/71, 4G TDD LTE: B34/B38/B39/B40/B41/B42/B48/B53, 3G UMTS: 850 MHz/900 MHz/1700 MHz/2100 MHz/1900 MHz/2100 MHz, 2G GSM: 850 MHz/900 MHz/1800 MHz/1900 MHz"
+          }
+        ]
+      },
+      {
+        "title": "Camera Features",
+        "specs": [
+          {
+            "label": "Primary Camera Available",
+            "value": "Yes"
+          },
+          {
+            "label": "Primary Camera",
+            "value": "48MP + 48MP"
+          },
+          {
+            "label": "Primary Camera Features",
+            "value": "48MP Fusion Main (Focal Length: 26mm, f/1.6 Aperture, Sensor-shift Optical Image Stabilization, 100% Focus Pixels, Support for Super High Resolution Photos (24MP and 48MP), Also Enables 12MP Optical Quality 2X Telephoto: Foval Length: 52 mm, f/1.6 Aperture, Sensor-shift Optical Image Stabilization, 100% Focus Pixels) + 48MP Fusion Ultra Wide (Focal Length: 13mm, f/2.2 Aperture, FOV: 120 Degree, Hybrid Focus Pixels, Support for Super High Resolution Photos (24MP and 48MP), 2X Optical Zoom In, 2X Optical Zoom Out; 4X Optical Zoom Range, Sapphire Crystal Lens Cover, Photonic Engine, Deep Fusion, Smart HDR 5, Next Generation Portraits with Focus and Depth Control, Portrait Lighting with Six Effects, Night Mode, PaNorama (Upto 63MP), Latest Generation Photographic Styles, Spatial Photos, 48MP Macro Photography, Wide Color Capture for Photos and Live Photos, Lens Correction (Fusion Ultra Wide), Advanced Red Eye Correction, Auto Image Stabilization, Burst Mode, Photo Geotagging, Image Formats Captured: HEIF and JPEG"
+          },
+          {
+            "label": "Optical Zoom",
+            "value": "Yes"
+          },
+          {
+            "label": "Secondary Camera Available",
+            "value": "Yes"
+          },
+          {
+            "label": "Secondary Camera",
+            "value": "18MP Front Camera"
+          },
+          {
+            "label": "Secondary Camera Features",
+            "value": "Front Camera Setup: 18MP Center Stage Camera (f/1.9 Aperture, Autofocus with Focus Pixels, Tap to Zoom and Rotate, Center Stage for Photos, Ultra Stabilized Video, Dual Capture, Center Stage for Video Calls, Photonic Engine, Deep Fusion, Smart HDR 5, Next Generation Portraits with Focus and Depth Control, Portrait Lighting with Six Effects, Animoji and Memoji, Night Mode, Latest Generation Photographic Styles, Wide Color Capture for Photos and Live Photos, Lens Correction, Auto Image Stabilization, Burst Mode, Timelapse Video with Stabilization, Night Mode Timelapse, Cinematic Video Stabilization (4K, 1080p, and 720p), Spatial Audio and Stereo Recording, Wind Noise Reduction, Audio Mix"
+          },
+          {
+            "label": "Flash",
+            "value": "Rear: True Tone Flash | Front: Retina Flash"
+          },
+          {
+            "label": "HD Recording",
+            "value": "Yes"
+          },
+          {
+            "label": "Full HD Recording",
+            "value": "Yes"
+          },
+          {
+            "label": "Video Recording",
+            "value": "Yes"
+          },
+          {
+            "label": "Video Recording Resolution",
+            "value": "Rear Camera: 4K (at 24 fps/at 25 fps/30 fps/at 60 fps), 1080p (at 25 fps/at 30 fps/at 60 fps), 720p (at 30 fps), Cinematic Mode Upto 4K Dolby Vision (at 30 fps), Action Mode Upto 2.8K Dolby Vision (at 60 fps), Slo���Mo Video Support for 1080p (at 120 fps/at 240 fps), Spatial Video Recording at 1080p (at 30 fps), Dual Capture Upto 4K Dolby Vision (at 30 fps), QuickTake Video Upto 4K Dolby Vision (at 60 fps)|Front Camera: 4K (at 24 fps/at 25 fps/at 30 fps/at 60 fps), 1080p (at 25 fps/at 30 fps/at 60 fps), Cinematic Mode Upto 4K (at 30 fps), Slo-Mo Video Support For 1080p (at 120 fps), QuickTake Video Upto 4K at 60 fps in Dolby Vision, Cinematic Video Stabilization (4K, 1080p, and 720p)"
+          },
+          {
+            "label": "Digital Zoom",
+            "value": "Camera: Upto 10X, Video: Upto 6X"
+          },
+          {
+            "label": "Frame Rate",
+            "value": "240 fps, 120 fps, 60 fps, 30 fps, 25 fps, 24 fps"
+          },
+          {
+            "label": "Image Editor",
+            "value": "Yes"
+          },
+          {
+            "label": "Dual Camera Lens",
+            "value": "Primary Camera"
+          }
+        ]
+      },
+      {
+        "title": "Other Details",
+        "specs": [
+          {
+            "label": "Smartphone",
+            "value": "Yes"
+          },
+          {
+            "label": "Mobile Tracker",
+            "value": "Yes"
+          },
+          {
+            "label": "Social Networking Phone",
+            "value": "Yes"
+          },
+          {
+            "label": "Instant Message",
+            "value": "Yes"
+          },
+          {
+            "label": "Business Phone",
+            "value": "Yes"
+          },
+          {
+            "label": "Java Application",
+            "value": "No"
+          },
+          {
+            "label": "Removable Battery",
+            "value": "No"
+          },
+          {
+            "label": "JAVA Support",
+            "value": "No"
+          },
+          {
+            "label": "MMS",
+            "value": "Yes"
+          },
+          {
+            "label": "SMS",
+            "value": "Yes"
+          },
+          {
+            "label": "Keypad",
+            "value": "No"
+          },
+          {
+            "label": "Voice Input",
+            "value": "Yes"
+          },
+          {
+            "label": "Graphics PPI",
+            "value": "460 PPI"
+          },
+          {
+            "label": "Predictive Text Input",
+            "value": "Yes"
+          },
+          {
+            "label": "Sensors",
+            "value": "Face ID, Barometer, High Dynamic Range Gyro, High G Accelerometer, Proximity Sensor, Dual Ambient Light Sensors"
+          },
+          {
+            "label": "Supported Languages",
+            "value": "English (Australia, UK, US), Chinese (Simplified, Traditional, Traditional - Hong Kong), French (Canada, France), German, Italian, Japanese, Korean, Spanish (Latin America, Spain), Arabic, Bulgarian, Catalan, Croatian, Czech, Danish, Dutch, Finnish, Greek, Hebrew, Hindi, Hungarian, Indonesian, Kazakh, Malay, Norwegian, Polish, Portuguese (Brazil, Portugal), Romanian, Russian, Slovak, Swedish, Thai, Turkish, Ukrainian, Vietnamese"
+          },
+          {
+            "label": "Browser",
+            "value": "Safari"
+          },
+          {
+            "label": "Important Apps",
+            "value": "Apple Store, App Store, Books, Calculator, Calendar, Camera, Clips, Clock, Compass, Contacts, FaceTime, Files, Find My, Fitness, Freeform, GarageBand, Health, Home, iMovie, iTunes Store, KeyNote, Magnifier, Mail, Maps, Measure, Messages, Music, News, Notes, Numbers, Pages, Passwords, Phone, Photos, Podcasts, Reminders, Safari, Settings, Shortcuts, Stocks, Tips, Translate, TV, Voice Memos, Wallet, Watch, Weather"
+          },
+          {
+            "label": "GPS Type",
+            "value": "GPS, GLONASS, GALILEO, QZSS, BEIDOU, NAVIC"
+          }
+        ]
+      },
+      {
+        "title": "Multimedia Features",
+        "specs": [
+          {
+            "label": "FM Radio",
+            "value": "No"
+          },
+          {
+            "label": "FM Radio Recording",
+            "value": "No"
+          },
+          {
+            "label": "DLNA Support",
+            "value": "No"
+          },
+          {
+            "label": "Audio Formats",
+            "value": "AAC, APAC, MP3, Apple Lossless, FLAC, Dolby Digital, Dolby Digital Plus, and Dolby Atmos"
+          },
+          {
+            "label": "Video Formats",
+            "value": "HEVC, H.264, AV1"
+          }
+        ]
+      },
+      {
+        "title": "Call Features",
+        "specs": [
+          {
+            "label": "Call Wait/Hold",
+            "value": "Yes"
+          },
+          {
+            "label": "Conference Call",
+            "value": "Yes"
+          },
+          {
+            "label": "Hands Free",
+            "value": "Yes"
+          },
+          {
+            "label": "Video Call Support",
+            "value": "Yes"
+          },
+          {
+            "label": "Call Divert",
+            "value": "Yes"
+          },
+          {
+            "label": "Phone Book",
+            "value": "Yes"
+          },
+          {
+            "label": "Call Timer",
+            "value": "Yes"
+          },
+          {
+            "label": "Speaker Phone",
+            "value": "Yes"
+          },
+          {
+            "label": "Speed Dialing",
+            "value": "Yes"
+          }
+        ]
+      },
+      {
+        "title": "Memory & Storage Features",
+        "specs": [
+          {
+            "label": "Internal Storage",
+            "value": "256 GB"
+          },
+          {
+            "label": "Call Log Memory",
+            "value": "Yes"
+          }
+        ]
+      },
+      {
+        "title": "Connectivity Features",
+        "specs": [
+          {
+            "label": "Network Type",
+            "value": "5G, 4G VOLTE, 4G, 3G, 2G"
+          },
+          {
+            "label": "Supported Networks",
+            "value": "5G, 4G VoLTE, 4G LTE, UMTS, GSM"
+          },
+          {
+            "label": "Internet Connectivity",
+            "value": "5G, 4G, 3G, Wi-Fi, EDGE"
+          },
+          {
+            "label": "3G",
+            "value": "Yes"
+          },
+          {
+            "label": "GPRS",
+            "value": "Yes"
+          },
+          {
+            "label": "WAP",
+            "value": "No"
+          },
+          {
+            "label": "Micro USB Port",
+            "value": "No"
+          },
+          {
+            "label": "Micro USB Version",
+            "value": "USB 2 (Type C)"
+          },
+          {
+            "label": "Mini USB Port",
+            "value": "No"
+          },
+          {
+            "label": "Bluetooth Support",
+            "value": "Yes"
+          },
+          {
+            "label": "Bluetooth Version",
+            "value": "v6.0"
+          },
+          {
+            "label": "Wi-Fi",
+            "value": "Yes"
+          },
+          {
+            "label": "Wi-Fi Hotspot",
+            "value": "Yes"
+          },
+          {
+            "label": "NFC",
+            "value": "Yes"
+          },
+          {
+            "label": "USB Tethering",
+            "value": "Yes"
+          },
+          {
+            "label": "TV Out",
+            "value": "Yes"
+          },
+          {
+            "label": "Infrared",
+            "value": "No"
+          },
+          {
+            "label": "USB Connectivity",
+            "value": "Yes"
+          },
+          {
+            "label": "EDGE",
+            "value": "Yes"
+          },
+          {
+            "label": "Map Support",
+            "value": "Yes"
+          },
+          {
+            "label": "GPS Support",
+            "value": "Yes"
+          }
+        ]
+      }
+    ],
+    "capturedAt": "2026-10-05T06:14:28.539Z"
+  }
+}

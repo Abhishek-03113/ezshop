@@ -1,0 +1,210 @@
+{
+  "url": "https://www.amazon.in/dp/B0FQG1YHYR",
+  "capturedAt": "2026-10-05T05:56:00.000Z",
+  "expected": {
+    "source": "amazon.in",
+    "externalId": "B0FQG1YHYR",
+    "url": "https://www.amazon.in/dp/B0FQG1YHYR",
+    "title": "Apple iPhone 17 512 GB: 15.93 cm (6.3″) Display with Promotion, A19 Chip, Center Stage Front Camera for Smarter Group Selfies, Improved Scratch Resistance, All-Day Battery Life; White",
+    "brand": "Apple",
+    "price": {
+      "amount": 124900,
+      "currency": "INR"
+    },
+    "listPrice": null,
+    "availability": null,
+    "rating": {
+      "average": 4.7,
+      "count": 753
+    },
+    "images": [
+      "https://m.media-amazon.com/images/I/61NBcHAmCpL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/31tFpNCkk5L._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/21cRMTfut8L._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/41ZJt39DsqL._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/41Uoyzhp3HL._SL1000_.jpg",
+      "https://m.media-amazon.com/images/I/312yY+MI8bL._SL1000_.jpg"
+    ],
+    "highlights": [
+      {
+        "heading": "DESIGNED TO DELIGHT. BUILT TO LAST",
+        "text": "iPhone 17 comes in five gorgeous colours, with a brighter 15.93 cm (6.3″) display and a Ceramic Shield 2 front that’s 3x more scratch resistant."
+      },
+      {
+        "heading": "SMOOTHER. BRIGHTER. BRILLIANT",
+        "text": "Smooth scrolling with ProMotion up to 120Hz, better outdoor contrast with 3,000 nits peak brightness and 33% fewer reflections compared with previous generation."
+      },
+      {
+        "heading": "18MP CENTER STAGE FRONT CAMERA",
+        "text": "Flexible ways to frame your shot. Smarter group selfies, Dual Capture video for simultaneous front and rear recording, and more."
+      },
+      {
+        "heading": "STUNNING SHOTS",
+        "text": "Capture super-high-resolution shots by default with the 48MP Dual Fusion camera system, 4x optical zoom range and 48MP Fusion Ultra Wide camera."
+      },
+      {
+        "heading": "A19 CHIP. POWER PLAYER. ENERGY EXPERT",
+        "text": "With a 5-core GPU, the enhanced neural engine helps power everything you do on iPhone — from Apple Intelligence to AAA games."
+      },
+      {
+        "heading": "CHARGES FAST. MAKES IT LAST",
+        "text": "All-day battery life with up to 30 hours of video playback. Charge up to 50% in 20 minutes."
+      },
+      {
+        "heading": "iOS",
+        "text": "A fresh design with Liquid Glass. Beautiful, delightful and instantly familiar. With a more vibrant Lock Screen, customisable backgrounds and polls in Messages, Call Screening and more."
+      },
+      {
+        "heading": "BUILT FOR APPLE INTELLIGENCE",
+        "text": "Personal, private, powerful. Write, express yourself and get things done effortlessly."
+      },
+      {
+        "heading": "VITAL SAFETY FEATURES",
+        "text": "With Crash Detection, iPhone can detect a severe car crash and call for help if you can’t."
+      },
+      {
+        "heading": "STRONGER CONNECTIVITY. SUPERFAST SPEEDS",
+        "text": "Stay connected at faster speeds with secure connections to Wi-Fi 7, 5G networks and Bluetooth 6, plus eSIM."
+      }
+    ],
+    "specGroups": [
+      {
+        "title": "At a glance",
+        "specs": [
+          {
+            "label": "Brand",
+            "value": "Apple"
+          },
+          {
+            "label": "Operating System",
+            "value": "iOS"
+          },
+          {
+            "label": "RAM Memory Installed Size",
+            "value": "0.1 GB"
+          },
+          {
+            "label": "CPU Speed",
+            "value": "0.1 GHz"
+          },
+          {
+            "label": "Memory Storage Capacity",
+            "value": "512 GB"
+          }
+        ]
+      },
+      {
+        "title": "Technical details",
+        "specs": [
+          {
+            "label": "Display",
+            "value": "Super Retina XDR display 15.93 cm / 6.3in (diagonal) all‑screen OLED display 2622x1206-pixel resolution at 460 ppi"
+          },
+          {
+            "label": "Capacity",
+            "value": "256 GB, 512 GB"
+          },
+          {
+            "label": "Splash, Water, and Dust Resistant",
+            "value": "Rated IP68 (maximum depth of 6 metres up to 30 minutes) under IEC standard 60529"
+          },
+          {
+            "label": "Camera & Video",
+            "value": "48MP Fusion Main: 26 mm, ƒ/1.6 aperture, sensor-shift optical image stabilisation, 100% Focus Pixels, support for super-high-resolution photos (24MP and 48MP) Also enables 12MP optical-quality 2x Telephoto: 52 mm, ƒ/1.6 aperture, sensor-shift optical image stabilisation, 100% Focus Pixels 48MP Fusion Ultra Wide: 13 mm, ƒ/2.2 aperture and 120° field of view, Hybrid Focus Pixels, support for super-high-resolution photos (24MP and 48MP) 2x optical zoom in, 2x optical zoom out; 4x optical zoom range Digital zoom up to 10x"
+          },
+          {
+            "label": "Front Camera",
+            "value": "18MP Center Stage camera ƒ/1.9 aperture Autofocus with Focus Pixels Retina Flash Tap to zoom and rotate Centre Stage for photos"
+          },
+          {
+            "label": "Power and Battery",
+            "value": "Video playback: Up to 30 hours Video playback (streamed): Up to 27 hours Built‑in rechargeable lithium‑ion battery Fast‑charge capable: Up to 50% charge in 20 minutes6 with 40W adapter or higher (available separately) paired with USB‑C charging cable Up to 50% charge in 30 minutes6 with 30W adapter or higher paired with MagSafe Charger (both available separately)"
+          },
+          {
+            "label": "In the box",
+            "value": "iPhone with iOS 26 USB-C Charge Cable (1 m) Documentation"
+          },
+          {
+            "label": "Height",
+            "value": "149.6 mm"
+          },
+          {
+            "label": "Width",
+            "value": "71.5 mm"
+          },
+          {
+            "label": "Depth",
+            "value": "7.95 mm"
+          },
+          {
+            "label": "Weight",
+            "value": "177 g"
+          }
+        ]
+      },
+      {
+        "title": "Product details",
+        "specs": [
+          {
+            "label": "Manufacturer",
+            "value": "Apple"
+          },
+          {
+            "label": "Country of Origin",
+            "value": "India"
+          },
+          {
+            "label": "Item model number",
+            "value": "MG6Q4HN/A"
+          },
+          {
+            "label": "Product Dimensions",
+            "value": "0.79 x 7.15 x 14.96 cm; 177 g"
+          },
+          {
+            "label": "ASIN",
+            "value": "B0FQG1YHYR"
+          }
+        ]
+      },
+      {
+        "title": "Additional information",
+        "specs": [
+          {
+            "label": "Manufacturer",
+            "value": "Apple, Apple Inc, One Apple Park Way, Cupertino, CA 95014, USA. or Apple India Private Limited 13th Floor, Prestige Minsk Square, Municipal No. 6, Cubbon Road, Bengaluru, Karnataka - 560001, India"
+          },
+          {
+            "label": "Packer",
+            "value": "Not Applicable for Apple (Always)"
+          },
+          {
+            "label": "Importer",
+            "value": "(If applicable) Apple India Private Limited 13th Floor, Prestige Minsk Square, Municipal No. 6, Cubbon Road, Bengaluru, Karnataka - 560001, India"
+          },
+          {
+            "label": "Item Weight",
+            "value": "177 g"
+          },
+          {
+            "label": "Item Dimensions LxWxH",
+            "value": "8 x 71 x 150 Millimeters"
+          },
+          {
+            "label": "Net Quantity",
+            "value": "1 Count"
+          },
+          {
+            "label": "Included Components",
+            "value": "USB-C Charge Cable, iPhone 17"
+          },
+          {
+            "label": "Generic Name",
+            "value": "iPhone 17"
+          }
+        ]
+      }
+    ],
+    "capturedAt": "2026-10-05T05:56:00.000Z"
+  }
+}
