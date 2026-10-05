@@ -1,0 +1,321 @@
+/* Spec sheet: summary (gallery, price card, highlights) and searchable spec groups. */
+.detail-page {
+  gap: 40px;
+}
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ez-space-32);
+  align-items: flex-start;
+}
+.summary > * {
+  flex: 1 1 420px;
+  min-width: 0;
+}
+.summary-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-20);
+}
+.summary-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.summary-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--ez-space-8);
+  flex-wrap: wrap;
+}
+.summary-brand {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ez-label-strong-secondary);
+}
+.summary h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.rating-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  color: var(--ez-label-strong-secondary);
+}
+.rating-note strong {
+  color: var(--ez-label);
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-12);
+}
+.gallery-main {
+  aspect-ratio: 1 / 1;
+  max-height: 520px;
+  width: 100%;
+  border-radius: 24px;
+  background: var(--ez-surface-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.gallery-main img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.gallery-empty {
+  color: var(--ez-skeleton);
+}
+.gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: var(--ez-space-8);
+}
+.gallery-thumbs button {
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--ez-radius-control);
+  background: var(--ez-surface-raised);
+  overflow: hidden;
+  cursor: pointer;
+}
+.gallery-thumbs button[aria-pressed="true"] {
+  border-color: var(--ez-blue);
+}
+.gallery-thumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.price-card {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.price-block {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.price {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.list-price {
+  font-size: 17px;
+  color: var(--ez-label-secondary);
+}
+.discount-chip {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ez-green-text);
+  background: var(--ez-green-soft);
+  padding: 3px 10px;
+  border-radius: var(--ez-radius-full);
+}
+.price-missing {
+  margin: 0;
+  font-size: 17px;
+  color: var(--ez-label-secondary);
+}
+.availability {
+  display: flex;
+  align-items: center;
+  gap: var(--ez-space-8);
+  font-size: 15px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.availability-dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--ez-radius-full);
+  background: var(--ez-orange);
+}
+.availability-dot.in-stock {
+  background: var(--ez-green);
+}
+.availability-dot.out-of-stock {
+  background: var(--ez-red);
+}
+.price-card-note {
+  font-size: 13px;
+  color: var(--ez-label-secondary);
+  border-top: 1px solid var(--ez-separator);
+  padding-top: var(--ez-space-12);
+}
+
+.highlights {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-12);
+}
+.highlights h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+.highlights ul {
+  margin: 0;
+  padding: 0 0 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.highlights li {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ez-label-strong-secondary);
+}
+
+.spec-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-20);
+}
+.spec-sheet-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ez-space-16);
+  flex-wrap: wrap;
+}
+.spec-sheet h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.search-box {
+  flex: 0 1 360px;
+  min-width: min(100%, 240px);
+  display: flex;
+  align-items: center;
+  gap: var(--ez-space-8);
+  height: var(--ez-control-height);
+  padding: 0 14px;
+  border-radius: var(--ez-radius-control);
+  background: var(--ez-surface-raised);
+  color: var(--ez-label-secondary);
+}
+.search-box:focus-within {
+  box-shadow:
+    0 0 0 3px var(--ez-blue-soft),
+    0 0 0 1px var(--ez-blue);
+}
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  color: var(--ez-label);
+}
+
+.group-chips {
+  display: flex;
+  gap: var(--ez-space-8);
+  flex-wrap: wrap;
+}
+.group-chips a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: var(--ez-radius-full);
+  background: var(--ez-surface-raised);
+  color: var(--ez-label);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.group-chips a:hover {
+  background: var(--ez-fill);
+}
+.group-chips .count {
+  color: var(--ez-label-secondary);
+}
+
+.empty-state {
+  padding: 48px var(--ez-space-24);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-8);
+  align-items: center;
+}
+.empty-state strong {
+  font-size: 17px;
+}
+
+.spec-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
+  gap: var(--ez-space-20);
+  align-items: start;
+}
+.spec-group {
+  padding: 8px 22px 6px;
+  scroll-margin-top: 80px;
+}
+.spec-group h3 {
+  margin: 0;
+  padding: 14px 0 var(--ez-space-8);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ez-label-secondary);
+}
+.spec-group dl {
+  margin: 0;
+}
+.spec-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 2fr) 3fr;
+  gap: var(--ez-space-16);
+  padding: var(--ez-space-12) 0;
+  border-bottom: 1px solid var(--ez-separator);
+}
+.spec-row:last-child {
+  border-bottom: 0;
+}
+.spec-row dt {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ez-label-secondary);
+}
+.spec-row dd {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .spec-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}

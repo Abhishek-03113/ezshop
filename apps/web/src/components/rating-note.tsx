@@ -1,13 +1,17 @@
 import type { Rating } from "@ezshop/catalog";
+import { StarIcon } from "./icons.tsx";
 
 const COUNT_FORMAT = new Intl.NumberFormat("en-IN");
 
-/** Rating as a quiet footnote: ezshop puts specs ahead of reviews on purpose. */
+/** "★ 4.4 out of 5 · 17,240 ratings"; renders nothing when the page showed no rating. */
 export function RatingNote({ rating }: { rating: Rating | null }) {
   if (rating === null) return null;
+  const countLabel = `${COUNT_FORMAT.format(rating.count)} ${rating.count === 1 ? "rating" : "ratings"}`;
   return (
-    <p className="rating-note">
-      {rating.average.toFixed(1)} / 5 from {COUNT_FORMAT.format(rating.count)} ratings
-    </p>
+    <span className="rating-note">
+      <StarIcon />
+      <strong>{rating.average.toFixed(1)}</strong>
+      <span>{`out of 5 · ${countLabel}`}</span>
+    </span>
   );
 }

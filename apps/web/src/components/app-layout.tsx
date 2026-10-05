@@ -1,18 +1,10 @@
-import { Link, Outlet } from "@tanstack/react-router";
+import { Outlet } from "@tanstack/react-router";
 
-/** Page chrome: brand bar and the routed page below it. */
+/** Page shell: each routed page brings its own app bar, because the bar differs per screen. */
 export function AppLayout() {
   return (
     <div className="app">
-      <header className="app-bar">
-        <Link to="/" className="brand">
-          ez<span>shop</span>
-        </Link>
-        <p className="brand-tagline">Specs first. Everything else later.</p>
-      </header>
-      <main className="app-main">
-        <Outlet />
-      </main>
+      <Outlet />
     </div>
   );
 }

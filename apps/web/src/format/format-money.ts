@@ -23,3 +23,14 @@ export function discountPercent(price: Money | null, listPrice: Money | null): n
   if (price.currency !== listPrice.currency || listPrice.amount <= price.amount) return null;
   return Math.round((1 - price.amount / listPrice.amount) * 100);
 }
+
+/**
+ * How much cheaper the price is than the list price; null when there is no real, same-currency saving.
+ *
+ * @example savingsAmount({ amount: 90, currency: "INR" }, { amount: 100, currency: "INR" }) // { amount: 10, currency: "INR" }
+ */
+export function savingsAmount(price: Money | null, listPrice: Money | null): Money | null {
+  if (price === null || listPrice === null) return null;
+  if (price.currency !== listPrice.currency || listPrice.amount <= price.amount) return null;
+  return { amount: listPrice.amount - price.amount, currency: price.currency };
+}

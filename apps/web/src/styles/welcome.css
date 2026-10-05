@@ -1,0 +1,122 @@
+/* Welcome screen for an empty library. */
+.welcome {
+  padding-top: 72px;
+}
+.welcome-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+  align-items: center;
+}
+.welcome-intro h1 {
+  margin: var(--ez-space-8) 0 0;
+  font-size: 34px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.welcome-intro p {
+  margin: 0;
+  max-width: 480px;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--ez-label-secondary);
+}
+.welcome-badge {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--ez-radius-lg);
+  background: var(--ez-surface-raised);
+  color: var(--ez-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.import-card {
+  padding: var(--ez-space-24);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.import-card-label {
+  font-size: 17px;
+  font-weight: 600;
+}
+.import-card-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.import-card-row input {
+  flex: 1 1 280px;
+  min-width: 0;
+  height: 48px;
+  padding: 0 var(--ez-space-16);
+  border-radius: var(--ez-radius-control);
+  border: 1px solid var(--ez-border);
+  background: var(--ez-surface-raised);
+  font-size: 16px;
+  color: var(--ez-label);
+}
+.import-card-row input:focus {
+  outline: none;
+  border-color: var(--ez-blue);
+  box-shadow: 0 0 0 3px var(--ez-blue-soft);
+}
+
+.extension-card {
+  padding: var(--ez-space-24);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.extension-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ez-space-16);
+  flex-wrap: wrap;
+}
+.extension-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-4);
+}
+.extension-card h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--ez-space-12);
+}
+.steps li {
+  border-radius: var(--ez-radius-md);
+  background: var(--ez-surface-grouped);
+  padding: var(--ez-space-16);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.step-number {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ez-blue);
+}
+.step-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+.step-hint {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ez-label-secondary);
+}

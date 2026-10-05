@@ -1,32 +1,43 @@
 import type { SpecGroup } from "@ezshop/catalog";
 import { useState } from "react";
-import { countSpecs, filterSpecGroups } from "../specs/filter-spec-groups.ts";
-import { SpecGroupTable } from "./spec-group-table.tsx";
+import { filterSpecGroups, specCountLabel } from "../specs/filter-spec-groups.ts";
+import { SpecGroupCard } from "./spec-group-card.tsx";
+import { SpecGroupNav } from "./spec-group-nav.tsx";
+import { SpecSearchBox } from "./spec-search-box.tsx";
 
 interface SpecSheetProps {
   groups: readonly SpecGroup[];
 }
 
-/** Every spec group, with a filter box to find one row among dozens. */
+function NoMatches({ query, onClear }: { query: string; onClear: () => void }) {
+  return (
+    <div className="card empty-state">
+      <strong>No specs match “{query.trim()}”</strong>
+      <button type="button" className="soft-button" onClick={onClear}>
+        Clear search
+      </button>
+    </div>
+  );
+}
+
+/** Every spec group, with live search and chips that jump between groups. */
 export function SpecSheet({ groups }: SpecSheetProps) {
   const [query, setQuery] = useState("");
   const visibleGroups = filterSpecGroups(groups, query);
   return (
     <section className="spec-sheet" aria-labelledby="spec-sheet-title">
       <div className="spec-sheet-head">
-        <h2 id="spec-sheet-title">Specifications</h2>
-        <input
-          type="search"
-          placeholder={`Filter ${countSpecs(groups)} specs…`}
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          aria-label="Filter specifications"
-        />
+        <div className="page-head-text">
+          <h2 id="spec-sheet-title">Specifications</h2>
+          <span className="subtle">{specCountLabel(groups, visibleGroups, query)}</span>
+        </div>
+        <SpecSearchBox query={query} onQueryChange={setQuery} />
       </div>
-      {visibleGroups.length === 0 && <p className="muted">No spec matches “{query}”.</p>}
+      <SpecGroupNav groups={visibleGroups} />
+      {visibleGroups.length === 0 && <NoMatches query={query} onClear={() => setQuery("")} />}
       <div className="spec-groups">
-        {visibleGroups.map((group, index) => (
-          <SpecGroupTable key={group.title} group={group} featured={index === 0 && query === ""} />
+        {visibleGroups.map((group) => (
+          <SpecGroupCard key={group.title} group={group} />
         ))}
       </div>
     </section>
