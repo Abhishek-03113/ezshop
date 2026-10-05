@@ -1,0 +1,15 @@
+{
+  "name": "@ezshop/api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch src/main.ts",
+    "start": "bun src/main.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ezshop/catalog": "workspace:*",
+    "hono": "^4.13.13",
+    "zod": "^4.6.5"
+  }
+}
