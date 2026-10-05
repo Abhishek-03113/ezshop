@@ -22,18 +22,33 @@ cp .env.example .env
 bun run db:up            # Postgres 17 on 127.0.0.1:5433, capped at 192 MB
 bun run dev:api          # http://localhost:8787 (applies migrations on start)
 bun run dev:web          # http://localhost:5173
+bun run dev:landing      # http://localhost:5174 (landing page for first-time users)
 bun run build:extension  # → apps/extension/dist
 ```
 
-Load the extension: `chrome://extensions` → Developer mode → **Load unpacked** → `apps/extension/dist`.
-Open an Amazon.in or Flipkart product page and click the ezshop toolbar button (or press **Alt+Shift+E**).
-The badge shows `…` while working, `✓` on success, `!` on failure and `?` on a page it can't read.
-On success the spec sheet opens in a new tab.
+Load the extension: `chrome://extensions` → Developer mode → **Load unpacked** → `apps/extension/dist` (Chrome 120+).
+Open an Amazon.in or Flipkart product page and click the ezshop toolbar button (or press **Alt+Shift+E**): the popup
+opens and captures the page straight away. The first time, it shows a short welcome screen; click **Got it** to capture.
+The toolbar badge still shows `…` while working, `✓` on success, `!` on failure and `?` on a page it can't read.
+On success the spec sheet opens in a new tab, unless you turn off **Open sheet automatically** in the popup
+(saved via the `storage` permission), in which case the popup shows the saved product and an **Open spec sheet** button.
 
 Point the extension at another stack with `EZSHOP_API_URL=… EZSHOP_WEB_URL=… bun run build:extension`;
 the API host permission in the built manifest follows `EZSHOP_API_URL`.
 After rebuilding, click **Reload** on the extension in `chrome://extensions`: Chromium can keep running the
 previously installed service worker even after a restart with the same profile.
+
+Build-time links (Vite env vars):
+
+| Var | Used by | Default |
+|---|---|---|
+| `VITE_EZSHOP_WEB_URL` | landing ("Open app", paste-a-link) | `http://localhost:5173` |
+| `VITE_EZSHOP_EXTENSION_URL` | landing and web "Add to Chrome" | landing: `#how`, web: Chrome Web Store search |
+
+The web app accepts `/?import=<url-encoded product URL>`: it prefills the import field, imports once and opens
+the new spec sheet. The landing page's paste-a-link form uses this.
+
+UI design (Apple HIG tokens, extension popup, web app, landing): https://claude.ai/artifact/KxVDZQoovX8Ju9PyHvZYzj
 
 ## Supported sites
 

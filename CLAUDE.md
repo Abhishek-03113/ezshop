@@ -4,12 +4,14 @@ Turns Amazon.in product pages into a clean, structured spec sheet.
 Research behind the design: `research/FINDINGS.md`.
 
 - `packages/catalog` — shared `ProductSnapshot` schema + page extractors (pure, no I/O).
+- `packages/ui-tokens` — shared `--ez-*` CSS design tokens (Apple HIG, light + dark) for web, landing and extension popup.
 - `apps/api` — Bun + Hono backend, Postgres storage, Firecrawl import.
-- `apps/web` — React + TanStack Router/Query frontend.
+- `apps/web` — React + TanStack Router/Query frontend (library + spec sheet).
+- `apps/landing` — React + Vite landing page for first-time users.
 - `apps/extension` — MV3 browser extension that captures the open product page.
 
 Commands (repo root): `bun run test`, `bun run typecheck`, `bun run format`,
-`bun run db:up`, `bun run dev:api`, `bun run dev:web`, `bun run build:extension`.
+`bun run db:up`, `bun run dev:api`, `bun run dev:web`, `bun run dev:landing`, `bun run build:extension`.
 
 ## Code rules — always loaded
 
