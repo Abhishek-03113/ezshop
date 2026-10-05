@@ -1,5 +1,6 @@
 import { SQL } from "bun";
 import { join } from "node:path";
+import { loadLayaDecisionModel } from "./decisions/load-laya-model.ts";
 import { loadApiConfig } from "./config/api-config.ts";
 import { applyMigrations, loadMigrationFiles } from "./db/migrate.ts";
 import { createApp } from "./http/create-app.ts";
@@ -22,7 +23,9 @@ const ingestion = new ProductIngestion(
   new FirecrawlHtmlFetcher(config.firecrawlUrl, fetch),
   () => new Date(),
 );
-const app = createApp({ repository, ingestion, logger, webOrigin: config.webOrigin });
+const decisionModel = config.decisionModelDir ? await loadLayaDecisionModel(config.decisionModelDir) : undefined;
+logger.info("decisions.model", { dir: config.decisionModelDir, loaded: decisionModel !== undefined });
+const app = createApp({ repository, ingestion, logger, webOrigin: config.webOrigin, decisionModel });
 
 // Firecrawl scrapes of Amazon take ~5 s; Bun's default 10 s idle timeout is too tight under load.
 Bun.serve({ port: config.port, fetch: app.fetch, idleTimeout: 120 });

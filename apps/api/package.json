@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@ezshop/catalog": "workspace:*",
+    "@huggingface/transformers": "^4.3.0",
     "hono": "^4.13.13",
+    "onnxruntime-node": "^1.30.0",
     "zod": "^4.6.5"
   }
 }

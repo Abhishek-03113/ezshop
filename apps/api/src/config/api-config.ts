@@ -1,5 +1,7 @@
 export interface ApiConfig {
   databaseUrl: string;
+  /** Directory of the Laya ONNX export; null disables /api/decisions. */
+  decisionModelDir: string | null;
   firecrawlUrl: string;
   port: number;
   webOrigin: string;
@@ -15,6 +17,7 @@ type EnvSource = Readonly<Record<string, string | undefined>>;
 export function loadApiConfig(env: EnvSource): ApiConfig {
   return {
     databaseUrl: requireEnv(env, "DATABASE_URL"),
+    decisionModelDir: env.DECISION_MODEL_DIR || null,
     firecrawlUrl: env.FIRECRAWL_URL ?? "http://localhost:3002",
     port: parsePort(env.API_PORT ?? "8787"),
     webOrigin: env.WEB_ORIGIN ?? "http://localhost:5173",

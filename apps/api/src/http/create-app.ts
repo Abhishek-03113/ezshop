@@ -1,10 +1,14 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import type { DecisionModel } from "../decisions/decision-model.ts";
+import { createDecisionRoutes } from "./decision-routes.ts";
 import { toErrorResponse } from "./http-errors.ts";
 import { createProductRoutes, type ProductRouteDependencies } from "./product-routes.ts";
 
 export interface AppDependencies extends ProductRouteDependencies {
   webOrigin: string;
+  /** Absent when no Laya model is configured; /api/decisions is then not mounted. */
+  decisionModel?: DecisionModel;
 }
 
 /**
@@ -18,6 +22,9 @@ export function createApp(deps: AppDependencies): Hono {
   app.use("/api/*", cors({ origin: deps.webOrigin }));
   app.get("/health", (c) => c.json({ status: "ok" }));
   app.route("/api", createProductRoutes(deps));
+  if (deps.decisionModel) {
+    app.route("/api", createDecisionRoutes({ decisionModel: deps.decisionModel, logger: deps.logger }));
+  }
   app.notFound((c) => c.json({ error: "NotFound", message: `No route for ${c.req.method} ${c.req.path}` }, 404));
   app.onError((error, c) => {
     const response = toErrorResponse(error);

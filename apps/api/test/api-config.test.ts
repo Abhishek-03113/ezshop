@@ -5,10 +5,16 @@ describe("loadApiConfig", () => {
   test("applies defaults around the required DATABASE_URL", () => {
     expect(loadApiConfig({ DATABASE_URL: "postgres://x" })).toEqual({
       databaseUrl: "postgres://x",
+      decisionModelDir: null,
       firecrawlUrl: "http://localhost:3002",
       port: 8787,
       webOrigin: "http://localhost:5173",
     });
+  });
+
+  test("reads the optional Laya model directory", () => {
+    const config = loadApiConfig({ DATABASE_URL: "postgres://x", DECISION_MODEL_DIR: "/models/laya" });
+    expect(config.decisionModelDir).toBe("/models/laya");
   });
 
   test("names the missing variable", () => {

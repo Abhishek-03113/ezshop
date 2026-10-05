@@ -1,5 +1,6 @@
 import { ProductPageError } from "@ezshop/catalog";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
+import { DecisionError } from "../decisions/decision-model.ts";
 import { InvalidSnapshotError } from "../products/product-ingestion.ts";
 import { ScrapeError } from "../scraping/html-fetcher.ts";
 
@@ -18,6 +19,7 @@ const STATUS_BY_ERROR: readonly [new (...args: never[]) => Error, ContentfulStat
   [BadRequestError, 400],
   [InvalidSnapshotError, 400],
   [ProductPageError, 422],
+  [DecisionError, 422],
   [ScrapeError, 502],
 ];
 
