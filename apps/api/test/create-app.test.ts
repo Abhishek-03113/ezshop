@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { createApp } from "../src/http/create-app.ts";
 import { ProductIngestion } from "../src/products/product-ingestion.ts";
 import { FakeHtmlFetcher } from "./fakes/fake-html-fetcher.ts";
+import { InMemoryComparisonRepository } from "./fakes/in-memory-comparison-repository.ts";
 import { InMemoryProductRepository } from "./fakes/in-memory-product-repository.ts";
 import { RecordingLogger } from "./fakes/recording-logger.ts";
 import { htmlByFixtureUrl, loadPageFixtures } from "./support/page-fixtures.ts";
@@ -14,7 +15,16 @@ function createTestApp() {
   const fetcher = new FakeHtmlFetcher(htmlByFixtureUrl(fixtures));
   const logger = new RecordingLogger();
   const ingestion = new ProductIngestion(repository, fetcher, () => new Date("2026-10-05T10:00:00Z"));
-  return { logger, app: createApp({ repository, ingestion, logger, webOrigin: "http://web.test" }) };
+  return {
+    logger,
+    app: createApp({
+      repository,
+      comparisons: new InMemoryComparisonRepository(repository),
+      ingestion,
+      logger,
+      webOrigin: "http://web.test",
+    }),
+  };
 }
 
 function postJson(path: string, body: unknown): Request {

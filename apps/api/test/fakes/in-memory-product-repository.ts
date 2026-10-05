@@ -1,5 +1,9 @@
 import type { CatalogProduct, CatalogProductSummary, ProductSnapshot } from "@ezshop/catalog";
-import { summarizeProduct, type ProductRepository } from "../../src/products/product-repository.ts";
+import {
+  productMatchesQuery,
+  summarizeProduct,
+  type ProductRepository,
+} from "../../src/products/product-repository.ts";
 
 /** ProductRepository held in a Map; ids are sequential so assertions stay readable. */
 export class InMemoryProductRepository implements ProductRepository {
@@ -23,7 +27,9 @@ export class InMemoryProductRepository implements ProductRepository {
     return [...this.productsByKey.values()].find((product) => product.id === id) ?? null;
   }
 
-  async listProductSummaries(): Promise<CatalogProductSummary[]> {
-    return [...this.productsByKey.values()].map(summarizeProduct);
+  async listProductSummaries(query = ""): Promise<CatalogProductSummary[]> {
+    return [...this.productsByKey.values()]
+      .filter((product) => productMatchesQuery(product.snapshot, query))
+      .map(summarizeProduct);
   }
 }

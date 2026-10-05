@@ -3,6 +3,7 @@ import { createApp } from "../src/http/create-app.ts";
 import { ProductIngestion } from "../src/products/product-ingestion.ts";
 import { FakeDecisionModel } from "./fakes/fake-decision-model.ts";
 import { FakeHtmlFetcher } from "./fakes/fake-html-fetcher.ts";
+import { InMemoryComparisonRepository } from "./fakes/in-memory-comparison-repository.ts";
 import { InMemoryProductRepository } from "./fakes/in-memory-product-repository.ts";
 import { RecordingLogger } from "./fakes/recording-logger.ts";
 
@@ -14,6 +15,7 @@ function createTestApp(withModel: boolean) {
   const decisionModel = withModel ? new FakeDecisionModel(answer) : undefined;
   const app = createApp({
     repository,
+    comparisons: new InMemoryComparisonRepository(repository),
     ingestion,
     logger: new RecordingLogger(),
     webOrigin: "http://web.test",

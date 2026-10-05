@@ -1,5 +1,6 @@
 import type { SQL } from "bun";
 import type { CatalogProduct, CatalogProductSummary, ProductSnapshot } from "@ezshop/catalog";
+import { isUuid } from "../db/uuid.ts";
 import { summarizeProduct, type ProductRepository } from "./product-repository.ts";
 
 interface ProductRow {
@@ -9,8 +10,16 @@ interface ProductRow {
   updated_at: Date;
 }
 
-const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const LIST_LIMIT = 200;
+
+// Why ILIKE over derived text, not over `snapshot::text`: the raw jsonb text also holds URLs, image
+// links and keys ("https", "specs"), so those words would match every product. Library-sized tables
+// (hundreds of rows) need no index; move to a generated tsvector/trigram column if that changes.
+// Kept in step with `searchableText` in product-repository.ts.
+const SEARCH_TEXT_SQL = `concat_ws(' ', snapshot->>'title', snapshot->>'brand', snapshot->>'category', (
+  SELECT string_agg((spec->>'label') || ' ' || (spec->>'value'), ' ')
+  FROM jsonb_array_elements(snapshot->'specGroups') AS spec_group,
+       jsonb_array_elements(spec_group->'specs') AS spec))`;
 
 /**
  * ProductRepository on Postgres via Bun's built-in SQL client.
@@ -33,15 +42,17 @@ export class PostgresProductRepository implements ProductRepository {
 
   async findProductById(id: string): Promise<CatalogProduct | null> {
     // Postgres rejects a malformed uuid with an error; to callers it is simply "not found".
-    if (!UUID_PATTERN.test(id)) return null;
+    if (!isUuid(id)) return null;
     const rows: ProductRow[] = await this.sql`
       SELECT id, snapshot, created_at, updated_at FROM products WHERE id = ${id}`;
     return rows[0] === undefined ? null : toCatalogProduct(rows[0]);
   }
 
-  async listProductSummaries(): Promise<CatalogProductSummary[]> {
+  async listProductSummaries(query = ""): Promise<CatalogProductSummary[]> {
+    const pattern = likePattern(query);
     const rows: ProductRow[] = await this.sql`
       SELECT id, snapshot, created_at, updated_at FROM products
+      WHERE ${pattern}::text IS NULL OR ${this.sql.unsafe(SEARCH_TEXT_SQL)} ILIKE ${pattern}
       ORDER BY updated_at DESC LIMIT ${LIST_LIMIT}`;
     return rows.map((row) => summarizeProduct(toCatalogProduct(row)));
   }
@@ -60,4 +71,15 @@ function toCatalogProduct(row: ProductRow): CatalogProduct {
     createdAt: row.created_at.toISOString(),
     updatedAt: row.updated_at.toISOString(),
   };
+}
+
+/**
+ * LIKE pattern for a substring search, with the user's %, _ and \\ escaped; null for a blank query.
+ *
+ * @example likePattern("50%") // "%50\\%%"
+ */
+export function likePattern(query: string): string | null {
+  const trimmed = query.trim();
+  if (trimmed === "") return null;
+  return `%${trimmed.replace(/[\\%_]/g, "\\$&")}%`;
 }

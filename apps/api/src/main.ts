@@ -5,6 +5,7 @@ import { loadApiConfig } from "./config/api-config.ts";
 import { applyMigrations, loadMigrationFiles } from "./db/migrate.ts";
 import { createApp } from "./http/create-app.ts";
 import { createJsonLogger } from "./logging/json-logger.ts";
+import { PostgresComparisonRepository } from "./comparisons/postgres-comparison-repository.ts";
 import { PostgresProductRepository } from "./products/postgres-product-repository.ts";
 import { ProductIngestion } from "./products/product-ingestion.ts";
 import { FirecrawlHtmlFetcher } from "./scraping/firecrawl-html-fetcher.ts";
@@ -18,6 +19,7 @@ const applied = await applyMigrations(sql, await loadMigrationFiles(join(import.
 logger.info("db.migrated", { applied: applied.join(",") || "none" });
 
 const repository = new PostgresProductRepository(sql);
+const comparisons = new PostgresComparisonRepository(sql);
 const ingestion = new ProductIngestion(
   repository,
   new FirecrawlHtmlFetcher(config.firecrawlUrl, fetch),
@@ -25,7 +27,7 @@ const ingestion = new ProductIngestion(
 );
 const decisionModel = config.decisionModelDir ? await loadLayaDecisionModel(config.decisionModelDir) : undefined;
 logger.info("decisions.model", { dir: config.decisionModelDir, loaded: decisionModel !== undefined });
-const app = createApp({ repository, ingestion, logger, webOrigin: config.webOrigin, decisionModel });
+const app = createApp({ repository, comparisons, ingestion, logger, webOrigin: config.webOrigin, decisionModel });
 
 // Firecrawl scrapes of Amazon take ~5 s; Bun's default 10 s idle timeout is too tight under load.
 Bun.serve({ port: config.port, fetch: app.fetch, idleTimeout: 120 });
