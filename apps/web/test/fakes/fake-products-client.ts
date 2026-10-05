@@ -10,8 +10,14 @@ export class FakeProductsClient implements ProductsClient {
     private readonly products: CatalogProduct[] = [],
   ) {}
 
-  async listProducts(): Promise<CatalogProductSummary[]> {
-    return this.summaries;
+  readonly listedQueries: string[] = [];
+
+  async listProducts(query = ""): Promise<CatalogProductSummary[]> {
+    this.listedQueries.push(query);
+    const needle = query.trim().toLowerCase();
+    return this.summaries.filter((summary) =>
+      `${summary.title} ${summary.brand} ${summary.category}`.toLowerCase().includes(needle),
+    );
   }
 
   async getProduct(id: string): Promise<CatalogProduct> {

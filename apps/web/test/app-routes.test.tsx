@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
+import { FakeComparisonsClient } from "./fakes/fake-comparisons-client.ts";
 import { FakeProductsClient } from "./fakes/fake-products-client.ts";
-import { makeProduct, makeSummary } from "./fakes/product-fixtures.ts";
+import { inr, makeProduct, makeSummary } from "./fakes/product-fixtures.ts";
 import { renderAppAt } from "./fakes/render-app.tsx";
 
 const populated = () =>
@@ -20,7 +21,7 @@ describe("library route", () => {
 
   test("shows the card grid, count and store filter when products exist", async () => {
     const html = await renderAppAt("/", populated());
-    expect(html).toContain("2 products · newest first");
+    expect(html).toContain("2 products in 1 group");
     expect(html).toContain('aria-pressed="true">All</button>');
     expect(html).toContain("Amazon.in");
     expect(html).toContain("Flipkart");
@@ -56,5 +57,90 @@ describe("product route", () => {
     expect(html).toContain("View on Amazon.in");
     expect(html).toContain("17% off · save ₹6,064");
     expect(html).toContain("2 specs in 2 groups");
+  });
+});
+
+describe("library search and grouping", () => {
+  test("?q= asks the server and shows the matching caption", async () => {
+    const client = populated();
+    const html = await renderAppAt("/?q=iphone", client);
+    expect(client.listedQueries).toContain("iphone");
+    expect(html).toContain("1 product matching “iphone”");
+    expect(html).toContain('value="iphone"');
+  });
+
+  test("a search with no hits keeps the library, not the welcome screen", async () => {
+    const html = await renderAppAt("/?q=zzz", populated());
+    expect(html).toContain("No products match “zzz”.");
+    expect(html).not.toContain("Welcome to ezshop");
+  });
+
+  test("?group=brand sections by brand and ?group=none is one flat list", async () => {
+    expect(await renderAppAt("/?group=brand", populated())).toContain("<h2>Sony</h2>");
+    const flat = await renderAppAt("/?group=none", populated());
+    expect(flat).toContain("2 products · newest first");
+    expect(flat).not.toContain("group-header");
+  });
+
+  test("a group's action opens the comparison that already holds exactly its products", async () => {
+    const both = [makeProduct("p1"), makeProduct("p2")];
+    const html = await renderAppAt(
+      "/",
+      populated(),
+      new FakeComparisonsClient([{ id: "c9", name: "Cans", products: both }]),
+    );
+    expect(html).toContain("Open comparison");
+    expect(html).toContain('href="/comparisons/c9"');
+    expect(html).not.toContain("Compare all 2");
+  });
+});
+
+describe("comparison routes", () => {
+  const seeded = () =>
+    new FakeComparisonsClient([
+      {
+        id: "c1",
+        name: "Cans",
+        products: [makeProduct("p1"), makeProduct("p2", { title: "Bose QC", brand: "Bose", price: inr(27900) })],
+      },
+    ]);
+
+  test("/comparisons shows the empty state when nothing is saved", async () => {
+    const html = await renderAppAt("/comparisons", populated());
+    expect(html).toContain("No comparisons yet");
+  });
+
+  test("the compare page renders sidebar, toolbar and a matrix with a Lowest price pill", async () => {
+    const html = await renderAppAt("/comparisons/c1", populated(), seeded());
+    expect(html).toContain('aria-label="Comparisons"');
+    expect(html).toContain("Differences");
+    expect(html).toContain("Mark best values");
+    expect(html).toContain("Lowest");
+    expect(html).toContain("Search Flipkart");
+    expect(html).toContain('href="/products/p1"');
+  });
+
+  test("an empty comparison invites adding products", async () => {
+    const html = await renderAppAt(
+      "/comparisons/c1",
+      populated(),
+      new FakeComparisonsClient([{ id: "c1", name: "Empty", products: [] }]),
+    );
+    expect(html).toContain("No products yet");
+  });
+});
+
+describe("product page comparisons", () => {
+  test("lists every comparison as a checkbox, checked where the product is a member", async () => {
+    const comparisons = new FakeComparisonsClient([
+      { id: "c1", name: "Cans", products: [makeProduct("p1")] },
+      { id: "c2", name: "Travel", products: [] },
+    ]);
+    const html = await renderAppAt("/products/p1", populated(), comparisons);
+    expect(html).toContain("In comparisons");
+    expect(html).toMatch(/<input type="checkbox" checked=""[^>]*\/><span>Cans<\/span>/);
+    expect(html).toMatch(/<input type="checkbox"(?! checked)[^>]*\/><span>Travel<\/span>/);
+    expect(html).toContain("New comparison");
+    expect(html).toContain("Comparisons<span");
   });
 });

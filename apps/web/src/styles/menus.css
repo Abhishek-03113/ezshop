@@ -1,0 +1,95 @@
+/* Main navigation and floating menus (group-by, add-to-comparison). */
+.main-nav {
+  display: flex;
+  gap: var(--ez-space-4);
+}
+.nav-link {
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border-radius: var(--ez-radius-sm);
+  font-size: 15px;
+  color: var(--ez-label-strong-secondary);
+  text-decoration: none;
+}
+.nav-link:hover {
+  color: var(--ez-label);
+}
+.nav-link[aria-current="page"] {
+  font-weight: 600;
+  color: var(--ez-label);
+  background: var(--ez-fill);
+}
+.nav-count {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background: var(--ez-fill);
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-anchor {
+  position: relative;
+  display: inline-flex;
+}
+.menu-popover {
+  position: absolute;
+  z-index: 20;
+  right: 0;
+  width: 280px;
+  max-width: calc(100vw - 32px);
+  padding: 6px;
+  background: var(--ez-bar);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-radius: var(--ez-radius-md);
+  box-shadow:
+    var(--ez-shadow-lift),
+    0 0 0 1px var(--ez-separator);
+}
+.menu-popover.below {
+  top: calc(100% + 8px);
+}
+.menu-popover.above {
+  bottom: calc(100% + 8px);
+}
+.menu-item {
+  width: 100%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: var(--ez-radius-sm);
+  background: transparent;
+  color: var(--ez-label);
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+.menu-item:hover,
+.menu-item[aria-checked="true"] {
+  background: var(--ez-blue-soft);
+}
+.menu-item.accent {
+  color: var(--ez-blue);
+  font-weight: 600;
+}
+.menu-item small {
+  display: block;
+  font-size: 12px;
+  line-height: 15px;
+  color: var(--ez-label-secondary);
+}
+.menu-item-mark {
+  width: 16px;
+  color: var(--ez-blue);
+}

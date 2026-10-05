@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { createComparisonsClient } from "./api/comparisons-client.ts";
 import { createProductsClient } from "./api/products-client.ts";
 import { readAppConfig } from "./config/app-config.ts";
 import { createEzshopRouter } from "./router.tsx";
@@ -13,6 +14,7 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 30
 const router = createEzshopRouter({
   queryClient,
   productsClient: createProductsClient(fetch.bind(window), ""),
+  comparisonsClient: createComparisonsClient(fetch.bind(window), ""),
   config: readAppConfig(import.meta.env),
 });
 

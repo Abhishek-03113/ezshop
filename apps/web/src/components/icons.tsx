@@ -97,3 +97,46 @@ export function StarIcon({ size = 16 }: IconProps) {
     </svg>
   );
 }
+
+export function PlusIcon({ size }: IconProps) {
+  return (
+    <StrokeIcon size={size} strokeWidth={2.4}>
+      <path d="M12 5v14M5 12h14" />
+    </StrokeIcon>
+  );
+}
+
+export function CloseIcon({ size }: IconProps) {
+  return (
+    <StrokeIcon size={size} strokeWidth={2.4}>
+      <path d="M6 6l12 12M18 6L6 18" />
+    </StrokeIcon>
+  );
+}
+
+export function CheckIcon({ size }: IconProps) {
+  return (
+    <StrokeIcon size={size} strokeWidth={3}>
+      <path d="M5 12l5 5 9-10" />
+    </StrokeIcon>
+  );
+}
+
+export function ChevronDownIcon({ size }: IconProps) {
+  return (
+    <StrokeIcon size={size} strokeWidth={2.4}>
+      <path d="M6 9l6 6 6-6" />
+    </StrokeIcon>
+  );
+}
+
+export function GridIcon({ size }: IconProps) {
+  return (
+    <StrokeIcon size={size} strokeWidth={2}>
+      <rect x="3" y="3" width="7" height="7" rx="1.5" />
+      <rect x="14" y="3" width="7" height="7" rx="1.5" />
+      <rect x="3" y="14" width="7" height="7" rx="1.5" />
+      <rect x="14" y="14" width="7" height="7" rx="1.5" />
+    </StrokeIcon>
+  );
+}
