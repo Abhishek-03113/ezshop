@@ -28,7 +28,7 @@ export function LibrarySearchBox({ query, onQueryCommit }: LibrarySearchBoxProps
       <input
         ref={inputRef}
         type="search"
-        placeholder="Search by name, brand or spec — e.g. “USB-C 90W”"
+        placeholder="Search name, brand or spec"
         aria-label="Search library"
         value={text}
         onChange={(event) => setText(event.target.value)}

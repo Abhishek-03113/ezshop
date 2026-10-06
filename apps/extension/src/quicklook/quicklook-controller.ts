@@ -37,6 +37,8 @@ const ARROW_KEYS_IGNORED_ON: ReadonlySet<string> = new Set(["SELECT", "INPUT"]);
  */
 export class QuickLookController implements OverlayActions {
   private model: QuickLookModel = INITIAL_MODEL;
+  /** True once the dialog has been drawn; later renders must not replay the open animation. */
+  private hasEntered = false;
   private readonly dom: Dom;
 
   constructor(private readonly deps: QuickLookControllerDependencies) {
@@ -78,11 +80,6 @@ export class QuickLookController implements OverlayActions {
     const selectedId = this.model.state?.selectedId;
     if (selectedId === undefined || selectedId === null) return;
     void this.load(() => this.deps.api.remove(selectedId, productId));
-  }
-
-  setDifferencesOnly(differencesOnly: boolean): void {
-    this.model = { ...this.model, differencesOnly };
-    this.render();
   }
 
   /**
@@ -152,7 +149,8 @@ export class QuickLookController implements OverlayActions {
     const { container } = this.deps;
     const focusId = this.deps.activeElement()?.getAttribute("data-focus") ?? null;
     const scrollTop = keepScroll ? (container.querySelector(".body")?.scrollTop ?? 0) : 0;
-    container.replaceChildren(overlayView(this.dom, this.model, this));
+    container.replaceChildren(overlayView(this.dom, this.model, this, !this.hasEntered));
+    this.hasEntered = true;
     const body = container.querySelector(".body");
     if (body !== null) body.scrollTop = scrollTop;
     this.focusControl(focusId ?? "dialog");

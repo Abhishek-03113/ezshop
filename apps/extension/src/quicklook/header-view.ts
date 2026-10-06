@@ -28,13 +28,6 @@ function segmentButton(dom: Dom, focusKey: string, label: string, checked: boole
   return button;
 }
 
-function modeControl(dom: Dom, differencesOnly: boolean, actions: OverlayActions): HTMLElement {
-  return dom.el("div", { className: "segmented", attrs: { role: "radiogroup", "aria-label": "Rows" } }, [
-    segmentButton(dom, "mode", "Differences", differencesOnly, () => actions.setDifferencesOnly(true)),
-    segmentButton(dom, "mode", "All specs", !differencesOnly, () => actions.setDifferencesOnly(false)),
-  ]);
-}
-
 /**
  * Top-level Specs | Compare switch. Its data-focus keys survive the re-render a switch causes, so
  * keyboard focus stays on the segment that was just activated.
@@ -59,13 +52,13 @@ function comparisonControls(dom: Dom, model: QuickLookModel, actions: OverlayAct
   return [
     comparisonPicker(dom, model, actions),
     dom.el("span", { className: "subtitle", text: subtitle(model) }),
-    modeControl(dom, model.differencesOnly, actions),
+    dom.el("span", { className: "grow" }),
   ];
 }
 
 /**
  * Dialog header: the Specs | Compare switch (only on a product page), then either the comparison
- * picker, saved-count line and Differences | All specs switch, or, in the specs view, just a spacer;
+ * picker and saved-count line, or, in the specs view, just a spacer;
  * the close button always ends it. With no comparisons yet the title stands in for the picker.
  *
  * @example headerView(dom, model, actions)

@@ -62,7 +62,7 @@
   max-height: 520px;
   width: 100%;
   border-radius: 24px;
-  background: var(--ez-surface-raised);
+  background: var(--ez-photo-backdrop);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -268,11 +268,14 @@
   font-size: 17px;
 }
 
+/* Columns, not a grid: a short group (At a glance) no longer leaves a hole beside a tall one (Item details). */
 .spec-groups {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
-  gap: var(--ez-space-20);
-  align-items: start;
+  columns: 520px;
+  column-gap: var(--ez-space-20);
+}
+.spec-groups > * {
+  break-inside: avoid;
+  margin-bottom: var(--ez-space-20);
 }
 .spec-group {
   padding: 8px 22px 6px;
@@ -318,4 +321,25 @@
     grid-template-columns: 1fr;
     gap: 2px;
   }
+}
+
+/* Chip jump cue: a ring plus a tint that fades out (see use-flash-value; the ring is removed after 2s). */
+.spec-group {
+  transition:
+    box-shadow 0.3s,
+    background-color 0.3s;
+}
+.spec-group.highlighted {
+  background: var(--ez-blue-soft);
+  box-shadow:
+    0 0 0 2px var(--ez-blue),
+    var(--ez-shadow-card);
+}
+.group-chips a[aria-current="true"] {
+  background: var(--ez-blue);
+  color: var(--ez-on-accent);
+}
+.group-chips a[aria-current="true"] .count {
+  color: inherit;
+  opacity: 0.85;
 }

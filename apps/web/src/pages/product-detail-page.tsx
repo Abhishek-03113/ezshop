@@ -4,6 +4,7 @@ import { comparisonListQuery, productComparisonsQuery } from "../api/comparison-
 import { productDetailQuery } from "../api/product-queries.ts";
 import { AppBar, MainNav } from "../components/app-bar.tsx";
 import { ChevronLeftIcon } from "../components/icons.tsx";
+import { usePageTitle } from "../hooks/use-page-title.ts";
 import { ProductComparisonsCard } from "../components/product-comparisons-card.tsx";
 import { ProductSummary } from "../components/product-summary.tsx";
 import { SourceLink } from "../components/source-link.tsx";
@@ -17,6 +18,7 @@ export function ProductDetailPage() {
   const { productsClient } = productRouteApi.useRouteContext();
   const { data: product } = useSuspenseQuery(productDetailQuery(productsClient, productId));
   const { snapshot } = product;
+  usePageTitle(snapshot.title);
   return (
     <>
       <AppBar sticky>

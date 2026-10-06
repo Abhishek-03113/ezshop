@@ -12,6 +12,12 @@
   box-sizing: border-box;
 }
 
+:root {
+  /* Marketplace photos are shot on white (some are transparent PNGs); a fixed backdrop keeps them
+     consistent in dark mode instead of mixing white boxes with dark ones. */
+  --ez-photo-backdrop: #ffffff;
+}
+
 body {
   margin: 0;
   background: var(--ez-surface-grouped);
@@ -234,5 +240,19 @@ input::placeholder {
   .page {
     padding-left: var(--ez-space-16);
     padding-right: var(--ez-space-16);
+  }
+}
+
+/* Detail page on a phone: back link and "View on" pill share the first row, the nav gets its own. */
+@media (max-width: 600px) {
+  .back-link ~ .main-nav {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .back-link {
+    margin-right: 0;
+  }
+  .back-link ~ .pill-link {
+    margin-left: auto;
   }
 }

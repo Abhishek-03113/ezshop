@@ -105,7 +105,7 @@ export function matrixView(dom: Dom, model: QuickLookModel, actions: OverlayActi
   const saved = model.state?.products ?? [];
   const page = thisPageColumn(model);
   const snapshots = [...saved.map((product) => product.snapshot), ...(page === null ? [] : [page])];
-  const matrix = buildComparisonMatrix(snapshots, { differencesOnly: model.differencesOnly });
+  const matrix = buildComparisonMatrix(snapshots, { differencesOnly: true });
   const root = dom.el("div", { className: "matrix", attrs: { role: "table", "aria-label": "Product comparison" } });
   root.style.setProperty("--columns", String(snapshots.length));
   root.append(headRow(dom, model, matrix.ratings, actions), ...bodyRows(dom, matrix, page !== null));

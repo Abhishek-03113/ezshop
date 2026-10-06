@@ -336,6 +336,24 @@
 .spec-view .group-chips button:hover {
   background: var(--ez-fill);
 }
+/* Jump cue: ring + tint on the group and a solid chip, cleared after 2s by GroupHighlighter. */
+.spec-view .spec-group {
+  transition:
+    box-shadow 0.3s,
+    background-color 0.3s;
+}
+.spec-view .spec-group.highlighted {
+  background: var(--ez-blue-soft);
+  box-shadow: 0 0 0 2px var(--ez-blue);
+}
+.spec-view .group-chips button[aria-current="true"] {
+  background: var(--ez-blue);
+  color: var(--ez-on-accent);
+}
+.spec-view .group-chips button[aria-current="true"] .count {
+  color: inherit;
+  opacity: 0.85;
+}
 .spec-view .group-chips .count {
   color: var(--ez-label-secondary);
 }

@@ -76,14 +76,17 @@ describe("QuickLookController", () => {
     expect(text(root, ".pill")).toEqual(["Lowest", "Best"]);
   });
 
-  test("Differences hides identical rows with a count; All specs shows them", async () => {
+  test("hides identical rows and says how many", async () => {
     const { root, controller } = setup({ page: null });
     await controller.open("compare");
     expect(root.querySelector(".identical-note")?.textContent).toBe("1 identical spec hidden");
     expect(text(root, ".label")).not.toContain("Panel");
-    controller.setDifferencesOnly(false);
-    expect(text(root, ".label")).toContain("Panel");
-    expect(root.querySelector(".identical-note")).toBeNull();
+  });
+
+  test("has no Differences / All specs switch", async () => {
+    const { root, controller } = setup();
+    await controller.open("compare");
+    expect(root.querySelector('[aria-label="Rows"]')).toBeNull();
   });
 
   test("on a non-product page there is no This page column", async () => {
@@ -220,5 +223,15 @@ describe("QuickLookController keys", () => {
     all[all.length - 1]?.focus();
     expect(controller.handleKey({ key: "Tab", shiftKey: false })).toBe(true);
     expect(root.ownerDocument.activeElement).toBe(all[0] ?? null);
+  });
+});
+
+describe("open animation", () => {
+  test("only the first render animates, so adding a page does not flash the dialog", async () => {
+    const { root, controller } = setup();
+    await controller.open("compare");
+    expect(root.querySelector(".layer")?.classList.contains("entering")).toBe(false);
+    controller.addPage();
+    expect(root.querySelector(".layer")?.classList.contains("entering")).toBe(false);
   });
 });

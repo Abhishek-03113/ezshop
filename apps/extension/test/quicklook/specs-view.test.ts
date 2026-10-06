@@ -41,9 +41,6 @@ class RecordingActions implements OverlayActions {
   select(comparisonId: string): void {
     this.calls.push(`select ${comparisonId}`);
   }
-  setDifferencesOnly(differencesOnly: boolean): void {
-    this.calls.push(`differences ${differencesOnly}`);
-  }
   setView(view: string): void {
     this.calls.push(`view ${view}`);
   }
@@ -132,7 +129,7 @@ describe("QuickLookController.setView", () => {
   test("falls back to the dialog when the focused control disappears", async () => {
     const { root, controller } = setup();
     await controller.open("compare");
-    root.querySelector<HTMLElement>('[data-focus="mode-All specs"]')?.focus();
+    root.querySelector<HTMLElement>('[data-focus="picker"]')?.focus();
     controller.setView("specs");
     expect(root.ownerDocument.activeElement?.getAttribute("data-focus")).toBe("dialog");
   });
@@ -272,5 +269,14 @@ describe("keys in the specs view", () => {
     const { root, controller, input } = await openSpecs();
     expect(controller.handleKey({ key: "Tab", ...KEY })).toBe(false);
     expect(root.ownerDocument.activeElement).toBe(input);
+  });
+});
+
+describe("overlayView entering", () => {
+  test("adds the open-animation class only when asked", () => {
+    const { dom } = createTestDom();
+    const model = modelWith({ view: "specs" });
+    expect(overlayView(dom, model, new RecordingActions(), true).className).toBe("layer entering");
+    expect(overlayView(dom, model, new RecordingActions()).className).toBe("layer");
   });
 });

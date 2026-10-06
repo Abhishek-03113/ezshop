@@ -221,3 +221,10 @@
   opacity: 0.6;
   cursor: progress;
 }
+
+/* No keyboard on a phone, so the "/" shortcut hint is just noise there. */
+@media (max-width: 600px) {
+  .library-search kbd {
+    display: none;
+  }
+}

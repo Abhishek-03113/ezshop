@@ -4,7 +4,6 @@ import type { QuickLookView } from "./quicklook-model.ts";
 export interface OverlayActions {
   close(): void;
   select(comparisonId: string): void;
-  setDifferencesOnly(differencesOnly: boolean): void;
   setView(view: QuickLookView): void;
   removeProduct(productId: string): void;
   addPage(): void;

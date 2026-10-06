@@ -58,6 +58,20 @@ describe("SpecGroupNav", () => {
   });
 });
 
+describe("spec group highlight", () => {
+  test("a highlighted card carries the highlighted class, others do not", () => {
+    expect(renderToStaticMarkup(<SpecGroupCard group={group} highlighted />)).toContain("card spec-group highlighted");
+    expect(renderToStaticMarkup(<SpecGroupCard group={group} />)).toContain('class="card spec-group"');
+  });
+
+  test("only the active group's chip is marked current", () => {
+    const other = { ...group, title: "More" };
+    const html = renderToStaticMarkup(<SpecGroupNav groups={[group, other]} activeAnchor="group-more" />);
+    expect(html.match(/aria-current="true"/g)).toHaveLength(1);
+    expect(html).toMatch(/aria-current="true"[^>]*>More/);
+  });
+});
+
 describe("SpecSheet", () => {
   test("shows the size summary, search box and one card per group", () => {
     const html = renderToStaticMarkup(<SpecSheet groups={[group, { ...group, title: "More" }]} />);

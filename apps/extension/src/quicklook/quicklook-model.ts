@@ -12,7 +12,6 @@ export interface QuickLookModel {
   state: QuickLookState | null;
   /** Live snapshot of the open tab, or null when it is not a product page. */
   pageSnapshot: ProductSnapshot | null;
-  differencesOnly: boolean;
   view: QuickLookView;
   busy: boolean;
 }
@@ -22,7 +21,6 @@ export const INITIAL_MODEL: QuickLookModel = {
   message: null,
   state: null,
   pageSnapshot: null,
-  differencesOnly: true,
   view: "specs",
   busy: false,
 };

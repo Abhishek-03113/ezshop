@@ -8,6 +8,7 @@ import { AppBar, BrandLink, MainNav } from "../components/app-bar.tsx";
 import { ImportProductForm } from "../components/import-product-form.tsx";
 import { LibraryView } from "../components/library-view.tsx";
 import { DEFAULT_GROUP_KEY, type GroupKey } from "../library/group-options.ts";
+import { usePageTitle } from "../hooks/use-page-title.ts";
 import { WelcomeView } from "../components/welcome-view.tsx";
 
 const listRouteApi = getRouteApi("/");
@@ -67,6 +68,7 @@ export function ProductListPage() {
   const { import: autoImportUrl, q = "", group = DEFAULT_GROUP_KEY } = listRouteApi.useSearch();
   const { data: products } = useSuspenseQuery(productListQuery(productsClient, q));
   const { data: comparisons } = useSuspenseQuery(comparisonListQuery(comparisonsClient));
+  usePageTitle("Library");
   if (products.length === 0 && q === "") {
     return <WelcomeScreen autoImportUrl={autoImportUrl} extensionUrl={config.extensionUrl} />;
   }

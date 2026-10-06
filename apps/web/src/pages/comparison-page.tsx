@@ -3,6 +3,7 @@ import { getRouteApi } from "@tanstack/react-router";
 import { comparisonDetailQuery, comparisonListQuery } from "../api/comparison-queries.ts";
 import { AppBar, BrandLink, MainNav } from "../components/app-bar.tsx";
 import { ComparisonSidebar } from "../components/comparison-sidebar.tsx";
+import { usePageTitle } from "../hooks/use-page-title.ts";
 import { ComparisonView } from "../components/comparison-view.tsx";
 
 const comparisonRouteApi = getRouteApi("/comparisons/$comparisonId");
@@ -13,6 +14,7 @@ export function ComparisonPage() {
   const { comparisonsClient } = comparisonRouteApi.useRouteContext();
   const { data: comparison } = useSuspenseQuery(comparisonDetailQuery(comparisonsClient, comparisonId));
   const { data: comparisons } = useSuspenseQuery(comparisonListQuery(comparisonsClient));
+  usePageTitle(comparison.name);
   return (
     <>
       <AppBar sticky>

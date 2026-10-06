@@ -78,6 +78,31 @@ describe("renderSpecSheetView", () => {
     expect(scrolled).toEqual(["group-battery"]);
   });
 
+  test("a chip highlights its group and is marked current; picking another moves the highlight", () => {
+    const { view } = mount();
+    for (const section of view.querySelectorAll("section.spec-group")) {
+      (section as HTMLElement).scrollIntoView = () => {};
+    }
+    const chips = view.querySelectorAll(".group-chips button");
+    (chips[0] as HTMLButtonElement).click();
+    expect(view.querySelectorAll(".spec-group.highlighted")).toHaveLength(1);
+    expect(chips[0]?.getAttribute("aria-current")).toBe("true");
+    (chips[1] as HTMLButtonElement).click();
+    expect(view.querySelector(".spec-group.highlighted")?.id).toBe("group-battery");
+    expect(chips[0]?.getAttribute("aria-current")).toBeNull();
+  });
+
+  // Regression: a two-row chips bar is taller than the old fixed 112px offset and covered the group title.
+  test("a chip scrolls its group to just below the sticky bar, whatever the bar's height", () => {
+    const { view } = mount();
+    const tools = view.querySelector(".spec-sheet-tools") as HTMLElement;
+    Object.defineProperty(tools, "offsetHeight", { value: 140 });
+    const section = view.querySelectorAll("section.spec-group")[1] as HTMLElement;
+    section.scrollIntoView = () => {};
+    (view.querySelectorAll(".group-chips button")[1] as HTMLButtonElement).click();
+    expect(section.style.scrollMarginTop).toBe("148px");
+  });
+
   // Regression: Quick Look mounts the sheet in a closed shadow root, where document.getElementById
   // found nothing and chips silently did not scroll.
   test("a chip scrolls its group inside a closed shadow root", () => {

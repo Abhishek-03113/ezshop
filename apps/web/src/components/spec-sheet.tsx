@@ -1,5 +1,7 @@
-import { filterSpecGroups, specCountLabel, type SpecGroup } from "@ezshop/catalog";
+import { filterSpecGroups, specCountLabel, specGroupAnchor, type SpecGroup } from "@ezshop/catalog";
 import { useState } from "react";
+import { useFlashValue } from "../hooks/use-flash-value.ts";
+import { scrollToAnchor } from "./scroll-to-anchor.ts";
 import { SpecGroupCard } from "./spec-group-card.tsx";
 import { SpecGroupNav } from "./spec-group-nav.tsx";
 import { SpecSearchBox } from "./spec-search-box.tsx";
@@ -19,10 +21,17 @@ function NoMatches({ query, onClear }: { query: string; onClear: () => void }) {
   );
 }
 
+const HIGHLIGHT_MS = 2000;
+
 /** Every spec group, with live search and chips that jump between groups. */
 export function SpecSheet({ groups }: SpecSheetProps) {
   const [query, setQuery] = useState("");
   const visibleGroups = filterSpecGroups(groups, query);
+  const [highlighted, highlight] = useFlashValue<string>(HIGHLIGHT_MS);
+  const jumpTo = (anchor: string) => {
+    scrollToAnchor(anchor);
+    highlight(anchor);
+  };
   return (
     <section className="spec-sheet" aria-labelledby="spec-sheet-title">
       <div className="spec-sheet-head">
@@ -32,11 +41,11 @@ export function SpecSheet({ groups }: SpecSheetProps) {
         </div>
         <SpecSearchBox query={query} onQueryChange={setQuery} />
       </div>
-      <SpecGroupNav groups={visibleGroups} />
+      <SpecGroupNav groups={visibleGroups} activeAnchor={highlighted} onSelect={jumpTo} />
       {visibleGroups.length === 0 && <NoMatches query={query} onClear={() => setQuery("")} />}
       <div className="spec-groups">
         {visibleGroups.map((group) => (
-          <SpecGroupCard key={group.title} group={group} />
+          <SpecGroupCard key={group.title} group={group} highlighted={specGroupAnchor(group.title) === highlighted} />
         ))}
       </div>
     </section>
