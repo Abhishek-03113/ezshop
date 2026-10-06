@@ -24,10 +24,25 @@ function renderChip(dom: Dom, group: SpecGroup, highlighter: GroupHighlighter): 
   chip.addEventListener("click", () => {
     const section = findInRoot(chip, specGroupAnchor(group.title));
     if (section === null) return;
+    clearStickyBar(chip, section);
     section.scrollIntoView({ block: "start", behavior: scrollBehavior(chip) });
     highlighter.show(chip, section);
   });
   return chip;
+}
+
+const STICKY_GAP_PX = 8;
+
+/**
+ * Makes the jump land the group below the sticky search + chips bar, not under it. The bar's height
+ * changes with the width (chips wrap to a second row in the wide Quick Look card), so a fixed CSS
+ * offset hid the group's title; measuring at click time is always right.
+ *
+ * @example clearStickyBar(chip, section) // section.style.scrollMarginTop === "148px" for a 140px bar
+ */
+function clearStickyBar(chip: HTMLElement, section: HTMLElement): void {
+  const barHeight = chip.closest<HTMLElement>(".spec-sheet-tools")?.offsetHeight ?? 0;
+  if (barHeight > 0) section.style.scrollMarginTop = `${barHeight + STICKY_GAP_PX}px`;
 }
 
 /** Smooth unless the user asked for reduced motion; read from the chip's own window (works in any document). */
