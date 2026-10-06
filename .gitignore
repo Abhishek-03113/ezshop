@@ -24,3 +24,6 @@ dist/
 *.log
 .idea/
 .vscode/
+
+# /brag launch-video output
+brag-output*/
