@@ -3,21 +3,11 @@
   --lp-panel: var(--ez-surface-grouped);
   --lp-card: var(--ez-surface-raised);
   --lp-max: 1120px;
-  /* Accent taken from the mascot's headphones (#0d5563, 8:1 on white) in place of system blue. */
-  --ez-blue: #0d5563;
-  --ez-blue-hover: #08404b;
-  --ez-blue-soft: rgba(13, 85, 99, 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --lp-panel: var(--ez-surface-raised);
-    --lp-card: var(--ez-fill);
-    --ez-blue: #5cc0cf;
-    --ez-blue-hover: #8cd4df;
-    --ez-blue-soft: rgba(92, 192, 207, 0.18);
-    --ez-on-accent: #04262d;
-  }
+:root[data-theme="dark"] {
+  --lp-panel: var(--ez-surface-raised);
+  --lp-card: var(--ez-fill);
 }
 
 * {
@@ -315,4 +305,21 @@ ol {
   .paste-form .pill {
     flex: 1 1 100%;
   }
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: var(--ez-radius-full);
+  background: transparent;
+  color: var(--ez-label-strong-secondary);
+  cursor: pointer;
+}
+.theme-toggle:hover {
+  background: var(--ez-fill);
+  color: var(--ez-label);
 }

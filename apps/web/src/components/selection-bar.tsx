@@ -1,4 +1,5 @@
-import type { CatalogComparisonSummary, CatalogProductSummary } from "@picky/catalog";
+import { pluralize, type CatalogComparisonSummary, type CatalogProductSummary } from "@picky/catalog";
+import { useDeleteProducts } from "../hooks/use-delete-products.ts";
 import { useAddProductsToComparison, useCreateComparison } from "../hooks/use-comparison-mutations.ts";
 import { nameForSelection } from "../library/selection.ts";
 import { AddToComparisonMenu } from "./add-to-comparison-menu.tsx";
@@ -10,7 +11,7 @@ interface SelectionBarProps {
   onAdded: (comparisonName: string) => void;
 }
 
-/** Floating bar while products are selected: "N selected · Clear · Add to comparison… · Compare N". */
+/** Floating bar while products are selected: "N selected · Clear · Delete · Add to comparison… · Compare N". */
 export function SelectionBar({ selectedProducts, comparisons, onClear, onAdded }: SelectionBarProps) {
   if (selectedProducts.length === 0) return null;
   return (
@@ -28,6 +29,11 @@ function SelectionBarContent({ selectedProducts, comparisons, onClear, onAdded }
   const addProducts = useAddProductsToComparison();
   const productIds = selectedProducts.map((product) => product.id);
   const name = nameForSelection(selectedProducts);
+  const deleteProducts = useDeleteProducts();
+  const confirmDelete = () => {
+    const message = `Delete ${pluralize(productIds.length, "product")} from your library? They also leave any comparison.`;
+    if (window.confirm(message)) deleteProducts.mutate(productIds, { onSuccess: onClear });
+  };
   const create = () => createComparison.mutate({ name, productIds });
   const addTo = (comparison: CatalogComparisonSummary) =>
     addProducts.mutate({ comparisonId: comparison.id, productIds }, { onSuccess: () => onAdded(comparison.name) });
@@ -36,6 +42,9 @@ function SelectionBarContent({ selectedProducts, comparisons, onClear, onAdded }
       <span className="selection-count">{selectedProducts.length} selected</span>
       <button type="button" className="selection-clear" onClick={onClear}>
         Clear
+      </button>
+      <button type="button" className="selection-delete" disabled={deleteProducts.isPending} onClick={confirmDelete}>
+        Delete
       </button>
       <AddToComparisonMenu comparisons={comparisons} newName={name} onAddTo={addTo} onCreateNew={create} />
       <button type="button" className="selection-compare" disabled={createComparison.isPending} onClick={create}>

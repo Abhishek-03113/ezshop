@@ -59,6 +59,16 @@ describe("product API", () => {
     expect(logger.entries[0]?.event).toBe("product.captured");
   });
 
+  test("DELETE /api/products/:id removes the product, then answers 404", async () => {
+    const { app, logger } = createTestApp();
+    const created = await app.request(postJson("/api/snapshots", buildSampleSnapshot()));
+    const { product } = (await created.json()) as { product: { id: string } };
+    expect((await app.request(`/api/products/${product.id}`, { method: "DELETE" })).status).toBe(204);
+    expect((await app.request(`/api/products/${product.id}`)).status).toBe(404);
+    expect((await app.request(`/api/products/${product.id}`, { method: "DELETE" })).status).toBe(404);
+    expect(logger.entries.map((entry) => entry.event)).toContain("product.deleted");
+  });
+
   test("POST /api/imports reads every supported site and lists the products", async () => {
     const { app } = createTestApp();
     for (const fixture of fixtures) {

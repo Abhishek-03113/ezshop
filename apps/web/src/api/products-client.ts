@@ -13,6 +13,8 @@ export interface ProductsClient {
   listProducts(query?: string): Promise<CatalogProductSummary[]>;
   getProduct(id: string): Promise<CatalogProduct>;
   importProduct(url: string): Promise<CatalogProduct>;
+  /** Removes the product from the library and from every comparison that held it. */
+  deleteProduct(id: string): Promise<void>;
   getCapabilities(): Promise<ApiCapabilities>;
 }
 
@@ -32,6 +34,7 @@ export function createProductsClient(fetchFunction: FetchFunction, baseUrl: stri
       (await requestJson<{ product: CatalogProduct }>(`/api/products/${encodeURIComponent(id)}`)).product,
     importProduct: async (url) =>
       (await requestJson<{ product: CatalogProduct }>("/api/imports", jsonRequest("POST", { url }))).product,
+    deleteProduct: (id) => requestJson<void>(`/api/products/${encodeURIComponent(id)}`, { method: "DELETE" }),
     getCapabilities: () => requestJson<ApiCapabilities>("/api/capabilities"),
   };
 }

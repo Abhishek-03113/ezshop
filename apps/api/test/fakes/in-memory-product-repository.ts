@@ -27,6 +27,13 @@ export class InMemoryProductRepository implements ProductRepository {
     return [...this.productsByKey.values()].find((product) => product.id === id) ?? null;
   }
 
+  async deleteProduct(id: string): Promise<boolean> {
+    const entry = [...this.productsByKey.entries()].find(([, product]) => product.id === id);
+    if (entry === undefined) return false;
+    this.productsByKey.delete(entry[0]);
+    return true;
+  }
+
   async listProductSummaries(query = ""): Promise<CatalogProductSummary[]> {
     return [...this.productsByKey.values()]
       .filter((product) => productMatchesQuery(product.snapshot, query))

@@ -48,6 +48,12 @@ export class PostgresProductRepository implements ProductRepository {
     return rows[0] === undefined ? null : toCatalogProduct(rows[0]);
   }
 
+  async deleteProduct(id: string): Promise<boolean> {
+    if (!isUuid(id)) return false;
+    const rows: { id: string }[] = await this.sql`DELETE FROM products WHERE id = ${id} RETURNING id`;
+    return rows.length > 0;
+  }
+
   async listProductSummaries(query = ""): Promise<CatalogProductSummary[]> {
     const pattern = likePattern(query);
     const rows: ProductRow[] = await this.sql`

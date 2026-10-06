@@ -27,12 +27,28 @@ function StrokeIcon({ size = 16, strokeWidth, children }: StrokeIconProps) {
   );
 }
 
-/** Picky mark: blue rounded square with three lines. */
+/** The Picky mascot, shared with the landing page and extension. */
 export function LogoMark() {
+  return <img className="logo-mark" src="/logo-128.png" width={28} height={28} alt="" />;
+}
+
+/** Light bulb: lit while the theme is light. */
+export function BulbIcon({ size = 20, lit }: IconProps & { lit: boolean }) {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
-      <rect width="28" height="28" rx="8" fill="var(--ez-blue)" />
-      <path d="M8 10h12M8 14h8M8 18h10" stroke="var(--ez-on-accent)" strokeWidth="2" strokeLinecap="round" />
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill={lit ? "currentColor" : "none"}
+      fillOpacity={lit ? 0.18 : 0}
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M9 18h6M10 21h4" />
+      <path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" />
     </svg>
   );
 }

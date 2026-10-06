@@ -19,6 +19,12 @@ export class FakeProductsClient implements ProductsClient {
     return this.capabilities;
   }
 
+  readonly deletedIds: string[] = [];
+
+  async deleteProduct(id: string): Promise<void> {
+    this.deletedIds.push(id);
+  }
+
   readonly listedQueries: string[] = [];
 
   async listProducts(query = ""): Promise<CatalogProductSummary[]> {

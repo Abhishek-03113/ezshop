@@ -265,3 +265,27 @@ input::placeholder {
     margin-left: auto;
   }
 }
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: var(--ez-radius-full);
+  background: transparent;
+  color: var(--ez-label-strong-secondary);
+  cursor: pointer;
+}
+.theme-toggle:hover {
+  background: var(--ez-fill);
+  color: var(--ez-label);
+}
+.app-bar-inner .theme-toggle {
+  margin-left: auto;
+}
+.logo-mark {
+  display: block;
+  border-radius: 8px;
+}

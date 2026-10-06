@@ -73,3 +73,22 @@ export const HeadphonesIcon = (): ReactElement => (
     <rect x="17" y="14" width="4" height="7" rx="2" />
   </svg>
 );
+
+/** Light bulb: lit while the theme is light. */
+export const BulbIcon = ({ lit }: { readonly lit: boolean }): ReactElement => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill={lit ? "currentColor" : "none"}
+    fillOpacity={lit ? 0.18 : 0}
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M9 18h6M10 21h4" />
+    <path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" />
+  </svg>
+);

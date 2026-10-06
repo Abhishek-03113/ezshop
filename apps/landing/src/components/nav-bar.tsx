@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { appHomeUrl, type LandingLinks } from "../lib/links.ts";
 import { LogoMark } from "./icons.tsx";
+import { ThemeToggle } from "./theme-toggle.tsx";
 
 /** Sticky translucent top bar. @example <NavBar links={links} /> */
 export function NavBar({ links }: { readonly links: LandingLinks }): ReactElement {
@@ -24,6 +25,7 @@ export function NavBar({ links }: { readonly links: LandingLinks }): ReactElemen
         <a className="pill pill-small" href={links.extensionUrl}>
           Add to Chrome
         </a>
+        <ThemeToggle />
       </nav>
     </header>
   );

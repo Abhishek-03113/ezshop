@@ -17,7 +17,6 @@ const circle = (r: number): IconShape => ({ tag: "circle", attrs: { cx: "12", cy
 
 /** Stroke icons share a 24x24 grid; styling (colour, stroke width) lives in popup.css. */
 export const ICONS = {
-  logo: { viewBox: "0 0 28 28", shapes: [rect(0, 0, 28, 28, 8), path("M8 10h12M8 14h8M8 18h10")] },
   library: {
     viewBox: "0 0 24 24",
     shapes: [rect(3, 3, 7, 7, 2), rect(14, 3, 7, 7, 2), rect(3, 14, 7, 7, 2), rect(14, 14, 7, 7, 2)],

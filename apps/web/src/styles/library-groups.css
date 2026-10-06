@@ -193,6 +193,7 @@
   margin-right: 6px;
 }
 .selection-clear,
+.selection-delete,
 .selection-add,
 .selection-compare {
   height: 40px;
@@ -205,6 +206,14 @@
 .selection-clear {
   background: transparent;
   color: var(--ez-blue-hover);
+}
+.selection-delete {
+  background: transparent;
+  color: var(--ez-red);
+  font-weight: 600;
+}
+.selection-delete:disabled {
+  opacity: 0.5;
 }
 .selection-add {
   background: var(--ez-blue-soft);
