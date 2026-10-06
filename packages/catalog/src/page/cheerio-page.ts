@@ -28,7 +28,7 @@ class CheerioPageNode implements PageNode {
 }
 
 /**
- * Parses raw HTML (e.g. Firecrawl's `rawHtml`) into a PageNode rooted at the document.
+ * Parses raw HTML (e.g. a stored test fixture) into a PageNode rooted at the document.
  *
  * @example extractProductSnapshot(parseHtmlPage(html), url, new Date())
  */

@@ -4,7 +4,6 @@
 !.env.example
 node_modules
 dist
-/firecrawl
 /research
 /brag-output*
 .claude

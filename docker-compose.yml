@@ -1,4 +1,4 @@
-# Local Postgres for Picky, tuned for a small footprint (the 8 GB dev box also runs Firecrawl).
+# Local Postgres for Picky, tuned for a small footprint on an 8 GB dev box.
 services:
   postgres:
     image: postgres:17-alpine

@@ -7,7 +7,7 @@ import { PAGE_FIXTURES_DIR, PageFixtureStore, readSnapshotFromHtml } from "../sr
 import { domFromHtml } from "./support/dom-from-html.ts";
 
 // Golden tests over every captured page in test/fixtures/<source>/. Add one with
-// `bun run fixtures:capture <url> <slug>`; after an intended extractor change, `bun run fixtures:refresh`.
+// `bun run fixtures:capture <url> <slug> <saved-page.html>`; after an intended extractor change, `bun run fixtures:refresh`.
 const store = new PageFixtureStore(new DirectoryFixtureFiles(PAGE_FIXTURES_DIR));
 const fixtures = await Promise.all((await store.listNames()).map((name) => store.read(name)));
 

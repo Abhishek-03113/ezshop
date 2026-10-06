@@ -1,9 +1,6 @@
-import { ProductPageError } from "@picky/catalog";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { DecisionError } from "../decisions/decision-model.ts";
 import { InvalidSnapshotError } from "../products/product-ingestion.ts";
-import { UrlImportDisabledError } from "../scraping/disabled-html-fetcher.ts";
-import { ScrapeError } from "../scraping/html-fetcher.ts";
 
 /** The request body is missing, not JSON, or the wrong shape. */
 export class BadRequestError extends Error {
@@ -19,16 +16,13 @@ export interface ErrorResponse {
 const STATUS_BY_ERROR: readonly [new (...args: never[]) => Error, ContentfulStatusCode][] = [
   [BadRequestError, 400],
   [InvalidSnapshotError, 400],
-  [ProductPageError, 422],
   [DecisionError, 422],
-  [ScrapeError, 502],
-  [UrlImportDisabledError, 501],
 ];
 
 /**
  * Maps a thrown error to the HTTP response clients see. Unknown errors never leak their message.
  *
- * @example toErrorResponse(new ScrapeError("timeout")).status // 502
+ * @example toErrorResponse(new BadRequestError("no body")).status // 400
  */
 export function toErrorResponse(error: Error): ErrorResponse {
   const status = STATUS_BY_ERROR.find(([errorClass]) => error instanceof errorClass)?.[1];

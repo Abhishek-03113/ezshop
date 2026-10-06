@@ -63,7 +63,7 @@ export class PageFixtureStore {
 }
 
 /**
- * Runs the production extractor over stored HTML, the way the API does for Firecrawl pages.
+ * Runs the production extractor over stored HTML, as the extension does over a live page.
  *
  * @example readSnapshotFromHtml(fixture.html, fixture.url, fixture.capturedAt)
  */

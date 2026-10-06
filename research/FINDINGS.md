@@ -5,6 +5,11 @@ All claims below were observed live with Playwright 1.63 driving headless Chromi
 (HAR-style JSONL network logs, traces, screenshots) is in `out/`. Open any trace with
 `npx playwright show-trace out/<name>-trace.zip`.
 
+> **Archived 2026-10-06.** The probe scripts, the `out/` evidence and the Firecrawl setup were deleted once Picky
+> settled on in-browser capture by the extension. The scripts and `infra/firecrawl/` are in git history up to
+> commit `3fd8b26`; the raw `out/` captures (never committed) are gone. `src/` now holds only the extension e2e drivers
+> (see `README-e2e.md`).
+
 Tested from an Indian residential IP, as a guest (no login). Sample size: ~10 Amazon and
 ~6 Flipkart browser sessions. No CAPTCHA was hit in that sample, but that is not a guarantee at scale.
 

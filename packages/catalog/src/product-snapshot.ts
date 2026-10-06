@@ -30,7 +30,7 @@ export const RatingSchema = z.object({
 
 /**
  * Everything Picky keeps about one product page at one moment.
- * Produced by the extension (live DOM) or the API (Firecrawl HTML); both use the same extractor.
+ * Produced by the extension from the live DOM or from a fetched page; both use the same extractor.
  *
  * @example ProductSnapshotSchema.parse(await request.json())
  */

@@ -5,7 +5,7 @@ Research behind the design: `research/FINDINGS.md`.
 
 - `packages/catalog` — shared `ProductSnapshot` schema + page extractors (pure, no I/O).
 - `packages/ui-tokens` — shared `--ez-*` CSS design tokens (Apple HIG, light + dark) for web, landing and extension popup.
-- `apps/api` — Bun + Hono backend, Postgres storage, stores snapshots the extension parses (Firecrawl import is unused tech debt).
+- `apps/api` — Bun + Hono backend, Postgres storage, stores snapshots the extension parses.
 - `apps/web` — React + TanStack Router/Query frontend (library + spec sheet).
 - `apps/landing` — React + Vite landing page for first-time users.
 - `apps/extension` — MV3 browser extension that captures the open product page.

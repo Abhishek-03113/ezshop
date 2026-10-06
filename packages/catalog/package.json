@@ -4,7 +4,6 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./cheerio": "./src/page/cheerio-page.ts",
     "./dom": "./src/page/dom-page.ts",
     "./testing": "./src/testing/index.ts",
     "./web-bridge": "./src/web-bridge-protocol.ts"

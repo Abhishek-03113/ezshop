@@ -9,7 +9,7 @@ import { createHash } from "node:crypto";
 const PRODUCT_URL = process.argv[2] ?? "https://www.amazon.in/dp/B0FQG1YHYR";
 const SHOTS = process.argv[3] ?? "/tmp";
 const EXT_DIR = process.env.PICKY_EXT_DIR ?? "/home/xcal/workspace/ezshop/apps/extension/dist";
-const IMPORT_URL = process.argv[4]; // optional: a second product to import through the web UI (Firecrawl path)
+const IMPORT_URL = process.argv[4]; // optional: a second product to import through the web UI's paste-a-link (fetched by the extension)
 const site = new URL(PRODUCT_URL).hostname.replace(/^www\./, "");
 const step = (name: string, detail: unknown = "") => console.log(JSON.stringify({ step: name, detail }));
 const screen = (name: string) => execFileSync("grim", [`${SHOTS}/${name}.png`]); // whole-screen capture, like a human sees it
@@ -93,7 +93,7 @@ if (IMPORT_URL) {
   await picky.getByRole("button", { name: "Add", exact: true }).click();
   await picky.waitForURL(/\/products\//, { timeout: 120000 });
   await picky.waitForSelector(".spec-group");
-  step("ui.import.firecrawl", { url: picky.url(), title: (await picky.getByRole("heading", { level: 1 }).innerText()).slice(0, 60), groups: await picky.locator(".spec-group h3").allInnerTexts() });
+  step("ui.import.link", { url: picky.url(), title: (await picky.getByRole("heading", { level: 1 }).innerText()).slice(0, 60), groups: await picky.locator(".spec-group h3").allInnerTexts() });
   await picky.waitForTimeout(800);
   screen("05-imported-detail");
   await picky.getByRole("link", { name: "Library" }).click();
