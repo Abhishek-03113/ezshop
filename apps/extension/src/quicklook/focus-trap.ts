@@ -19,7 +19,8 @@ export function nextFocusTarget(
   return null;
 }
 
-const FOCUSABLE = 'button:not([disabled]), a[href], select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+const FOCUSABLE =
+  'button:not([disabled]), a[href], select:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /** Focusable controls inside `container`, in DOM order. */
 export function focusableControls(container: ParentNode): HTMLElement[] {

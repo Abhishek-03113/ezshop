@@ -1,6 +1,10 @@
-import type { CatalogComparisonSummary, CatalogProductSummary, Money } from "@ezshop/catalog";
-import { formatMoney } from "../format/format-money.ts";
-import { pluralize } from "../format/format-count.ts";
+import {
+  type CatalogComparisonSummary,
+  type CatalogProductSummary,
+  formatMoney,
+  type Money,
+  pluralize,
+} from "@ezshop/catalog";
 import type { ProductGroup } from "./group-products.ts";
 
 /**

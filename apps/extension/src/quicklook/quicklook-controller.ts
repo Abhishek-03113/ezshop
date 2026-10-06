@@ -5,7 +5,14 @@ import { focusableControls, nextFocusTarget } from "./focus-trap.ts";
 import type { OverlayActions } from "./overlay-actions.ts";
 import { overlayView } from "./overlay-view.ts";
 import type { QuickLookApi } from "./quicklook-api.ts";
-import { INITIAL_MODEL, neighbourComparisonId, type QuickLookModel } from "./quicklook-model.ts";
+import {
+  INITIAL_MODEL,
+  effectiveView,
+  neighbourComparisonId,
+  showsSpecs,
+  type QuickLookModel,
+  type QuickLookView,
+} from "./quicklook-model.ts";
 
 export interface QuickLookControllerDependencies {
   /** Mount point inside the closed shadow root; also where focus is trapped. */
@@ -19,7 +26,9 @@ export interface QuickLookControllerDependencies {
   activeElement: () => Element | null;
 }
 
-const CONTROL_KEYS_IGNORED_ON: ReadonlySet<string> = new Set(["BUTTON", "A", "SELECT"]);
+// INPUT: the spec search box owns Return and the arrow keys for its own caret, so they are not shortcuts there.
+const CONTROL_KEYS_IGNORED_ON: ReadonlySet<string> = new Set(["BUTTON", "A", "SELECT", "INPUT"]);
+const ARROW_KEYS_IGNORED_ON: ReadonlySet<string> = new Set(["SELECT", "INPUT"]);
 
 /**
  * Owns the Quick Look model: loads it through the API, renders it, and turns clicks and keys into actions.
@@ -34,8 +43,13 @@ export class QuickLookController implements OverlayActions {
     this.dom = new Dom(deps.container.ownerDocument);
   }
 
-  async open(): Promise<void> {
-    this.model = { ...INITIAL_MODEL, pageSnapshot: this.deps.readPage() };
+  /**
+   * Loads the model and renders it on `view` (specs by default; compare when the page is not a product).
+   *
+   * @example await controller.open("compare")
+   */
+  async open(view: QuickLookView = "specs"): Promise<void> {
+    this.model = { ...INITIAL_MODEL, view, pageSnapshot: this.deps.readPage() };
     this.render();
     await this.load(() => this.deps.api.init());
   }
@@ -71,14 +85,33 @@ export class QuickLookController implements OverlayActions {
     this.render();
   }
 
+  /**
+   * Switches between the comparison matrix and this page's spec sheet. Asking for "specs" on a page
+   * with no snapshot is ignored: there is nothing to show.
+   *
+   * @example controller.setView("specs") // no-op on a search page
+   */
+  setView(view: QuickLookView): void {
+    if (view === "specs" && this.model.pageSnapshot === null) return;
+    this.model = { ...this.model, view };
+    this.render({ keepScroll: false });
+  }
+
+  /** The view on screen, after the no-page fallback; the host compares it with the requested view to toggle. */
+  currentView(): QuickLookView {
+    return effectiveView(this.model);
+  }
+
   /** Returns true when the key was ours, so the host can stop the page from seeing it. */
   handleKey(event: Pick<KeyboardEvent, "key" | "shiftKey">): boolean {
     const active = this.deps.activeElement();
     if (event.key === "Escape") return this.run(() => this.close());
     if (event.key === "Tab") return this.trapTab(active, event.shiftKey);
-    if (event.key === "Enter" && !CONTROL_KEYS_IGNORED_ON.has(active?.tagName ?? ""))
-      return this.run(() => this.addPage());
-    if ((event.key === "ArrowLeft" || event.key === "ArrowRight") && active?.tagName !== "SELECT")
+    // The compare shortcuts act on controls the specs view hides, so they must not fire blind there.
+    if (showsSpecs(this.model)) return false;
+    const tag = active?.tagName ?? "";
+    if (event.key === "Enter" && !CONTROL_KEYS_IGNORED_ON.has(tag)) return this.run(() => this.addPage());
+    if ((event.key === "ArrowLeft" || event.key === "ArrowRight") && !ARROW_KEYS_IGNORED_ON.has(tag))
       return this.switchBy(event.key === "ArrowRight" ? 1 : -1);
     return false;
   }
@@ -114,10 +147,11 @@ export class QuickLookController implements OverlayActions {
     this.render();
   }
 
-  private render(): void {
+  /** `keepScroll: false` for a view switch: the other view's scroll offset means nothing here. */
+  private render({ keepScroll }: { keepScroll: boolean } = { keepScroll: true }): void {
     const { container } = this.deps;
     const focusId = this.deps.activeElement()?.getAttribute("data-focus") ?? null;
-    const scrollTop = container.querySelector(".body")?.scrollTop ?? 0;
+    const scrollTop = keepScroll ? (container.querySelector(".body")?.scrollTop ?? 0) : 0;
     container.replaceChildren(overlayView(this.dom, this.model, this));
     const body = container.querySelector(".body");
     if (body !== null) body.scrollTop = scrollTop;

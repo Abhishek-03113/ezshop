@@ -35,3 +35,11 @@ describe("focusableControls", () => {
     expect(focusableControls(root).map((node) => node.textContent)).toEqual(["a", "b", "c"]);
   });
 });
+
+describe("focusableControls with a text field", () => {
+  test("includes enabled inputs (the spec search box) but not disabled ones", () => {
+    const { dom, root } = createTestDom();
+    root.append(dom.el("input"), dom.el("input", { attrs: { disabled: "" } }));
+    expect(focusableControls(root).length).toBe(1);
+  });
+});

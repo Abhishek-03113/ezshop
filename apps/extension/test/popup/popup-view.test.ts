@@ -34,15 +34,37 @@ describe("renderPopupView", () => {
     expect(view.querySelectorAll(".progress-done").length).toBe(2);
   });
 
-  test("saved: card, struck list price, sheet and library links, no HTML injection", () => {
+  test("saved: card, struck list price, View specs button, ezshop and library links, no HTML injection", () => {
     const { dom } = createTestDom();
     const view = renderPopupView(dom, { kind: "saved", summary: SUMMARY }, createTestContext().context);
     const hrefs = [...view.querySelectorAll("a")].map((link) => link.getAttribute("href"));
     expect(hrefs).toEqual(["http://web/", "http://web/products/p1", "http://web/products/p1"]);
+    const links = [...view.querySelectorAll("a.button-secondary")].map((link) => link.textContent);
+    expect(links).toEqual(["Open in ezshop ↗"]);
+    expect(view.querySelector("button.button-primary")?.textContent).toBe("View specs");
     expect(view.querySelector(".list-price")?.tagName).toBe("S");
     expect(view.querySelector(".product-title")?.textContent).toBe(SUMMARY.title);
     expect(view.querySelector("img.thumb-image")).toBeNull();
     expect(view.textContent).toContain("54 specs in 10 groups");
+  });
+
+  test("saved: View specs reports the click", () => {
+    const { dom } = createTestDom();
+    const { context, clicks } = createTestContext();
+    const view = renderPopupView(dom, { kind: "saved", summary: SUMMARY }, context);
+    (view.querySelector("button.button-primary") as HTMLButtonElement).click();
+    expect(clicks.viewedSpecs).toBe(1);
+  });
+
+  test("specs: titled header with a Back button, library link and the spec sheet", () => {
+    const { dom } = createTestDom();
+    const { context, clicks } = createTestContext();
+    const view = renderPopupView(dom, { kind: "specs", summary: SUMMARY }, context);
+    expect(view.querySelector(".header .brand")?.textContent).toBe("Specifications");
+    expect(view.querySelector('a[aria-label="Open library"]')?.getAttribute("href")).toBe("http://web/");
+    expect(view.querySelector("main.spec-body")).not.toBeNull();
+    (view.querySelector("button.back-button") as HTMLButtonElement).click();
+    expect(clicks.backedToSaved).toBe(1);
   });
 
   test("saved: uses the product image when the snapshot has one", () => {

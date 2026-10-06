@@ -1,5 +1,5 @@
-import type { Spec, SpecGroup } from "@ezshop/catalog";
-import { pluralize } from "../format/format-count.ts";
+import type { Spec, SpecGroup } from "../product-snapshot.ts";
+import { pluralize } from "./pluralize.ts";
 
 /**
  * Keeps specs whose label, value or group title contains the query (case-insensitive); drops emptied groups.

@@ -1,6 +1,5 @@
-import { PRODUCT_SOURCES } from "@ezshop/catalog";
+import { PRODUCT_SOURCES, sourceLabel } from "@ezshop/catalog";
 import type { FormEvent } from "react";
-import { sourceLabel } from "../format/source-label.ts";
 import { LinkIcon } from "./icons.tsx";
 
 export interface ImportFieldViewProps {

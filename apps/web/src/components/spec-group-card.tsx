@@ -1,5 +1,4 @@
-import type { SpecGroup } from "@ezshop/catalog";
-import { specGroupAnchor } from "../specs/filter-spec-groups.ts";
+import { type SpecGroup, specGroupAnchor } from "@ezshop/catalog";
 
 /** One titled group of label/value specs as a description list. */
 export function SpecGroupCard({ group }: { group: SpecGroup }) {

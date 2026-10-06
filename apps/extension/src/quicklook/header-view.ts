@@ -1,6 +1,6 @@
 import { Dom } from "../popup/dom.ts";
 import type { OverlayActions } from "./overlay-actions.ts";
-import { thisPageColumn, type QuickLookModel } from "./quicklook-model.ts";
+import { showsSpecs, thisPageColumn, type QuickLookModel, type QuickLookView } from "./quicklook-model.ts";
 
 function comparisonPicker(dom: Dom, model: QuickLookModel, actions: OverlayActions): HTMLElement {
   const state = model.state;
@@ -18,11 +18,11 @@ function comparisonPicker(dom: Dom, model: QuickLookModel, actions: OverlayActio
   return dom.el("span", { className: "picker-wrap" }, [select, dom.icon("chevronDown", "icon-picker")]);
 }
 
-function modeButton(dom: Dom, label: string, checked: boolean, onPick: () => void): HTMLElement {
+function segmentButton(dom: Dom, focusKey: string, label: string, checked: boolean, onPick: () => void): HTMLElement {
   const button = dom.el("button", {
     className: "segment",
     text: label,
-    attrs: { type: "button", role: "radio", "aria-checked": String(checked), "data-focus": `mode-${label}` },
+    attrs: { type: "button", role: "radio", "aria-checked": String(checked), "data-focus": `${focusKey}-${label}` },
   });
   button.addEventListener("click", onPick);
   return button;
@@ -30,8 +30,20 @@ function modeButton(dom: Dom, label: string, checked: boolean, onPick: () => voi
 
 function modeControl(dom: Dom, differencesOnly: boolean, actions: OverlayActions): HTMLElement {
   return dom.el("div", { className: "segmented", attrs: { role: "radiogroup", "aria-label": "Rows" } }, [
-    modeButton(dom, "Differences", differencesOnly, () => actions.setDifferencesOnly(true)),
-    modeButton(dom, "All specs", !differencesOnly, () => actions.setDifferencesOnly(false)),
+    segmentButton(dom, "mode", "Differences", differencesOnly, () => actions.setDifferencesOnly(true)),
+    segmentButton(dom, "mode", "All specs", !differencesOnly, () => actions.setDifferencesOnly(false)),
+  ]);
+}
+
+/**
+ * Top-level Specs | Compare switch. Its data-focus keys survive the re-render a switch causes, so
+ * keyboard focus stays on the segment that was just activated.
+ */
+function viewControl(dom: Dom, view: QuickLookView, actions: OverlayActions): HTMLElement {
+  const attrs = { role: "radiogroup", "aria-label": "View" };
+  return dom.el("div", { className: "segmented segmented-view", attrs }, [
+    segmentButton(dom, "view", "Specs", view === "specs", () => actions.setView("specs")),
+    segmentButton(dom, "view", "Compare", view === "compare", () => actions.setView("compare")),
   ]);
 }
 
@@ -40,26 +52,33 @@ function subtitle(model: QuickLookModel): string {
   return thisPageColumn(model) === null ? `${saved} saved` : `${saved} saved · comparing with this page`;
 }
 
+function comparisonControls(dom: Dom, model: QuickLookModel, actions: OverlayActions): HTMLElement[] {
+  const hasComparisons = (model.state?.comparisons.length ?? 0) > 0;
+  if (!hasComparisons)
+    return [dom.el("h2", { className: "title", text: "Quick Look" }), dom.el("span", { className: "grow" })];
+  return [
+    comparisonPicker(dom, model, actions),
+    dom.el("span", { className: "subtitle", text: subtitle(model) }),
+    modeControl(dom, model.differencesOnly, actions),
+  ];
+}
+
 /**
- * Dialog header: comparison picker, saved-count line, Differences | All specs switch and the close button.
- * With no comparisons yet only the close button remains.
+ * Dialog header: the Specs | Compare switch (only on a product page), then either the comparison
+ * picker, saved-count line and Differences | All specs switch, or, in the specs view, just a spacer;
+ * the close button always ends it. With no comparisons yet the title stands in for the picker.
  *
  * @example headerView(dom, model, actions)
  */
 export function headerView(dom: Dom, model: QuickLookModel, actions: OverlayActions): HTMLElement {
-  const hasComparisons = (model.state?.comparisons.length ?? 0) > 0;
   const close = dom.el(
     "button",
     { className: "close", attrs: { type: "button", "aria-label": "Close Quick Look", "data-focus": "close" } },
     [dom.icon("close", "icon-close")],
   );
   close.addEventListener("click", () => actions.close());
-  const parts = hasComparisons
-    ? [
-        comparisonPicker(dom, model, actions),
-        dom.el("span", { className: "subtitle", text: subtitle(model) }),
-        modeControl(dom, model.differencesOnly, actions),
-      ]
-    : [dom.el("h2", { className: "title", text: "Quick Look" }), dom.el("span", { className: "grow" })];
-  return dom.el("header", { className: "header" }, [...parts, close]);
+  const hasPage = model.pageSnapshot !== null;
+  const switcher = hasPage ? [viewControl(dom, model.view, actions)] : [];
+  const rest = showsSpecs(model) ? [dom.el("span", { className: "grow" })] : comparisonControls(dom, model, actions);
+  return dom.el("header", { className: "header" }, [...switcher, ...rest, close]);
 }

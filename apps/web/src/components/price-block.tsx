@@ -1,5 +1,4 @@
-import type { Money } from "@ezshop/catalog";
-import { discountPercent, formatMoney, savingsAmount } from "../format/format-money.ts";
+import { discountPercent, formatMoney, type Money, savingsAmount } from "@ezshop/catalog";
 
 interface PriceBlockProps {
   price: Money | null;

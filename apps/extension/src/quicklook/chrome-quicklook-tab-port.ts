@@ -1,10 +1,11 @@
 import type { QuickLookTabPort } from "./quicklook-launcher.ts";
+import type { QuickLookView } from "./quicklook-model.ts";
 
 /**
  * QuickLookTabPort over chrome.scripting and chrome.action. The overlay bundle is a classic script
  * (executeScript `files` cannot load ES modules); the toggle runs in the same isolated world afterwards.
  *
- * @example await new ChromeQuickLookTabPort("quicklook.js", "popup.html").injectAndToggle(7)
+ * @example await new ChromeQuickLookTabPort("quicklook.js", "popup.html").injectAndToggle(7, "specs")
  */
 export class ChromeQuickLookTabPort implements QuickLookTabPort {
   constructor(
@@ -12,12 +13,14 @@ export class ChromeQuickLookTabPort implements QuickLookTabPort {
     private readonly popupPage: string,
   ) {}
 
-  async injectAndToggle(tabId: number): Promise<void> {
+  async injectAndToggle(tabId: number, view: QuickLookView): Promise<void> {
     await chrome.scripting.executeScript({ target: { tabId }, files: [this.overlayScriptFile] });
     const [injection] = await chrome.scripting.executeScript({
       target: { tabId },
-      func: (): boolean => {
-        globalThis.ezshopQuickLookToggle?.();
+      // The page-side function receives the view as an argument: executeScript cannot close over `view`.
+      args: [view],
+      func: (requested: QuickLookView): boolean => {
+        globalThis.ezshopQuickLookToggle?.(requested);
         return globalThis.ezshopQuickLookToggle !== undefined;
       },
     });

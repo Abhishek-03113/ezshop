@@ -15,11 +15,13 @@ export interface RecordedClicks {
   dismissed: number;
   retried: number;
   autoOpenChanges: boolean[];
+  viewedSpecs: number;
+  backedToSaved: number;
 }
 
 /** A view context whose handlers record their calls. */
 export function createTestContext(): { context: PopupViewContext; clicks: RecordedClicks } {
-  const clicks: RecordedClicks = { dismissed: 0, retried: 0, autoOpenChanges: [] };
+  const clicks: RecordedClicks = { dismissed: 0, retried: 0, autoOpenChanges: [], viewedSpecs: 0, backedToSaved: 0 };
   const context: PopupViewContext = {
     webBaseUrl: "http://web",
     hostLabel: "amazon.in",
@@ -27,6 +29,8 @@ export function createTestContext(): { context: PopupViewContext; clicks: Record
     onDismissWelcome: () => void (clicks.dismissed += 1),
     onRetry: () => void (clicks.retried += 1),
     onAutoOpenChange: (checked) => void clicks.autoOpenChanges.push(checked),
+    onViewSpecs: () => void (clicks.viewedSpecs += 1),
+    onBackToSaved: () => void (clicks.backedToSaved += 1),
   };
   return { context, clicks };
 }

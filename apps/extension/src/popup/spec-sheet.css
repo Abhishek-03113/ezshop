@@ -1,0 +1,397 @@
+/* Spec view: ports apps/web/src/styles/product.css at popup size, scoped under .spec-view so it never
+   clashes with the popup's saved card (.price, .list-price, .card) or Quick Look's own dialog classes
+   (.card, .body, .header, ...). Spec cards are therefore .spec-card, never .card.
+   Shared by two hosts: the popup (<main class="body spec-body">, its scroll container) and the Quick
+   Look overlay (its .body). Wide layout lives in spec-sheet-wide.css, keyed off the container width. */
+.body.spec-body {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0;
+  gap: 0;
+  background: var(--ez-surface-grouped);
+}
+/* In Quick Look the grouped surface must fill the whole scroll area, not just the content's height. */
+.body:has(> .spec-view) {
+  background: var(--ez-surface-grouped);
+}
+.spec-view {
+  flex: 0 0 auto;
+  /* A size container: @container rules in spec-sheet-wide.css react to the width this view is given. */
+  container-type: inline-size;
+}
+.spec-view .spec-content {
+  --spec-pad: var(--ez-space-12);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-12);
+  padding: var(--spec-pad);
+}
+.spec-view .spec-card {
+  display: block;
+  padding: 0;
+  gap: 0;
+  background: var(--ez-surface-raised);
+  border-radius: var(--ez-radius-lg);
+  box-shadow: var(--ez-shadow-card);
+}
+.spec-view .icon {
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.spec-view .icon-xs {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2.2;
+}
+.spec-view .icon-md {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.8;
+}
+.spec-view .icon-xl {
+  width: 30px;
+  height: 30px;
+  stroke-width: 1.6;
+}
+.spec-view .chip {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ez-label-strong-secondary);
+  background: var(--ez-fill);
+  padding: 3px 8px;
+  border-radius: var(--ez-radius-full);
+  white-space: nowrap;
+}
+.spec-view .subtle {
+  font-size: 13px;
+  color: var(--ez-label-secondary);
+}
+.spec-view .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.spec-view .soft-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--ez-radius-full);
+  background: var(--ez-surface-grouped);
+  color: var(--ez-blue);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 8px 0 2px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ez-blue);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.back-button:hover {
+  background: var(--ez-fill);
+}
+
+.spec-view .summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-12);
+}
+.spec-view .gallery-main {
+  height: 168px;
+  border-radius: var(--ez-radius-lg);
+  background: var(--ez-surface-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.spec-view .gallery-main img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.spec-view .gallery-empty {
+  color: var(--ez-skeleton);
+}
+.spec-view .summary-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.spec-view .summary-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--ez-space-8);
+  flex-wrap: wrap;
+}
+.spec-view .summary-brand {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ez-label-strong-secondary);
+}
+.spec-view h1 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.spec-view .rating-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ez-label-strong-secondary);
+}
+.spec-view .rating-note strong {
+  color: var(--ez-label);
+}
+
+.spec-view .price-card {
+  padding: var(--ez-space-16);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.spec-view .price-block {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.spec-view .price {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.spec-view .list-price {
+  font-size: 14px;
+  color: var(--ez-label-secondary);
+}
+.spec-view .discount-chip {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ez-green-text);
+  background: var(--ez-green-soft);
+  padding: 3px 8px;
+  border-radius: var(--ez-radius-full);
+}
+.spec-view .price-missing {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ez-label-secondary);
+}
+.spec-view .availability {
+  display: flex;
+  align-items: center;
+  gap: var(--ez-space-8);
+  font-size: 14px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.spec-view .availability-dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--ez-radius-full);
+  background: var(--ez-orange);
+}
+.spec-view .availability-dot.in-stock {
+  background: var(--ez-green);
+}
+.spec-view .availability-dot.out-of-stock {
+  background: var(--ez-red);
+}
+.spec-view .price-card-note {
+  font-size: 12px;
+  color: var(--ez-label-secondary);
+  border-top: 1px solid var(--ez-separator);
+  padding-top: 10px;
+}
+
+.spec-view .highlights {
+  padding: var(--ez-space-16);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.spec-view .highlights h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+.spec-view .highlights ul {
+  margin: 0;
+  padding: 0 0 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.spec-view .highlights li {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ez-label-strong-secondary);
+  overflow-wrap: anywhere;
+}
+
+.spec-view .spec-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.spec-view .spec-sheet-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ez-space-12);
+}
+.spec-view .spec-sheet h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+/* Pinned to the top of the host's scroll container so search and group chips stay reachable. The
+   negative margins cancel .spec-content's padding so the bar spans the full width. */
+.spec-view .spec-sheet-tools {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0 calc(-1 * var(--spec-pad));
+  padding: var(--ez-space-8) var(--spec-pad);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-8);
+  background: var(--ez-surface-grouped);
+}
+.spec-view .search-box {
+  display: flex;
+  align-items: center;
+  gap: var(--ez-space-8);
+  height: var(--ez-control-height);
+  padding: 0 12px;
+  border-radius: var(--ez-radius-control);
+  background: var(--ez-surface-raised);
+  color: var(--ez-label-secondary);
+}
+.spec-view .search-box:focus-within {
+  box-shadow:
+    0 0 0 3px var(--ez-blue-soft),
+    0 0 0 1px var(--ez-blue);
+}
+.spec-view .search-box input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ez-label);
+}
+.spec-view .group-chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+.spec-view .group-chips button {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--ez-radius-full);
+  background: var(--ez-surface-raised);
+  color: var(--ez-label);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.spec-view .group-chips button:hover {
+  background: var(--ez-fill);
+}
+.spec-view .group-chips .count {
+  color: var(--ez-label-secondary);
+}
+.spec-view .empty-state {
+  padding: 32px var(--ez-space-16);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-8);
+  align-items: center;
+}
+.spec-view .empty-state strong {
+  font-size: 15px;
+}
+.spec-view .spec-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-12);
+}
+.spec-view .spec-group {
+  padding: 4px var(--ez-space-16) 2px;
+  /* Clears the sticky search + chips when a chip scrolls a group into view. */
+  scroll-margin-top: 112px;
+}
+.spec-view .spec-group h3 {
+  margin: 0;
+  padding: 12px 0 var(--ez-space-8);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ez-label-secondary);
+}
+.spec-view .spec-group dl {
+  margin: 0;
+}
+/* Single column: the web's narrow-screen rule is the only layout at popup width. */
+.spec-view .spec-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ez-separator);
+}
+.spec-view .spec-row:last-child {
+  border-bottom: 0;
+}
+.spec-view .spec-row dt {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ez-label-secondary);
+}
+.spec-view .spec-row dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}

@@ -1,3 +1,4 @@
+import type { QuickLookView } from "./quicklook-model.ts";
 import { installQuickLook } from "./overlay-host.ts";
 
 // Injected into the active tab by the service worker (classic IIFE, like page-capture.js). Replaced at build time
@@ -5,7 +6,7 @@ import { installQuickLook } from "./overlay-host.ts";
 declare const __EZSHOP_QUICKLOOK_CSS__: string;
 
 declare global {
-  var ezshopQuickLookToggle: (() => void) | undefined;
+  var ezshopQuickLookToggle: ((view: QuickLookView) => void) | undefined;
 }
 
 // A second injection (the user clicked again after the first) must not stack a second overlay.

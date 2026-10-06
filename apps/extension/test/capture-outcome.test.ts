@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { formatMoney } from "@ezshop/catalog";
 import { summarizeSnapshot } from "../src/capture-outcome.ts";
 import { stateFromOutcome } from "../src/popup/popup-state.ts";
 import { buildSnapshot } from "./support/build-snapshot.ts";
@@ -23,7 +24,8 @@ describe("summarizeSnapshot", () => {
     };
     const summary = summarizeSnapshot("p1", snapshot);
     expect(summary.priceText).toMatch(/28,926/);
-    expect(summary.listPriceText).toMatch(/34,990\.5/);
+    expect(summary.listPriceText).toBe(formatMoney(snapshot.listPrice));
+    expect(summary.snapshot).toEqual(snapshot);
     expect(summary).toMatchObject({ productId: "p1", imageUrl: "https://img.test/a.jpg", specCount: 3, groupCount: 2 });
   });
 

@@ -1,4 +1,5 @@
 import type { ActiveTab } from "../capture-flow.ts";
+import type { SavedSummary } from "../capture-outcome.ts";
 import type { SettingsStore } from "../settings.ts";
 import type { ActiveTabSource } from "./active-tab-source.ts";
 import type { CaptureService } from "./capture-service.ts";
@@ -28,7 +29,9 @@ export function hostLabelOf(url: string): string | null {
  */
 export class PopupController {
   private readonly dom: Dom;
-  private autoOpen = true;
+  private autoOpen = false;
+  /** The last saved capture, kept so Back from the spec view can return to it. */
+  private lastSummary: SavedSummary | null = null;
   private hostLabel: string | null = null;
 
   constructor(private readonly deps: PopupDependencies) {
@@ -47,7 +50,9 @@ export class PopupController {
     if (tab === null) return this.show({ kind: "unsupported" });
     this.hostLabel = hostLabelOf(tab.url);
     this.show({ kind: "capturing", phase: "reading" });
-    this.show(await this.runCapture(tab));
+    const state = await this.runCapture(tab);
+    this.lastSummary = state.kind === "saved" ? state.summary : null;
+    this.show(state);
   }
 
   private async runCapture(tab: ActiveTab): Promise<PopupState> {
@@ -67,8 +72,14 @@ export class PopupController {
       onDismissWelcome: () => void this.dismissWelcome(),
       onRetry: () => void this.capture(),
       onAutoOpenChange: (checked) => void this.saveAutoOpen(checked),
+      onViewSpecs: () => this.showSummaryAs("specs"),
+      onBackToSaved: () => this.showSummaryAs("saved"),
     });
     this.deps.root.replaceChildren(view);
+  }
+
+  private showSummaryAs(kind: "saved" | "specs"): void {
+    if (this.lastSummary !== null) this.show({ kind, summary: this.lastSummary });
   }
 
   private async dismissWelcome(): Promise<void> {

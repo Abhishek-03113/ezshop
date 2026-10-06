@@ -31,8 +31,9 @@ function createDeps(
 }
 
 describe("runCaptureFlow", () => {
-  test("captures, sends and opens the spec sheet", async () => {
-    const { browser, events, deps } = createDeps({ ok: true, snapshot: buildSnapshot() }, async () => "p1");
+  test("captures, sends and opens the spec sheet when auto-open is on", async () => {
+    const storage = new FakeKeyValueStorage({ "ezshop.settings": { autoOpenSheet: true } });
+    const { browser, events, deps } = createDeps({ ok: true, snapshot: buildSnapshot() }, async () => "p1", storage);
     const outcome = await runCaptureFlow(PRODUCT_TAB, deps);
     expect(outcome.kind).toBe("saved");
     expect(browser.openedUrls).toEqual(["http://web/products/p1"]);
@@ -40,9 +41,8 @@ describe("runCaptureFlow", () => {
     expect(events).toEqual(["capture.sent"]);
   });
 
-  test("saves without opening the sheet when auto-open is off, reporting progress", async () => {
-    const storage = new FakeKeyValueStorage({ "ezshop.settings": { autoOpenSheet: false } });
-    const { browser, deps } = createDeps({ ok: true, snapshot: buildSnapshot() }, async () => "p1", storage);
+  test("saves without opening the sheet by default, reporting progress", async () => {
+    const { browser, deps } = createDeps({ ok: true, snapshot: buildSnapshot() }, async () => "p1");
     const phases: string[] = [];
     const outcome = await runCaptureFlow(PRODUCT_TAB, deps, (phase) => phases.push(phase));
     expect(outcome).toMatchObject({ kind: "saved", summary: { productId: "p1" } });

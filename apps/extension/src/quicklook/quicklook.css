@@ -408,3 +408,9 @@ select {
 .card:focus {
   outline: none;
 }
+
+/* Top-level Compare | Specs switch: sits at the header's start, unlike the right-aligned rows switch. */
+.segmented-view {
+  margin-left: 0;
+  width: 168px;
+}

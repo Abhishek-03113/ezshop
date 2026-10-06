@@ -1,6 +1,5 @@
-import type { SpecGroup } from "@ezshop/catalog";
+import { filterSpecGroups, specCountLabel, type SpecGroup } from "@ezshop/catalog";
 import { useState } from "react";
-import { filterSpecGroups, specCountLabel } from "../specs/filter-spec-groups.ts";
 import { SpecGroupCard } from "./spec-group-card.tsx";
 import { SpecGroupNav } from "./spec-group-nav.tsx";
 import { SpecSearchBox } from "./spec-search-box.tsx";

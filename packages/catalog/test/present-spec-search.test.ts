@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { countSpecs, filterSpecGroups, specCountLabel, specGroupAnchor } from "../src/specs/filter-spec-groups.ts";
+import { countSpecs, filterSpecGroups, specCountLabel, specGroupAnchor } from "../src/present/spec-search.ts";
 
 const groups = [
   {

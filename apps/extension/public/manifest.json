@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "description": "Sends the product page you are viewing (Amazon.in, Flipkart) to ezshop as a clean spec sheet.",
   "action": {
-    "default_title": "Quick Look: compare this page with your saved products"
+    "default_title": "Quick Look: specs of this page"
   },
   "background": {
     "service_worker": "background.js",
@@ -15,9 +15,15 @@
   "commands": {
     "_execute_action": {
       "suggested_key": {
-        "default": "Alt+Shift+E"
+        "default": "Alt+Shift+S"
       },
-      "description": "Toggle ezshop Quick Look"
+      "description": "Quick Look: specs of this page"
+    },
+    "open-comparison": {
+      "suggested_key": {
+        "default": "Alt+Shift+V"
+      },
+      "description": "Quick Look: compare this page"
     }
   },
   "content_scripts": [

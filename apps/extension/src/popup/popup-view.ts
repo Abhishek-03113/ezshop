@@ -3,6 +3,7 @@ import type { Dom } from "./dom.ts";
 import { renderErrorView } from "./error-view.ts";
 import type { PopupState } from "./popup-state.ts";
 import { renderSavedView } from "./saved-view.ts";
+import { renderSpecSheetView } from "./specs/spec-sheet-view.ts";
 import { renderShell, type ShellOptions } from "./shell.ts";
 import { renderUnsupportedView } from "./unsupported-view.ts";
 import { renderWelcomeView } from "./welcome-view.ts";
@@ -15,6 +16,8 @@ export interface PopupViewContext {
   onDismissWelcome: () => void;
   onRetry: () => void;
   onAutoOpenChange: (checked: boolean) => void;
+  onViewSpecs: () => void;
+  onBackToSaved: () => void;
 }
 
 /**
@@ -42,6 +45,12 @@ export function renderPopupView(dom: Dom, state: PopupState, context: PopupViewC
           { summary: state.summary, webBaseUrl: context.webBaseUrl, autoOpen: context.autoOpen },
           context,
         ),
+      );
+    case "specs":
+      return renderShell(
+        dom,
+        { libraryUrl, onBack: context.onBackToSaved, title: "Specifications" },
+        renderSpecSheetView(dom, state.summary.snapshot),
       );
     case "unsupported":
       return renderShell(dom, { libraryUrl }, renderUnsupportedView(dom, context.webBaseUrl));

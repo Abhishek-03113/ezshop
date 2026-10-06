@@ -1,9 +1,8 @@
-import type { CatalogProductSummary } from "@ezshop/catalog";
+import { type CatalogProductSummary, formatMoney } from "@ezshop/catalog";
 import { useQuery } from "@tanstack/react-query";
 import { getRouteApi } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { productListQuery } from "../api/product-queries.ts";
-import { formatMoney } from "../format/format-money.ts";
 import { useDebouncedValue } from "../hooks/use-debounced-value.ts";
 import { useDismiss } from "../hooks/use-dismiss.ts";
 import { SearchIcon } from "./icons.tsx";

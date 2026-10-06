@@ -19,11 +19,12 @@ import { SettingsStore } from "./settings.ts";
 import { sendSnapshot } from "./snapshot-sender.ts";
 import { ChromeQuickLookTabPort } from "./quicklook/chrome-quicklook-tab-port.ts";
 import { toggleQuickLook } from "./quicklook/quicklook-launcher.ts";
+import { viewForCommand } from "./quicklook/quicklook-model.ts";
 import { QuickLookService } from "./quicklook/quicklook-service.ts";
 import { ChromeToastPort } from "./toast/toast-port.ts";
 
-// Service-worker composition root. The toolbar button (and Alt+Shift+E, _execute_action) fires
-// chrome.action.onClicked and toggles the in-page Quick Look; when a tab cannot be scripted the worker
+// Service-worker composition root. The toolbar button (and Alt+Shift+S, _execute_action) fires
+// chrome.action.onClicked and toggles the in-page Quick Look on Specs; Alt+Shift+V (open-comparison) toggles it on Compare; when a tab cannot be scripted the worker
 // switches that tab to popup.html, which asks this worker to capture over a port (the original flow).
 // Replaced at build time by build.ts (Bun.build `define`).
 declare const __EZSHOP_CAPTURE_CONFIG__: CaptureConfig;
@@ -58,7 +59,12 @@ const linkCapture = new LinkCaptureService({
   log,
 });
 
-chrome.action.onClicked.addListener((tab) => void toggleQuickLook(tab, tabPort, log));
+chrome.action.onClicked.addListener((tab) => void toggleQuickLook(tab, tabPort, log, "specs"));
+chrome.commands.onCommand.addListener((command, tab) => {
+  const view = viewForCommand(command);
+  if (view === null) return log("quicklook.unknown_command", { command });
+  void toggleQuickLook(tab ?? {}, tabPort, log, view);
+});
 chrome.tabs.onUpdated.addListener((tabId, change) => {
   if (change.status === "loading") void tabPort.clearPopupFor(tabId).catch(() => undefined);
 });
@@ -78,7 +84,7 @@ chrome.runtime.onMessage.addListener((message: unknown, sender, sendResponse) =>
   const deps = {
     quickLook,
     linkCapture,
-    openQuickLook: (tabId: number) => toggleQuickLook({ id: tabId }, tabPort, log),
+    openQuickLook: (tabId: number) => toggleQuickLook({ id: tabId }, tabPort, log, "compare"),
   };
   void routeRequest(message, { tabId: sender.tab?.id ?? null }, deps).then(sendResponse);
   return true;

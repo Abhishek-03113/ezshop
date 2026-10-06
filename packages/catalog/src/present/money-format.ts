@@ -1,4 +1,4 @@
-import type { Money } from "@ezshop/catalog";
+import type { Money } from "../product-snapshot.ts";
 
 /**
  * Formats money the way Indian shoppers read it: ₹1,24,900.
