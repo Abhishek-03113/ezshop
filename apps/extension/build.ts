@@ -69,6 +69,8 @@ async function writeManifest(): Promise<void> {
 await rm(OUT_DIR, { recursive: true, force: true });
 await Promise.all(BUNDLES.map(buildBundle));
 await cp(join(import.meta.dir, "public"), OUT_DIR, { recursive: true });
+// Shared brand logo lives at the repo root so web, landing and extension use one file.
+await cp(join(import.meta.dir, "../../assets/logo.png"), join(OUT_DIR, "logo.png"));
 await writeManifest();
 await writePopupStylesheet();
 console.log(`Extension built to ${OUT_DIR} for API ${config.apiBaseUrl}, web ${config.webBaseUrl}`);
