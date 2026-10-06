@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { ProductPageError } from "@ezshop/catalog";
 import { BadRequestError, toErrorResponse } from "../src/http/http-errors.ts";
 import { InvalidSnapshotError } from "../src/products/product-ingestion.ts";
+import { UrlImportDisabledError } from "../src/scraping/disabled-html-fetcher.ts";
 import { ScrapeError } from "../src/scraping/html-fetcher.ts";
 
 describe("toErrorResponse", () => {
@@ -9,6 +10,7 @@ describe("toErrorResponse", () => {
     expect(toErrorResponse(new BadRequestError("x")).status).toBe(400);
     expect(toErrorResponse(new ProductPageError("x")).status).toBe(422);
     expect(toErrorResponse(new ScrapeError("x")).status).toBe(502);
+    expect(toErrorResponse(new UrlImportDisabledError("x")).status).toBe(501);
   });
 
   test("includes snapshot issues", () => {

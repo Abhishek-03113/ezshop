@@ -10,7 +10,7 @@ import { buildSampleSnapshot } from "./support/sample-snapshot.ts";
 
 const fixtures = await loadPageFixtures();
 
-function createTestApp() {
+function createTestApp(urlImportEnabled = true) {
   const repository = new InMemoryProductRepository();
   const fetcher = new FakeHtmlFetcher(htmlByFixtureUrl(fixtures));
   const logger = new RecordingLogger();
@@ -23,6 +23,7 @@ function createTestApp() {
       ingestion,
       logger,
       webOrigin: "http://web.test",
+      urlImportEnabled,
     }),
   };
 }
@@ -34,6 +35,18 @@ function postJson(path: string, body: unknown): Request {
     body: JSON.stringify(body),
   });
 }
+
+describe("GET /api/capabilities", () => {
+  test("reports URL import as on when a scraping backend is configured", async () => {
+    const response = await createTestApp(true).app.request("/api/capabilities");
+    expect(await response.json()).toEqual({ urlImport: true });
+  });
+
+  test("reports URL import as off for a DOM-capture-only deployment", async () => {
+    const response = await createTestApp(false).app.request("/api/capabilities");
+    expect(await response.json()).toEqual({ urlImport: false });
+  });
+});
 
 describe("product API", () => {
   test("POST /api/snapshots stores the capture and GET returns it", async () => {

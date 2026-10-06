@@ -2,7 +2,7 @@ import type { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, createRoute, createRouter, type RouterHistory } from "@tanstack/react-router";
 import { comparisonDetailQuery, comparisonListQuery, productComparisonsQuery } from "./api/comparison-queries.ts";
 import type { ComparisonsClient } from "./api/comparisons-client.ts";
-import { productDetailQuery, productListQuery } from "./api/product-queries.ts";
+import { apiCapabilitiesQuery, productDetailQuery, productListQuery } from "./api/product-queries.ts";
 import type { ProductsClient } from "./api/products-client.ts";
 import type { AppConfig } from "./config/app-config.ts";
 import { AppLayout } from "./components/app-layout.tsx";
@@ -23,7 +23,12 @@ export interface EzshopRouterContext {
 
 const rootRoute = createRootRouteWithContext<EzshopRouterContext>()({
   // Every page shows the comparison count in the app bar, so the list is loaded once at the root.
-  loader: ({ context }) => context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient)),
+  // Capabilities load here too, so the import form renders greyed out (or not) without a flash.
+  loader: ({ context }) =>
+    Promise.all([
+      context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient)),
+      context.queryClient.ensureQueryData(apiCapabilitiesQuery(context.productsClient)),
+    ]),
   component: AppLayout,
   errorComponent: RouteErrorPanel,
 });

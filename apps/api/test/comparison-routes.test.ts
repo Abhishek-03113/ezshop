@@ -17,7 +17,7 @@ beforeEach(() => {
   logger = new RecordingLogger();
   const ingestion = new ProductIngestion(repository, new FakeHtmlFetcher(new Map()), () => new Date());
   const comparisons = new InMemoryComparisonRepository(repository);
-  app = createApp({ repository, comparisons, ingestion, logger, webOrigin: "http://web.test" });
+  app = createApp({ repository, comparisons, ingestion, logger, webOrigin: "http://web.test", urlImportEnabled: true });
 });
 
 function send(method: string, path: string, body?: unknown): Promise<Response> {

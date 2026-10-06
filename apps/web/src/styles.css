@@ -207,6 +207,15 @@ input::placeholder {
   opacity: 0.6;
   cursor: progress;
 }
+/* URL import is off on this server: grey out the field but keep the explanatory hint readable. */
+.is-unavailable .import-pill-field,
+.is-unavailable .import-card-row {
+  opacity: 0.5;
+}
+.is-unavailable input,
+.is-unavailable button:disabled {
+  cursor: not-allowed;
+}
 .form-error {
   margin: 0;
   font-size: 14px;

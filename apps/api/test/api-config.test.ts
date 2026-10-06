@@ -6,7 +6,8 @@ describe("loadApiConfig", () => {
     expect(loadApiConfig({ DATABASE_URL: "postgres://x" })).toEqual({
       databaseUrl: "postgres://x",
       decisionModelDir: null,
-      firecrawlUrl: "http://localhost:3002",
+      firecrawlApiKey: null,
+      firecrawlUrl: null,
       port: 8787,
       webOrigin: "http://localhost:5173",
     });
@@ -15,6 +16,16 @@ describe("loadApiConfig", () => {
   test("reads the optional Laya model directory", () => {
     const config = loadApiConfig({ DATABASE_URL: "postgres://x", DECISION_MODEL_DIR: "/models/laya" });
     expect(config.decisionModelDir).toBe("/models/laya");
+  });
+
+  test("an API key alone points at hosted Firecrawl", () => {
+    const config = loadApiConfig({ DATABASE_URL: "postgres://x", FIRECRAWL_API_KEY: "fc-123" });
+    expect(config).toMatchObject({ firecrawlApiKey: "fc-123", firecrawlUrl: "https://api.firecrawl.dev" });
+  });
+
+  test("an explicit FIRECRAWL_URL selects a self-hosted instance", () => {
+    const config = loadApiConfig({ DATABASE_URL: "postgres://x", FIRECRAWL_URL: "http://localhost:3002" });
+    expect(config).toMatchObject({ firecrawlApiKey: null, firecrawlUrl: "http://localhost:3002" });
   });
 
   test("names the missing variable", () => {

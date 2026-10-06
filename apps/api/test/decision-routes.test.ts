@@ -19,6 +19,7 @@ function createTestApp(withModel: boolean) {
     ingestion,
     logger: new RecordingLogger(),
     webOrigin: "http://web.test",
+    urlImportEnabled: true,
     decisionModel,
   });
   return { app, decisionModel };

@@ -7,8 +7,12 @@ export interface ImportFieldViewProps {
   onUrlChange: (url: string) => void;
   onSubmit: (event: FormEvent) => void;
   isPending: boolean;
+  /** The API has no URL import configured: the field is greyed out and points to the extension. */
+  isUnavailable: boolean;
   errorMessage: string | null;
 }
+
+const UNAVAILABLE_NOTE = "Adding by link isn't set up on this server. Use the ezshop extension on a product page.";
 
 const SUPPORTED_STORES = new Intl.ListFormat("en", { type: "conjunction" }).format(PRODUCT_SOURCES.map(sourceLabel));
 
@@ -21,10 +25,19 @@ function ErrorLine({ message }: { message: string | null }) {
   );
 }
 
+function formClassName(base: string, isUnavailable: boolean): string {
+  return isUnavailable ? `${base} is-unavailable` : base;
+}
+
 /** Compact pill that lives in the app bar of the library. */
-export function ImportPillView({ url, onUrlChange, onSubmit, isPending, errorMessage }: ImportFieldViewProps) {
+export function ImportPillView(props: ImportFieldViewProps) {
+  const { url, onUrlChange, onSubmit, isPending, isUnavailable, errorMessage } = props;
   return (
-    <form className="import-pill" onSubmit={onSubmit}>
+    <form
+      className={formClassName("import-pill", isUnavailable)}
+      onSubmit={onSubmit}
+      title={isUnavailable ? UNAVAILABLE_NOTE : undefined}
+    >
       <div className="import-pill-field">
         <LinkIcon size={16} />
         <label htmlFor="import-url" className="visually-hidden">
@@ -34,11 +47,12 @@ export function ImportPillView({ url, onUrlChange, onSubmit, isPending, errorMes
           id="import-url"
           type="url"
           required
-          placeholder="Paste a product link to add it"
+          placeholder={isUnavailable ? "Add products with the extension" : "Paste a product link to add it"}
           value={url}
+          disabled={isUnavailable}
           onChange={(event) => onUrlChange(event.target.value)}
         />
-        <button type="submit" className="pill-button" disabled={isPending}>
+        <button type="submit" className="pill-button" disabled={isPending || isUnavailable}>
           {isPending ? "Reading…" : "Add"}
         </button>
       </div>
@@ -48,9 +62,10 @@ export function ImportPillView({ url, onUrlChange, onSubmit, isPending, errorMes
 }
 
 /** Large paste-a-link card for the empty library. */
-export function ImportCardView({ url, onUrlChange, onSubmit, isPending, errorMessage }: ImportFieldViewProps) {
+export function ImportCardView(props: ImportFieldViewProps) {
+  const { url, onUrlChange, onSubmit, isPending, isUnavailable, errorMessage } = props;
   return (
-    <form className="card import-card" onSubmit={onSubmit}>
+    <form className={formClassName("card import-card", isUnavailable)} onSubmit={onSubmit}>
       <label htmlFor="import-url" className="import-card-label">
         Paste a product link
       </label>
@@ -61,13 +76,14 @@ export function ImportCardView({ url, onUrlChange, onSubmit, isPending, errorMes
           required
           placeholder="https://www.amazon.in/dp/…"
           value={url}
+          disabled={isUnavailable}
           onChange={(event) => onUrlChange(event.target.value)}
         />
-        <button type="submit" className="primary-button" disabled={isPending}>
+        <button type="submit" className="primary-button" disabled={isPending || isUnavailable}>
           {isPending ? "Reading page…" : "Get specs"}
         </button>
       </div>
-      <span className="hint">{SUPPORTED_STORES} product pages</span>
+      <span className="hint">{isUnavailable ? UNAVAILABLE_NOTE : `${SUPPORTED_STORES} product pages`}</span>
       <ErrorLine message={errorMessage} />
     </form>
   );

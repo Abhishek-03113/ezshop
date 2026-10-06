@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "bun --watch src/main.ts",
     "start": "bun src/main.ts",
+    "db:migrate": "bun scripts/migrate.ts",
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {

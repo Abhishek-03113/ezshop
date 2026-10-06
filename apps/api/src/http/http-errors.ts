@@ -2,6 +2,7 @@ import { ProductPageError } from "@ezshop/catalog";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { DecisionError } from "../decisions/decision-model.ts";
 import { InvalidSnapshotError } from "../products/product-ingestion.ts";
+import { UrlImportDisabledError } from "../scraping/disabled-html-fetcher.ts";
 import { ScrapeError } from "../scraping/html-fetcher.ts";
 
 /** The request body is missing, not JSON, or the wrong shape. */
@@ -21,6 +22,7 @@ const STATUS_BY_ERROR: readonly [new (...args: never[]) => Error, ContentfulStat
   [ProductPageError, 422],
   [DecisionError, 422],
   [ScrapeError, 502],
+  [UrlImportDisabledError, 501],
 ];
 
 /**

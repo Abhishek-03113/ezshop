@@ -50,6 +50,23 @@ describe("library route", () => {
   });
 });
 
+describe("URL import availability", () => {
+  test("greys out the welcome card and ignores ?import= when the API has URL import off", async () => {
+    const client = new FakeProductsClient([], [], { urlImport: false });
+    const html = await renderAppAt(`/?import=${encodeURIComponent("https://www.flipkart.com/p/x")}`, client);
+    expect(html).not.toContain('value="https://www.flipkart.com/p/x"');
+    expect(html).toContain("card import-card is-unavailable");
+    expect(html).toContain("isn&#x27;t set up on this server");
+  });
+
+  test("greys out the import field when the capabilities probe fails", async () => {
+    const client = new FakeProductsClient([makeSummary()], [makeProduct("p1")], new Error("network down"));
+    const html = await renderAppAt("/", client);
+    expect(html).toContain('class="import-pill is-unavailable"');
+    expect(html).toContain("Add products with the extension");
+  });
+});
+
 describe("product route", () => {
   test("renders back link, source pill, price card and specs", async () => {
     const html = await renderAppAt("/products/p1", populated());
