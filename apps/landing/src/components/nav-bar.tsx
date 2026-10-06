@@ -22,10 +22,10 @@ export function NavBar({ links }: { readonly links: LandingLinks }): ReactElemen
         <a className="nav-link" href={appHomeUrl(links)}>
           Open app
         </a>
+        <ThemeToggle />
         <a className="pill pill-small" href={links.extensionUrl}>
           Add to Chrome
         </a>
-        <ThemeToggle />
       </nav>
     </header>
   );

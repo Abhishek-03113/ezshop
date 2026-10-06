@@ -268,19 +268,19 @@ input::placeholder {
 
 .theme-toggle {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
   border: 0;
   border-radius: var(--ez-radius-full);
-  background: transparent;
-  color: var(--ez-label-strong-secondary);
+  background: var(--ez-fill);
+  color: var(--ez-label);
   cursor: pointer;
 }
 .theme-toggle:hover {
-  background: var(--ez-fill);
-  color: var(--ez-label);
+  background: var(--ez-fill-strong);
 }
 .app-bar-inner .theme-toggle {
   margin-left: auto;

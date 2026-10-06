@@ -80,15 +80,14 @@ export const BulbIcon = ({ lit }: { readonly lit: boolean }): ReactElement => (
     width="20"
     height="20"
     viewBox="0 0 24 24"
-    fill={lit ? "currentColor" : "none"}
-    fillOpacity={lit ? 0.18 : 0}
+    fill={lit ? "#f0b527" : "none"}
     stroke="currentColor"
     strokeWidth="1.8"
     strokeLinecap="round"
     strokeLinejoin="round"
     aria-hidden="true"
   >
-    <path d="M9 18h6M10 21h4" />
-    <path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" />
+    <path d="M9.5 17.5h5M10.5 20.5h3" />
+    <path d="M12 2.8a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.1v.3h5v-.3c0-.8.4-1.5 1.1-2.1A6 6 0 0 0 12 2.8z" />
   </svg>
 );
