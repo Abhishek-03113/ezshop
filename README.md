@@ -1,101 +1,100 @@
 # ezshop
 
-Product pages on Amazon.in and Flipkart bury the specs under offers, financing and reviews. ezshop pulls the
-product information out and shows it as a clean, grouped spec sheet.
+**Stop shopping by opening more tabs. Start shopping by making better decisions.**
 
-```
- Amazon.in tab ──(extension: live DOM)──┐
-                                         ├─► @ezshop/catalog extractor ─► API (Hono) ─► Postgres ─► web (React)
- pasted URL ────(API: Firecrawl rawHtml)─┘
-```
+ezshop is a personal shopping workspace that turns scattered product research into a clear decision. It helps you
+collect products as you browse, understand what each one actually offers, compare them side by side, and move from
+endless research to a confident purchase.
 
-Both paths run the **same extractor** (`packages/catalog`) over a `PageNode` interface:
-the extension adapts the live DOM, and the API adapts cheerio.
+## The problem
 
-## Run it
+Online shopping is very good at showing products and surprisingly bad at helping you choose between them.
 
-Prereqs: Bun ≥ 1.4, Docker, and a self-hosted Firecrawl on :3002 (only needed for "Import by URL"; setup in `infra/firecrawl/README.md`).
+A single product page holds hundreds of details. Specifications are scattered across sections and buried under reviews,
+offers, financing, promotions and marketing copy. Comparing two products means opening multiple tabs, remembering
+numbers and switching back and forth to work out which differences actually matter.
+
+The problem is not a lack of information. **The information needed to make a decision is fragmented.**
+
+Shopping platforms are designed around selling individual products. They are not designed around helping you decide
+between them, so the buyer ends up doing all the work. The more important the purchase, the worse it gets, and people
+often decide from memory, intuition or whichever product they saw last.
+
+## What ezshop does
+
+ezshop sits between discovering a product and buying it.
+
+1. **Save** products while you browse. You don't have to leave the page or copy anything by hand.
+2. **Understand** each product through a clean, consistent spec sheet, free of store layouts and promotional noise.
+3. **Compare** your shortlist. See what the products share, where they differ, and where one clearly wins.
+4. **Decide** with confidence. The buyer always makes the final call.
+
+## Who it's for
+
+People who care about making a good purchase. They aren't necessarily experts. They might be choosing a phone, laptop,
+monitor, headphones, camera or appliance, where several options look alike but differ in ways that matter. Their
+priorities vary (price, battery, performance, weight, reliability, one specific feature), but the need is the same:
+**they need to decide.**
+
+## Core experience
+
+- **A shortlist that builds itself.** Save a product, keep browsing, save another. Over time you have a collection of
+  the products worth considering.
+- **Consistent product pages.** Every product is presented the same way, so you can read it without learning a new
+  layout each time.
+- **Comparison where you shop.** When you look at a new product, ezshop shows how it stacks up against your shortlist.
+  There is no need to remember which tab held the other one or to build your own spreadsheet.
+- **A library you own.** Research doesn't vanish when a tab closes. Come back to it whenever you like, and organise it
+  by category, store, brand or price.
+
+## Comparison is the heart of the product
+
+A comparison is more than two products side by side. It reduces a decision to its meaningful tradeoffs.
+
+- **What they have in common.** Identical information stays out of the way.
+- **Where they differ.** Only differences that could influence your choice ask for attention.
+- **Where one clearly wins.** More battery and lower weight are generally better, and ezshop can say so.
+- **Where preference matters.** A bigger screen isn't better for everyone. ezshop separates objective advantages from
+  personal taste, and it doesn't pretend every decision has one correct answer.
+
+## Where it's going
+
+The current product starts with clear product information and comparison. The long-term vision is a **personal decision
+layer for online shopping**:
+
+- **Across stores.** A product on one marketplace should be comparable with a similar one on another. The question
+  stops being "what's on Amazon?" and becomes "which of the products I'm considering is best?" The store is where you
+  buy. ezshop is where you decide.
+- **From specifications to understanding.** ezshop should move from displaying numbers to explaining them: what's
+  better, what's worse, and what you actually gain by paying more.
+- **From comparison to recommendation.** Tell ezshop what matters to you ("battery life matters most, I travel often,
+  I don't care about display resolution") and the comparison reshapes around your priorities. One option emerges as the
+  strongest fit, with a reasoned explanation, not just a score: *"This is the best fit for you because…"*
+
+## Principles
+
+- **Neutral.** ezshop works for the buyer. It isn't another store nudging you toward a product.
+- **Clear.** No specialist knowledge required.
+- **Honest.** Unknown information stays unknown.
+- **Contextual.** A specification only matters relative to what you're trying to achieve.
+- **Decision oriented.** Every part of the experience moves toward helping you choose.
+- **You stay in control.** ezshop helps you decide and doesn't decide for you without explanation.
+- **Research is an asset.** Every product you save reduces future effort, and you never repeat work you've already done.
+
+## Run it locally
+
+Prerequisites: [Bun](https://bun.sh) and Docker. Importing a product by pasting its URL also needs a self-hosted
+Firecrawl instance (see `infra/firecrawl/README.md`).
 
 ```bash
 bun install
 cp .env.example .env
-bun run db:up            # Postgres 17 on 127.0.0.1:5433, capped at 192 MB
-bun run dev:api          # http://localhost:8787 (applies migrations on start)
-bun run dev:web          # http://localhost:5173
-bun run dev:landing      # http://localhost:5174 (landing page for first-time users)
-bun run build:extension  # → apps/extension/dist
+bun run db:up            # Postgres on 127.0.0.1:5433
+bun run dev:api          # API on http://localhost:8787
+bun run dev:web          # App on http://localhost:5173
+bun run dev:landing      # Landing page on http://localhost:5174
+bun run build:extension  # Browser extension build in apps/extension/dist
 ```
 
-Load the extension: `chrome://extensions` → Developer mode → **Load unpacked** → `apps/extension/dist` (Chrome 120+).
-Click the ezshop toolbar button (or press **Alt+Shift+E**) on any page to open **Quick Look**: a temporary overlay
-of your last-used comparison, drawn over the page. On a product page, that page appears as a highlighted
-**This page** column you can compare before saving. Press **Return** (or click **Add**) to add it, **←/→** to switch
-comparison, and **Esc** or click outside to close. On pages the extension can't script (`chrome://`, the web store),
-the button opens the classic capture popup instead.
-
-To save a product without opening it, right-click a product link on Amazon.in or Flipkart → **Add to ezshop** →
-pick a comparison, **Library only** or **New comparison…**. **Alt+click** on a product link adds it to the
-last-used comparison. The page is fetched with your cookies and parsed in an offscreen document. Toasts on the
-page show progress (with **Quick Look** / **Undo**), and the toolbar badge counts links still loading.
-
-Point the extension at another stack with `EZSHOP_API_URL=… EZSHOP_WEB_URL=… bun run build:extension`;
-the API host permission in the built manifest follows `EZSHOP_API_URL`.
-After rebuilding, click **Reload** on the extension in `chrome://extensions`: Chromium can keep running the
-previously installed service worker even after a restart with the same profile.
-
-Build-time links (Vite env vars):
-
-| Var | Used by | Default |
-|---|---|---|
-| `VITE_EZSHOP_WEB_URL` | landing ("Open app", paste-a-link) | `http://localhost:5173` |
-| `VITE_EZSHOP_EXTENSION_URL` | landing and web "Add to Chrome" | landing: `#how`, web: Chrome Web Store search |
-
-The web app accepts `/?import=<url-encoded product URL>`: it prefills the import field, imports once and opens
-the new spec sheet. The landing page's paste-a-link form uses this.
-
-UI design (Apple HIG tokens, extension popup, web app, landing): https://claude.ai/artifact/KxVDZQoovX8Ju9PyHvZYzj
-
-## Supported sites
-
-| Site | Identity, price, rating, images | Specs |
-|---|---|---|
-| amazon.in | Page widgets (Amazon ships no JSON-LD) | Overview, `#tech`, product-detail tables, expander sections, detail bullets |
-| flipkart.com | schema.org JSON-LD | "Specifications" sections (layout hooks, not hashed classes) |
-
-To add a site, implement `SiteExtractor` (`packages/catalog/src/extract/site-extractor.ts`), list it in
-`SITE_EXTRACTORS`, add its id to `PRODUCT_SOURCES`, and capture fixtures for it. The API, web app and extension pick it up from there.
-
-## Fixtures
-
-Tests don't assert values for specific products. Every captured page in `packages/catalog/test/fixtures/<source>/`
-(`<slug>.html` plus `<slug>.json` with its URL and expected snapshot) runs through the same generic tests:
-the server path (cheerio), the extension path (DOM), schema validity and the API import.
-
-```bash
-bun run fixtures:capture "<product-url>" <slug>   # scrape via Firecrawl, store HTML + expected snapshot
-bun run fixtures:refresh                          # re-derive expectations after an intended extractor change; review the diff
-```
-
-## Develop
-
-| Command | What |
-|---|---|
-| `bun run test` | All tests (Postgres integration tests run when `EZSHOP_TEST_DATABASE_URL` is set, as `.env` does) |
-| `bun run typecheck` | `tsc` in every workspace |
-| `bun run format` | prettier |
-| `bun run fixtures:capture` / `fixtures:refresh` | see Fixtures |
-
-Code rules live in `.claude/skills/clean-code/SKILL.md`, which `CLAUDE.md` loads into every Claude Code session.
-
-## API
-
-| Method | Path | Body | |
-|---|---|---|---|
-| POST | `/api/snapshots` | `ProductSnapshot` | From the extension; validated by zod, upserted by (source, ASIN) |
-| POST | `/api/imports` | `{ "url": "…" }` | Scrape the URL via Firecrawl, then extract it |
-| GET | `/api/products?q=` | | Summaries, newest first; `q` searches title, brand, category and specs |
-| GET | `/api/products/:id` | | Full snapshot |
-| GET | `/api/products/:id/comparisons` | | Comparisons containing the product |
-| GET / POST | `/api/comparisons` | `{ "name", "productIds"? }` | List (newest first) / create |
-| GET / PATCH / DELETE | `/api/comparisons/:id` | `{ "name" }` | Detail with products / rename / delete |
-| PUT / DELETE | `/api/comparisons/:id/products/:productId` | | Add (idempotent) / remove a product |
+To load the extension, open `chrome://extensions`, turn on Developer mode, choose **Load unpacked** and select
+`apps/extension/dist`.
