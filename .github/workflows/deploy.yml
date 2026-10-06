@@ -1,0 +1,74 @@
+# Every push to the deployment branch is tested, then shipped to production on Vercel.
+# The API deploys first because its build command applies database migrations (apps/api/vercel.json);
+# web and landing follow once the schema they read is in place. Setup: docs/deploy.md ("Continuous deployment").
+name: Deploy
+
+on:
+  push:
+    branches: [feat/vercel-deploy]
+  workflow_dispatch:
+
+# One production rollout at a time; a newer push waits for the running one instead of racing its migrations.
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: picky
+          POSTGRES_PASSWORD: picky
+          POSTGRES_DB: picky_test
+        ports: ["5433:5432"]
+        options: >-
+          --health-cmd "pg_isready -U picky" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      # Turns on the Postgres repository integration tests, which skip without it.
+      PICKY_TEST_DATABASE_URL: postgres://picky:picky@127.0.0.1:5433/picky_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2 # matches local dev; Vercel builds use bunVersion 1.4.x
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun run test
+
+  deploy-api:
+    needs: verify
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://picky-api.vercel.app
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy picky-api
+        run: npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ vars.VERCEL_API_PROJECT_ID }}
+
+  deploy-frontends:
+    needs: deploy-api
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      matrix:
+        include:
+          - project: picky-web
+            project_id_var: VERCEL_WEB_PROJECT_ID
+          - project: picky-landing
+            project_id_var: VERCEL_LANDING_PROJECT_ID
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy ${{ matrix.project }}
+        run: npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ vars[matrix.project_id_var] }}

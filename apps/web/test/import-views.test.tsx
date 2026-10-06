@@ -7,6 +7,7 @@ const idle: ImportFieldViewProps = {
   onUrlChange: () => {},
   onSubmit: () => {},
   isPending: false,
+  isUnavailable: false,
   errorMessage: null,
 };
 
@@ -30,5 +31,22 @@ describe("import field views", () => {
     expect(html).toContain("Reading page…");
     expect(html).toContain('role="alert"');
     expect(html).toContain("Unsupported product URL");
+  });
+
+  test("unavailable card greys out the field and points to the extension", () => {
+    const html = renderToStaticMarkup(<ImportCardView {...idle} isUnavailable />);
+    expect(html).toContain("is-unavailable");
+    expect(html).toMatch(/<input[^>]*disabled/);
+    expect(html).toMatch(/<button[^>]*disabled/);
+    expect(html).toContain("Use the Picky extension on a product page");
+    expect(html).not.toContain("Amazon.in and Flipkart product pages");
+  });
+
+  test("unavailable pill disables the field and explains why on hover", () => {
+    const html = renderToStaticMarkup(<ImportPillView {...idle} isUnavailable />);
+    expect(html).toContain('class="import-pill is-unavailable"');
+    expect(html).toContain("Add products with the extension");
+    expect(html).toMatch(/<input[^>]*disabled/);
+    expect(html).toContain("isn&#x27;t set up on this server");
   });
 });

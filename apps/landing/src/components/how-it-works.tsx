@@ -1,8 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
-import { BrowserIcon, PointerIcon, SheetIcon } from "./icons.tsx";
 
 interface Step {
-  readonly icon: ReactElement;
   readonly title: string;
   readonly body: ReactNode;
 }
@@ -23,45 +21,43 @@ function Shortcut(): ReactElement {
 }
 
 const STEPS: readonly Step[] = [
-  { icon: <BrowserIcon />, title: "Open a product page", body: "Browse Amazon.in or Flipkart as you normally would." },
   {
-    icon: <PointerIcon />,
-    title: "Click Picky",
+    title: "Save",
     body: (
       <>
-        Use the toolbar button, or press <Shortcut />.
+        Click Picky on any product page, or press <Shortcut />. Nothing to copy, and you never leave the page.
       </>
     ),
   },
   {
-    icon: <SheetIcon />,
-    title: "Read the spec sheet",
-    body: "It opens in a new tab and stays in your library for later.",
+    title: "Understand",
+    body: "Every product opens as the same grouped spec sheet, free of store layouts and promotional noise.",
   },
+  {
+    title: "Compare",
+    body: "Put your shortlist side by side. See what they share, where they differ and where one clearly wins.",
+  },
+  { title: "Decide", body: "You make the call. Your research stays in your library for whenever you come back." },
 ];
 
-/** The three-step workflow on a grouped background. */
+/** The save, understand, compare, decide sequence as a plain ordered list. */
 export function HowItWorks(): ReactElement {
   return (
-    <section id="how" className="how" aria-labelledby="how-title">
-      <div className="section how-inner">
-        <div className="section-head centered">
-          <h2 id="how-title" className="h2">
-            One click. That's the whole workflow.
-          </h2>
-          <p className="sub">No forms, no copy-paste, no account to set up first.</p>
-        </div>
-        <ol className="steps">
-          {STEPS.map((step, index) => (
-            <li className="step" key={step.title}>
-              <span className="step-icon">{step.icon}</span>
-              <span className="step-count">Step {index + 1}</span>
-              <h3>{step.title}</h3>
-              <p>{step.body}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
+    <section id="how" className="section how" aria-labelledby="how-title">
+      <h2 id="how-title" className="h2">
+        Between finding a product and buying it.
+      </h2>
+      <ol className="steps">
+        {STEPS.map((step, index) => (
+          <li className="step" key={step.title}>
+            <span className="step-count" aria-hidden="true">
+              {index + 1}
+            </span>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }

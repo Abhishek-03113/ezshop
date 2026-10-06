@@ -15,6 +15,8 @@ export interface TestAppOptions {
   /** Pages the fake scraper serves to /api/imports. */
   htmlByUrl?: ReadonlyMap<string, string>;
   decisionModel?: DecisionModel;
+  /** What GET /api/capabilities reports; on by default. */
+  urlImportEnabled?: boolean;
 }
 
 /**
@@ -22,7 +24,7 @@ export interface TestAppOptions {
  *
  * @example const harness = createTestApp(); const alice = await harness.signUp("alice@example.com")
  */
-export function createTestApp({ htmlByUrl = new Map(), decisionModel }: TestAppOptions = {}) {
+export function createTestApp({ htmlByUrl = new Map(), decisionModel, urlImportEnabled = true }: TestAppOptions = {}) {
   const accounts = new InMemoryAccountRepository();
   const repository = new InMemoryProductRepository();
   const logger = new RecordingLogger();
@@ -34,6 +36,7 @@ export function createTestApp({ htmlByUrl = new Map(), decisionModel }: TestAppO
     logger,
     sessionCookie: { secure: true },
     webOrigin: "http://web.test",
+    urlImportEnabled,
     decisionModel,
   });
 

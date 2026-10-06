@@ -1,15 +1,18 @@
 {
   "manifest_version": 3,
   "name": "Picky capture",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Sends the product page you are viewing (Amazon.in, Flipkart) to Picky as a clean spec sheet.",
   "icons": {
-    "16": "logo.png",
-    "48": "logo.png",
-    "128": "logo.png"
+    "16": "logo-16.png",
+    "48": "logo-48.png",
+    "128": "logo-128.png"
   },
   "action": {
-    "default_icon": "logo.png",
+    "default_icon": {
+      "16": "logo-16.png",
+      "48": "logo-48.png"
+    },
     "default_title": "Quick Look: specs of this page"
   },
   "background": {

@@ -7,6 +7,8 @@ import type { CatalogProduct, CatalogProductSummary, ProductSnapshot } from "@pi
 export interface ProductRepository {
   saveSnapshot(userId: string, snapshot: ProductSnapshot): Promise<CatalogProduct>;
   findProductById(userId: string, id: string): Promise<CatalogProduct | null>;
+  /** True when one of the user's products was deleted. It also leaves any comparison that held it. */
+  deleteProduct(userId: string, id: string): Promise<boolean>;
   /** Newest first; a non-blank query keeps products whose title, brand, category or specs contain it. */
   listProductSummaries(userId: string, query?: string): Promise<CatalogProductSummary[]>;
 }

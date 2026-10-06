@@ -18,22 +18,31 @@ type FetchFunction = (input: string, init: RequestInit) => Promise<Response>;
 /**
  * HtmlFetcher backed by a Firecrawl `/v2/scrape` endpoint (no LLM needed for `rawHtml`).
  *
+ * Pass an API key for hosted Firecrawl; self-hosted instances accept unauthenticated requests.
+ *
  * @example await new FirecrawlHtmlFetcher("http://localhost:3002", fetch).fetchHtml("https://www.amazon.in/dp/B0FQG1YHYR")
  */
 export class FirecrawlHtmlFetcher implements HtmlFetcher {
   constructor(
     private readonly baseUrl: string,
     private readonly fetchFunction: FetchFunction,
+    private readonly apiKey: string | null = null,
   ) {}
 
   async fetchHtml(url: string): Promise<string> {
     const response = await this.fetchFunction(`${this.baseUrl}/v2/scrape`, {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: buildScrapeHeaders(this.apiKey),
       body: JSON.stringify(buildScrapeRequest(url)),
     });
     return readRawHtml(url, response.status, await response.json());
   }
+}
+
+function buildScrapeHeaders(apiKey: string | null): Record<string, string> {
+  const headers: Record<string, string> = { "content-type": "application/json" };
+  if (apiKey !== null) headers.authorization = `Bearer ${apiKey}`;
+  return headers;
 }
 
 function buildScrapeRequest(url: string): Record<string, unknown> {

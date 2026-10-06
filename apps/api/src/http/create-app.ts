@@ -15,6 +15,8 @@ export interface AppDependencies extends ProductRouteDependencies {
   comparisons: ComparisonRepository;
   sessionCookie: SessionCookieOptions;
   webOrigin: string;
+  /** False when no Firecrawl is configured; the web app greys out its paste-a-link form. */
+  urlImportEnabled: boolean;
   /** Absent when no Laya model is configured; /api/decisions is then not mounted. */
   decisionModel?: DecisionModel;
 }
@@ -23,8 +25,8 @@ export interface AppDependencies extends ProductRouteDependencies {
  * Builds the HTTP app from injected dependencies, so tests can run it against fakes.
  * The extension's service worker calls the API with host permissions, so CORS only needs the web app.
  *
- * Order matters: Hono runs handlers in registration order, so the public routes (health, accounts,
- * decisions) answer before `requireUser` runs; everything registered after it needs a session.
+ * Order matters: Hono runs handlers in registration order, so the public routes (health, capabilities,
+ * accounts, decisions) answer before `requireUser` runs; everything registered after it needs a session.
  *
  * @example Bun.serve({ port: 8787, fetch: createApp(deps).fetch })
  */
@@ -32,6 +34,7 @@ export function createApp(deps: AppDependencies): Hono {
   const app = new Hono();
   app.use("/api/*", cors({ origin: deps.webOrigin, credentials: true }));
   app.get("/health", (c) => c.json({ status: "ok" }));
+  app.get("/api/capabilities", (c) => c.json({ urlImport: deps.urlImportEnabled }));
   app.route("/api", createAuthRoutes(deps));
   if (deps.decisionModel) {
     app.route("/api", createDecisionRoutes({ decisionModel: deps.decisionModel, logger: deps.logger }));

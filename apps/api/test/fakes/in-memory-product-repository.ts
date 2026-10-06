@@ -32,6 +32,15 @@ export class InMemoryProductRepository implements ProductRepository {
     return this.owned(userId).find((product) => product.id === id) ?? null;
   }
 
+  async deleteProduct(userId: string, id: string): Promise<boolean> {
+    const entry = [...this.productsByKey.entries()].find(
+      ([, owned]) => owned.userId === userId && owned.product.id === id,
+    );
+    if (entry === undefined) return false;
+    this.productsByKey.delete(entry[0]);
+    return true;
+  }
+
   async listProductSummaries(userId: string, query = ""): Promise<CatalogProductSummary[]> {
     return this.owned(userId)
       .filter((product) => productMatchesQuery(product.snapshot, query))

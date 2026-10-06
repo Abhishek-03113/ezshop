@@ -1,14 +1,29 @@
 import type { CatalogProduct, CatalogProductSummary } from "@picky/catalog";
-import type { ProductsClient } from "../../src/api/products-client.ts";
+import type { ApiCapabilities, ProductsClient } from "../../src/api/products-client.ts";
 
-/** In-memory ProductsClient: serves canned products and records every URL passed to importProduct. */
+/**
+ * In-memory ProductsClient: serves canned products and records every URL passed to importProduct.
+ * `capabilities` defaults to URL import on; pass an Error to simulate a failed capabilities probe.
+ */
 export class FakeProductsClient implements ProductsClient {
   readonly importedUrls: string[] = [];
 
   constructor(
     private readonly summaries: CatalogProductSummary[] = [],
     private readonly products: CatalogProduct[] = [],
+    private readonly capabilities: ApiCapabilities | Error = { urlImport: true },
   ) {}
+
+  async getCapabilities(): Promise<ApiCapabilities> {
+    if (this.capabilities instanceof Error) throw this.capabilities;
+    return this.capabilities;
+  }
+
+  readonly deletedIds: string[] = [];
+
+  async deleteProduct(id: string): Promise<void> {
+    this.deletedIds.push(id);
+  }
 
   readonly listedQueries: string[] = [];
 

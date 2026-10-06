@@ -5,6 +5,18 @@ import { createTestApp } from "./support/test-app.ts";
 
 const fixtures = await loadPageFixtures();
 
+describe("GET /api/capabilities", () => {
+  test("reports URL import as on when a scraping backend is configured, without signing in", async () => {
+    const response = await createTestApp({ urlImportEnabled: true }).send("GET", "/api/capabilities");
+    expect(await response.json()).toEqual({ urlImport: true });
+  });
+
+  test("reports URL import as off for a DOM-capture-only deployment", async () => {
+    const response = await createTestApp({ urlImportEnabled: false }).send("GET", "/api/capabilities");
+    expect(await response.json()).toEqual({ urlImport: false });
+  });
+});
+
 describe("product API", () => {
   test("POST /api/snapshots stores the capture and GET returns it", async () => {
     const { send, signUp, logger } = createTestApp();
@@ -15,6 +27,18 @@ describe("product API", () => {
     const fetched = await send("GET", `/api/products/${product.id}`, { cookie });
     expect(((await fetched.json()) as { product: { id: string } }).product.id).toBe(product.id);
     expect(logger.entries.map((entry) => entry.event)).toContain("product.captured");
+  });
+
+  test("DELETE /api/products/:id removes the product, then answers 404", async () => {
+    const { send, signUp, logger } = createTestApp();
+    const cookie = await signUp("me@example.com");
+    const created = await send("POST", "/api/snapshots", { body: buildSampleSnapshot(), cookie });
+    const { product } = (await created.json()) as { product: { id: string } };
+    const path = `/api/products/${product.id}`;
+    expect((await send("DELETE", path, { cookie })).status).toBe(204);
+    expect((await send("GET", path, { cookie })).status).toBe(404);
+    expect((await send("DELETE", path, { cookie })).status).toBe(404);
+    expect(logger.entries.map((entry) => entry.event)).toContain("product.deleted");
   });
 
   test("POST /api/imports reads every supported site and lists the products", async () => {
@@ -126,6 +150,16 @@ describe("isolation between users", () => {
     expect(((await alicesProduct.json()) as { product: { snapshot: { title: string } } }).product.snapshot.title).toBe(
       "Alice's view",
     );
+  });
+
+  test("a user cannot delete another user's product", async () => {
+    const { send, signUp } = createTestApp();
+    const alice = await signUp("alice@example.com");
+    const bob = await signUp("bob@example.com");
+    const created = await send("POST", "/api/snapshots", { body: buildSampleSnapshot(), cookie: alice });
+    const { product } = (await created.json()) as { product: { id: string } };
+    expect((await send("DELETE", `/api/products/${product.id}`, { cookie: bob })).status).toBe(404);
+    expect((await send("GET", `/api/products/${product.id}`, { cookie: alice })).status).toBe(200);
   });
 
   test("a user cannot read, rename, fill or delete another user's comparison", async () => {

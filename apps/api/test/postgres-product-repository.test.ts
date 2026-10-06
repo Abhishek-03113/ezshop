@@ -49,6 +49,14 @@ describe.skipIf(!TEST_DATABASE_URL)("PostgresProductRepository + migrations", ()
     expect((await repository.listProductSummaries(bob)).map((summary) => summary.title)).toEqual(["Bob's capture"]);
   });
 
+  test("deletes only the owner's product", async () => {
+    const doomed = await repository.saveSnapshot(bob, buildSampleSnapshot({ externalId: "B0DELETE01" }));
+    expect(await repository.deleteProduct(alice, doomed.id)).toBe(false);
+    expect(await repository.deleteProduct(bob, doomed.id)).toBe(true);
+    expect(await repository.findProductById(bob, doomed.id)).toBeNull();
+    expect(await repository.deleteProduct(bob, "not-a-uuid")).toBe(false);
+  });
+
   test("lists summaries and treats malformed ids as not found", async () => {
     expect((await repository.listProductSummaries(alice)).map((summary) => summary.title)).toEqual(["Renamed"]);
     expect(await repository.findProductById(alice, "not-a-uuid")).toBeNull();

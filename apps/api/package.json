@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "bun --watch src/main.ts",
     "start": "bun src/main.ts",
+    "db:migrate": "bun scripts/migrate.ts",
+    "build:vercel": "bun build src/vercel-app.ts --target bun --outdir dist --splitting --external onnxruntime-node --external @huggingface/transformers",
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {

@@ -9,30 +9,37 @@ export interface HeroProps {
   readonly navigator: Navigator;
 }
 
-/** Headline, primary calls to action and the paste-a-link form. */
+/** Headline, primary calls to action, the paste-a-link form and the mascot. */
 export function Hero({ links, navigator }: HeroProps): ReactElement {
   return (
     <section id="top" className="hero" aria-labelledby="hero-title">
-      <span className="eyebrow">For Amazon.in and Flipkart product pages</span>
-      <h1 id="hero-title">
-        The specs.
-        <br />
-        Without the sales pitch.
-      </h1>
-      <p className="lede">
-        Picky turns a crowded product page into one clean, grouped spec sheet — one click from the page you're already
-        on.
-      </p>
-      <div className="cta-row">
-        <a className="pill pill-large" href={links.extensionUrl}>
-          <DownloadIcon />
-          Add to Chrome
-        </a>
-        <a className="pill pill-large pill-quiet" href="#sample">
-          See a sample sheet
-        </a>
+      <div className="hero-copy">
+        <h1 id="hero-title">
+          Stop shopping by opening more tabs.
+          <span className="hero-turn">Start making better decisions.</span>
+        </h1>
+        <p className="lede">
+          Picky saves products as you browse, turns each one into a clean spec sheet, and shows where your shortlist
+          really differs. For Amazon.in and Flipkart.
+        </p>
+        <div className="cta-row">
+          <a className="pill pill-large" href={links.extensionUrl}>
+            <DownloadIcon />
+            Add to Chrome
+          </a>
+          <a className="pill pill-large pill-quiet" href="#sample">
+            See a sample sheet
+          </a>
+        </div>
+        <PasteLinkForm webUrl={links.webUrl} navigator={navigator} />
       </div>
-      <PasteLinkForm webUrl={links.webUrl} navigator={navigator} />
+      <img
+        className="hero-mascot"
+        src="/mascot.png"
+        width={640}
+        height={640}
+        alt="Picky, a cream bean wearing teal headphones"
+      />
     </section>
   );
 }

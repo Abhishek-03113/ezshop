@@ -5,6 +5,7 @@ import { currentUserQuery } from "../api/auth-queries.ts";
 import { comparisonListQuery } from "../api/comparison-queries.ts";
 import { useSignOut } from "../hooks/use-session.ts";
 import { LogoMark } from "./icons.tsx";
+import { ThemeToggle } from "./theme-toggle.tsx";
 
 /** Logo mark plus wordmark, linking home. */
 export function BrandLink() {
@@ -58,7 +59,10 @@ function SignOutButton() {
 export function AppBar({ children, sticky = false }: { children: ReactNode; sticky?: boolean }) {
   return (
     <header className={sticky ? "app-bar sticky" : "app-bar"}>
-      <div className="app-bar-inner">{children}</div>
+      <div className="app-bar-inner">
+        {children}
+        <ThemeToggle />
+      </div>
     </header>
   );
 }

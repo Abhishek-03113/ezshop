@@ -3,7 +3,7 @@ import { createRootRouteWithContext, createRoute, createRouter, type RouterHisto
 import type { AuthClient } from "./api/auth-client.ts";
 import { comparisonDetailQuery, comparisonListQuery, productComparisonsQuery } from "./api/comparison-queries.ts";
 import type { ComparisonsClient } from "./api/comparisons-client.ts";
-import { productDetailQuery, productListQuery } from "./api/product-queries.ts";
+import { apiCapabilitiesQuery, productDetailQuery, productListQuery } from "./api/product-queries.ts";
 import type { ProductsClient } from "./api/products-client.ts";
 import { SIGN_IN_PATH, requireSignedIn, skipSignInWhenSignedIn } from "./auth/route-guards.ts";
 import { parseSignInSearch } from "./auth/sign-in-search.ts";
@@ -29,10 +29,14 @@ export interface PickyRouterContext {
 const rootRoute = createRootRouteWithContext<PickyRouterContext>()({
   beforeLoad: ({ context, location }) => requireSignedIn(context, location),
   // Every signed-in page shows the comparison count in the app bar, so the list is loaded once at the root.
+  // Capabilities load here too, so the import form renders greyed out (or not) without a flash.
   loader: ({ context, location }) =>
     location.pathname === SIGN_IN_PATH
       ? undefined
-      : context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient)),
+      : Promise.all([
+          context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient)),
+          context.queryClient.ensureQueryData(apiCapabilitiesQuery(context.productsClient)),
+        ]),
   component: AppLayout,
   errorComponent: RouteErrorPanel,
 });

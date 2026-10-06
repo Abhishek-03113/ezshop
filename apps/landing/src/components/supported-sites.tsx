@@ -9,21 +9,23 @@ export function SupportedSites({
   readonly sites?: readonly SupportedSite[];
 }): ReactElement {
   return (
-    <section id="sites" className="section sites-wrap" aria-labelledby="sites-title">
-      <div className="sites">
-        <div className="sites-copy">
-          <h2 id="sites-title">Works where you shop</h2>
-          <p>More stores are on the way.</p>
-        </div>
-        <ul className="site-list">
-          {sites.map((site) => (
-            <li key={site.host}>
-              <CheckIcon />
-              {site.name}
-            </li>
-          ))}
-        </ul>
+    <section id="sites" className="section sites" aria-labelledby="sites-title">
+      <div className="sites-copy">
+        <h2 id="sites-title" className="h2">
+          The store is where you buy. Picky is where you decide.
+        </h2>
+        <p className="sub">
+          Today it reads Amazon.in and Flipkart pages. Comparing across stores is where it's headed.
+        </p>
       </div>
+      <ul className="site-list">
+        {sites.map((site) => (
+          <li key={site.host}>
+            <CheckIcon />
+            {site.name}
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

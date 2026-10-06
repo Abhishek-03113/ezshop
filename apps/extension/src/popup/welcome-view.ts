@@ -9,7 +9,7 @@ const STEPS = [
   { title: "Open any product page", body: "On Amazon.in or Flipkart, click Picky. That's it." },
 ] as const;
 
-const SHORTCUT_KEYS = ["Alt", "Shift", "E"] as const;
+const SHORTCUT_KEYS = ["Alt", "Shift", "S"] as const;
 
 /**
  * First-run body: two setup steps, the shortcut and a "Got it" button.

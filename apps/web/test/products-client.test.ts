@@ -25,6 +25,12 @@ describe("createProductsClient", () => {
     });
   });
 
+  test("reads what the API can do", async () => {
+    const server = new FakeApiServer(200, { urlImport: false });
+    expect(await createProductsClient(server.fetch, "").getCapabilities()).toEqual({ urlImport: false });
+    expect(server.calls[0]?.url).toBe("/api/capabilities");
+  });
+
   test("throws the API's message and status on failure", async () => {
     const server = new FakeApiServer(422, { message: "Unsupported product URL" });
     await expect(createProductsClient(server.fetch, "").importProduct("x")).rejects.toThrow(

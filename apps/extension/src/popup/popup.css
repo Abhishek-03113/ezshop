@@ -36,18 +36,7 @@ a {
 .logo {
   width: 24px;
   height: 24px;
-  fill: var(--ez-blue);
-  stroke: var(--ez-on-accent);
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-.logo rect {
-  /* Higher specificity than the generic .icon { fill: none } further down. */
-  fill: var(--ez-blue);
-  stroke: none;
-}
-.logo path {
-  fill: none;
+  border-radius: 6px;
 }
 .brand {
   font-size: 16px;

@@ -1,0 +1,10 @@
+# Keep secrets and local-only material out of CLI uploads (the repo root is uploaded for every project).
+.env
+.env.*
+!.env.example
+node_modules
+dist
+/firecrawl
+/research
+/brag-output*
+.claude

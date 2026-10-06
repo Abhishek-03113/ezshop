@@ -57,3 +57,11 @@ describe("formatUpdatedLabel", () => {
     expect(formatUpdatedLabel("2026-10-03T08:00:00Z", now, "UTC")).toBe("Updated 3 Oct");
   });
 });
+
+describe("formatUpdatedLabel", () => {
+  test("uses the same day scale as the capture label", () => {
+    const now = new Date("2026-10-05T12:00:00Z");
+    expect(formatUpdatedLabel("2026-10-04T08:00:00Z", now, "UTC")).toBe("Updated yesterday");
+    expect(formatUpdatedLabel("2026-10-03T08:00:00Z", now, "UTC")).toBe("Updated 3 Oct");
+  });
+});
