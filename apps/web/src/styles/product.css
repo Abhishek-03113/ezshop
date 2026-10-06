@@ -322,3 +322,24 @@
     gap: 2px;
   }
 }
+
+/* Chip jump cue: a ring plus a tint that fades out (see use-flash-value; the ring is removed after 2s). */
+.spec-group {
+  transition:
+    box-shadow 0.3s,
+    background-color 0.3s;
+}
+.spec-group.highlighted {
+  background: var(--ez-blue-soft);
+  box-shadow:
+    0 0 0 2px var(--ez-blue),
+    var(--ez-shadow-card);
+}
+.group-chips a[aria-current="true"] {
+  background: var(--ez-blue);
+  color: var(--ez-on-accent);
+}
+.group-chips a[aria-current="true"] .count {
+  color: inherit;
+  opacity: 0.85;
+}
