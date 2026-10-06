@@ -34,7 +34,6 @@ select {
   inset: 0;
   background: rgba(0, 0, 0, 0.32);
   backdrop-filter: blur(3px);
-  animation: fade-in 120ms ease-out;
 }
 .card {
   position: relative;
@@ -49,6 +48,11 @@ select {
   box-shadow:
     var(--ez-shadow-lift),
     0 0 0 1px var(--ez-separator);
+}
+.entering .backdrop {
+  animation: fade-in 120ms ease-out;
+}
+.entering .card {
   animation: rise-in 160ms ease-out;
 }
 @keyframes fade-in {

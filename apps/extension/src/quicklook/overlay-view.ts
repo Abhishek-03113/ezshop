@@ -26,9 +26,12 @@ function errorBanner(dom: Dom, model: QuickLookModel): HTMLElement[] {
 /**
  * The whole Quick Look dialog (backdrop + card) for a model. Pure: same model, same DOM.
  *
- * @example container.replaceChildren(overlayView(dom, model, actions))
+ * `entering` adds the open animation. Every model change re-renders the whole dialog, so animating on each
+ * render made the card flash twice per "Add" click (busy, then result); only the first render may animate.
+ *
+ * @example container.replaceChildren(overlayView(dom, model, actions, true))
  */
-export function overlayView(dom: Dom, model: QuickLookModel, actions: OverlayActions): HTMLElement {
+export function overlayView(dom: Dom, model: QuickLookModel, actions: OverlayActions, entering = false): HTMLElement {
   const label =
     model.state?.comparisons.find((comparison) => comparison.id === model.state?.selectedId)?.name ?? "comparison";
   const backdrop = dom.el("div", { className: "backdrop", attrs: { "aria-hidden": "true" } });
@@ -42,5 +45,5 @@ export function overlayView(dom: Dom, model: QuickLookModel, actions: OverlayAct
     body,
     footerView(dom, model),
   ]);
-  return dom.el("div", { className: "layer" }, [backdrop, card]);
+  return dom.el("div", { className: entering ? "layer entering" : "layer" }, [backdrop, card]);
 }

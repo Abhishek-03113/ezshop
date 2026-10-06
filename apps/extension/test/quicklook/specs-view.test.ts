@@ -274,3 +274,12 @@ describe("keys in the specs view", () => {
     expect(root.ownerDocument.activeElement).toBe(input);
   });
 });
+
+describe("overlayView entering", () => {
+  test("adds the open-animation class only when asked", () => {
+    const { dom } = createTestDom();
+    const model = modelWith({ view: "specs" });
+    expect(overlayView(dom, model, new RecordingActions(), true).className).toBe("layer entering");
+    expect(overlayView(dom, model, new RecordingActions()).className).toBe("layer");
+  });
+});

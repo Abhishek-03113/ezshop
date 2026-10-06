@@ -222,3 +222,13 @@ describe("QuickLookController keys", () => {
     expect(root.ownerDocument.activeElement).toBe(all[0] ?? null);
   });
 });
+
+describe("open animation", () => {
+  test("only the first render animates, so adding a page does not flash the dialog", async () => {
+    const { root, controller } = setup();
+    await controller.open("compare");
+    expect(root.querySelector(".layer")?.classList.contains("entering")).toBe(false);
+    controller.addPage();
+    expect(root.querySelector(".layer")?.classList.contains("entering")).toBe(false);
+  });
+});
