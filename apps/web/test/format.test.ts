@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { formatSourceList } from "../src/format/format-sources.ts";
 import { formatCapturedLabel } from "../src/format/format-relative-date.ts";
 import { storeFilterOptions } from "../src/format/source-label.ts";
+import { pageTitle } from "../src/format/page-title.ts";
 
 describe("formatSourceList", () => {
   test("joins with commas and a final 'or'", () => {
@@ -36,5 +37,15 @@ describe("source labels", () => {
       { value: "amazon.in", label: "Amazon.in" },
       { value: "flipkart.com", label: "Flipkart" },
     ]);
+  });
+});
+
+describe("pageTitle", () => {
+  test("puts the page name before the site name", () => {
+    expect(pageTitle("Budget 4K picks")).toBe("Budget 4K picks · ezshop");
+  });
+
+  test("falls back to the site name for a blank page name", () => {
+    expect(pageTitle("  ")).toBe("ezshop");
   });
 });

@@ -30,7 +30,7 @@ export function buildPriceCells(snapshots: readonly ProductSnapshot[]): Comparis
  */
 export function buildRatingCells(snapshots: readonly ProductSnapshot[]): ComparisonCell[] {
   return snapshots.map(({ rating }) => ({
-    text: rating === null ? null : `${rating.average} ★ · ${rating.count.toLocaleString("en-IN")}`,
+    text: rating === null ? null : `${rating.average.toFixed(1)} ★ · ${rating.count.toLocaleString("en-IN")}`,
     isBest: false,
   }));
 }

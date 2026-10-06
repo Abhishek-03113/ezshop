@@ -1,9 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { AppBar, BrandLink, MainNav } from "../components/app-bar.tsx";
 import { ComparisonSidebar } from "../components/comparison-sidebar.tsx";
+import { usePageTitle } from "../hooks/use-page-title.ts";
 
 /** /comparisons when nothing is saved yet (otherwise the route redirects to the latest comparison). */
 export function ComparisonsIndexPage() {
+  usePageTitle("Comparisons");
   return (
     <>
       <AppBar sticky>

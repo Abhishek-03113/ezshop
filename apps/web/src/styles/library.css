@@ -91,6 +91,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--ez-photo-backdrop);
   border-bottom: 1px solid var(--ez-separator);
   color: var(--ez-skeleton);
 }
@@ -142,5 +143,22 @@
   .product-card:hover {
     transition: none;
     transform: none;
+  }
+}
+
+/* Phones: two cards per row with a shorter photo, instead of one 200px-tall card per screen. */
+@media (max-width: 600px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ez-space-12);
+  }
+  .product-card-image {
+    height: 140px;
+  }
+  .product-card-body {
+    padding: var(--ez-space-12);
+  }
+  .product-card-title {
+    font-size: 15px;
   }
 }

@@ -98,6 +98,10 @@ describe("price and rating cells", () => {
     const usd = snapshotWith("X", [], { price: { amount: 1200, currency: "USD" } });
     expect(buildPriceCells([usd])[0]?.text).toBe("USD 1,200");
   });
+  test("a whole-number average keeps one decimal, matching the column header", () => {
+    const four = snapshotWith("X", [], { rating: { average: 4, count: 46 } });
+    expect(buildRatingCells([four])[0]?.text).toBe("4.0 ★ · 46");
+  });
   test("ratings show average and count, never best", () => {
     expect(buildRatingCells([LG, DELL])).toEqual([
       { text: "4.3 ★ · 2,140", isBest: false },

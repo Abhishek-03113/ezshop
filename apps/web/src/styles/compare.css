@@ -1,8 +1,9 @@
 /* Compare page: sidebar, heading, toolbar, sticky-header matrix, add-product picker, membership card. */
 .compare-layout {
-  max-width: 1400px;
+  /* Same width and gutter as .app-bar-inner, so the brand and the sidebar share a left edge. */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: var(--ez-space-24) var(--ez-space-20) 48px;
+  padding: var(--ez-space-24) var(--ez-space-24) 48px;
   display: flex;
   flex-wrap: wrap;
   gap: var(--ez-space-24);
@@ -334,7 +335,7 @@
   width: 88px;
   height: 88px;
   border-radius: 12px;
-  background: var(--ez-surface-panel);
+  background: var(--ez-photo-backdrop);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -474,6 +475,10 @@
   margin: 0;
   accent-color: var(--ez-blue);
 }
+.comparisons-card .side-new {
+  margin-top: 0;
+  padding-left: 0;
+}
 .membership-open {
   margin-left: auto;
   font-size: 14px;
@@ -484,5 +489,26 @@
   .switch::after,
   .chevron {
     transition: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .compare-sidebar {
+    flex-basis: 100%;
+    max-width: none;
+  }
+  /* 200px of labels would leave one product column on a phone. */
+  .matrix-scroll {
+    --label-width: 104px;
+  }
+  .mx-label,
+  .mx-corner {
+    padding-left: var(--ez-space-12);
+  }
+  .segmented-pair {
+    width: 100%;
+  }
+  .compare-toolbar .filter-field {
+    flex-basis: 100%;
   }
 }
