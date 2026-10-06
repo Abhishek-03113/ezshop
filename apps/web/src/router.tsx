@@ -1,11 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
-import {
-  createRootRouteWithContext,
-  createRoute,
-  createRouter,
-  redirect,
-  type RouterHistory,
-} from "@tanstack/react-router";
+import { createRootRouteWithContext, createRoute, createRouter, type RouterHistory } from "@tanstack/react-router";
 import { comparisonDetailQuery, comparisonListQuery, productComparisonsQuery } from "./api/comparison-queries.ts";
 import type { ComparisonsClient } from "./api/comparisons-client.ts";
 import { productDetailQuery, productListQuery } from "./api/product-queries.ts";
@@ -13,7 +7,6 @@ import type { ProductsClient } from "./api/products-client.ts";
 import type { AppConfig } from "./config/app-config.ts";
 import { AppLayout } from "./components/app-layout.tsx";
 import { RouteErrorPanel } from "./components/route-error-panel.tsx";
-import { latestComparisonId } from "./comparison/latest-comparison.ts";
 import { parseLibrarySearch } from "./library/library-search.ts";
 import { ComparisonPage } from "./pages/comparison-page.tsx";
 import { ComparisonsIndexPage } from "./pages/comparisons-index-page.tsx";
@@ -59,13 +52,7 @@ const productDetailRoute = createRoute({
 const comparisonsIndexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/comparisons",
-  // Opens the most recently updated comparison; only a user with none sees the empty state.
-  // beforeLoad, not loader: a redirect thrown here is followed before anything renders.
-  beforeLoad: async ({ context }) => {
-    const comparisons = await context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient));
-    const latestId = latestComparisonId(comparisons);
-    if (latestId !== null) throw redirect({ to: "/comparisons/$comparisonId", params: { comparisonId: latestId } });
-  },
+  // The list is already loaded by the root loader; the index page reads it from the cache.
   component: ComparisonsIndexPage,
 });
 

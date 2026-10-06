@@ -1,4 +1,5 @@
-import { queryOptions } from "@tanstack/react-query";
+import type { CatalogComparisonSummary } from "@ezshop/catalog";
+import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import type { ComparisonsClient } from "./comparisons-client.ts";
 
 export const comparisonQueryKeys = {
@@ -37,4 +38,17 @@ export function productComparisonsQuery(client: ComparisonsClient, productId: st
     queryKey: comparisonQueryKeys.forProduct(productId),
     queryFn: () => client.listComparisonsForProduct(productId),
   });
+}
+
+/**
+ * Drops a deleted comparison from the cache: out of the list (so the sidebar, nav count and index update
+ * before the refetch lands) and its detail query removed, so nothing ever refetches it into a 404.
+ *
+ * @example forgetDeletedComparison(queryClient, "c1")
+ */
+export function forgetDeletedComparison(queryClient: QueryClient, comparisonId: string): void {
+  queryClient.setQueryData<CatalogComparisonSummary[]>(comparisonQueryKeys.list, (comparisons) =>
+    comparisons?.filter((comparison) => comparison.id !== comparisonId),
+  );
+  queryClient.removeQueries({ queryKey: comparisonQueryKeys.detail(comparisonId), exact: true });
 }

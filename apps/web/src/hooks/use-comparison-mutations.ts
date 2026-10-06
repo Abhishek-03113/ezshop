@@ -1,7 +1,7 @@
 import type { CatalogComparisonSummary } from "@ezshop/catalog";
 import { useMutation, useQueryClient, type UseMutationResult } from "@tanstack/react-query";
 import { getRouteApi, useNavigate } from "@tanstack/react-router";
-import { comparisonQueryKeys } from "../api/comparison-queries.ts";
+import { comparisonQueryKeys, forgetDeletedComparison } from "../api/comparison-queries.ts";
 import { uniqueComparisonName } from "../comparison/comparison-labels.ts";
 
 const rootRouteApi = getRouteApi("__root__");
@@ -114,13 +114,17 @@ export function useRenameComparison(): UseMutationResult<
  */
 export function useDeleteComparison(): UseMutationResult<void, Error, string> {
   const { comparisonsClient } = rootRouteApi.useRouteContext();
+  const queryClient = useQueryClient();
   const refresh = useRefreshComparisons();
   const navigate = useNavigate();
   return useMutation({
     mutationFn: (comparisonId: string) => comparisonsClient.deleteComparison(comparisonId),
-    onSuccess: async () => {
-      await refresh();
+    onSuccess: async (_deleted, comparisonId) => {
+      // Leave the page before touching the cache: refreshing while it is still mounted refetched the
+      // deleted comparison, and its 404 replaced the page with "No comparison with id …".
       await navigate({ to: "/comparisons" });
+      forgetDeletedComparison(queryClient, comparisonId);
+      await refresh();
     },
   });
 }

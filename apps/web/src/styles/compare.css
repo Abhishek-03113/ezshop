@@ -555,3 +555,69 @@
     padding-bottom: var(--ez-space-12);
   }
 }
+
+/* Comparisons index: the parent page listing every comparison as a card. */
+.comparisons-index {
+  /* Same width and gutter as .app-bar-inner and .compare-layout. */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--ez-space-24) var(--ez-space-24) 48px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-24);
+}
+.comparisons-index-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ez-space-12);
+}
+.comparisons-index-heading .new-comparison-form {
+  margin-top: 0;
+  flex: 0 1 360px;
+}
+.comparisons-index-heading .soft-button {
+  gap: var(--ez-space-8);
+}
+.comparison-index-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: var(--ez-space-20);
+}
+.comparison-index-grid > li {
+  display: flex;
+}
+.comparison-index-card {
+  flex: 1;
+  min-width: 0;
+  padding: var(--ez-space-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-4);
+  color: var(--ez-label);
+  text-decoration: none;
+}
+.comparison-index-card:hover {
+  color: var(--ez-label);
+  box-shadow: var(--ez-shadow-lift);
+}
+.comparison-index-name {
+  font-size: 17px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.comparison-index-card .subtle {
+  margin: 0;
+  font-size: 13px;
+}
+.side-all {
+  color: var(--ez-label-secondary);
+  font-size: 13px;
+  min-height: 32px;
+}

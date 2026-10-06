@@ -5,7 +5,6 @@ import {
   shortProductName,
   uniqueComparisonName,
 } from "../src/comparison/comparison-labels.ts";
-import { latestComparisonId } from "../src/comparison/latest-comparison.ts";
 import { isTypingTarget } from "../src/hooks/use-slash-focus.ts";
 import { makeProduct } from "./fakes/product-fixtures.ts";
 
@@ -34,14 +33,6 @@ describe("ratingLine", () => {
     expect(ratingLine({ average: 4.3, count: 214000 })).toBe("4.3 ★ · 2,14,000 ratings");
     expect(ratingLine({ average: 5, count: 1 })).toBe("5.0 ★ · 1 rating");
     expect(ratingLine(null)).toBe("No ratings");
-  });
-});
-
-describe("latestComparisonId", () => {
-  test("is the first (newest) comparison, or null", () => {
-    const summary = (id: string) => ({ id, name: id, productIds: [], updatedAt: "u" });
-    expect(latestComparisonId([summary("c2"), summary("c1")])).toBe("c2");
-    expect(latestComparisonId([])).toBeNull();
   });
 });
 
