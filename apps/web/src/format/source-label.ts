@@ -1,4 +1,4 @@
-import { PRODUCT_SOURCES, sourceLabel, type ProductSource } from "@ezshop/catalog";
+import { PRODUCT_SOURCES, sourceLabel, type ProductSource } from "@picky/catalog";
 
 export type StoreFilter = "all" | ProductSource;
 

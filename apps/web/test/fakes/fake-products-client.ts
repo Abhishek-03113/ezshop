@@ -1,4 +1,4 @@
-import type { CatalogProduct, CatalogProductSummary } from "@ezshop/catalog";
+import type { CatalogProduct, CatalogProductSummary } from "@picky/catalog";
 import type { ProductsClient } from "../../src/api/products-client.ts";
 
 /** In-memory ProductsClient: serves canned products and records every URL passed to importProduct. */

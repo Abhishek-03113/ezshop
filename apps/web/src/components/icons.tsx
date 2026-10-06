@@ -27,7 +27,7 @@ function StrokeIcon({ size = 16, strokeWidth, children }: StrokeIconProps) {
   );
 }
 
-/** ezshop mark: blue rounded square with three lines. */
+/** Picky mark: blue rounded square with three lines. */
 export function LogoMark() {
   return (
     <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">

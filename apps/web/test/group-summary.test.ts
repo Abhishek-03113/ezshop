@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import type { CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonSummary } from "@picky/catalog";
 import { groupAction, groupMeta, priceRange } from "../src/library/group-summary.ts";
 import type { ProductGroup } from "../src/library/group-products.ts";
 import { inr, makeSummary } from "./fakes/product-fixtures.ts";

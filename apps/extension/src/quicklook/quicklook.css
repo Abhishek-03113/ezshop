@@ -1,4 +1,4 @@
-/* Quick Look overlay styles. Tokens come from @ezshop/ui-tokens (build.ts prepends them with :root → :host). */
+/* Quick Look overlay styles. Tokens come from @picky/ui-tokens (build.ts prepends them with :root → :host). */
 :host {
   all: initial;
   position: fixed;

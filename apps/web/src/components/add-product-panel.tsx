@@ -1,4 +1,4 @@
-import { type CatalogProductSummary, formatMoney } from "@ezshop/catalog";
+import { type CatalogProductSummary, formatMoney } from "@picky/catalog";
 import { useQuery } from "@tanstack/react-query";
 import { getRouteApi } from "@tanstack/react-router";
 import { useRef, useState } from "react";

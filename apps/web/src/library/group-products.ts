@@ -1,4 +1,4 @@
-import { type CatalogProductSummary, type Money, sourceLabel } from "@ezshop/catalog";
+import { type CatalogProductSummary, type Money, sourceLabel } from "@picky/catalog";
 import type { GroupKey } from "./group-options.ts";
 
 export interface ProductGroup {

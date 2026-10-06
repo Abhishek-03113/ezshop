@@ -1,4 +1,4 @@
-import { ratingCountLabel, sourceLabel, type ProductSnapshot, type Rating } from "@ezshop/catalog";
+import { ratingCountLabel, sourceLabel, type ProductSnapshot, type Rating } from "@picky/catalog";
 import type { Dom } from "../dom.ts";
 
 /**

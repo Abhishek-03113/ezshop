@@ -1,4 +1,4 @@
-import { ratingCountLabel, type Rating } from "@ezshop/catalog";
+import { ratingCountLabel, type Rating } from "@picky/catalog";
 import { StarIcon } from "./icons.tsx";
 
 /** "★ 4.4 out of 5 · 17,240 ratings"; renders nothing when the page showed no rating. */

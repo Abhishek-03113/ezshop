@@ -22,7 +22,7 @@ const JsonLdProductSchema = z.object({
 });
 type RawJsonLdProduct = z.infer<typeof JsonLdProductSchema>;
 
-/** The schema.org Product fields ezshop uses, normalised. */
+/** The schema.org Product fields Picky uses, normalised. */
 export interface JsonLdProduct {
   name: string | null;
   sku: string | null;

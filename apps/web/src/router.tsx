@@ -14,14 +14,14 @@ import { ProductDetailPage } from "./pages/product-detail-page.tsx";
 import { ProductListPage } from "./pages/product-list-page.tsx";
 
 /** Dependencies handed to every route through router context, instead of module-level singletons. */
-export interface EzshopRouterContext {
+export interface PickyRouterContext {
   queryClient: QueryClient;
   productsClient: ProductsClient;
   comparisonsClient: ComparisonsClient;
   config: AppConfig;
 }
 
-const rootRoute = createRootRouteWithContext<EzshopRouterContext>()({
+const rootRoute = createRootRouteWithContext<PickyRouterContext>()({
   // Every page shows the comparison count in the app bar, so the list is loaded once at the root.
   loader: ({ context }) => context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient)),
   component: AppLayout,
@@ -71,14 +71,14 @@ const routeTree = rootRoute.addChildren([productListRoute, productDetailRoute, c
  *
  * `history` defaults to the browser history; tests pass a memory history.
  *
- * @example createEzshopRouter({ queryClient, productsClient: createProductsClient(fetch, ""), comparisonsClient: createComparisonsClient(fetch, ""), config: readAppConfig(import.meta.env) })
+ * @example createPickyRouter({ queryClient, productsClient: createProductsClient(fetch, ""), comparisonsClient: createComparisonsClient(fetch, ""), config: readAppConfig(import.meta.env) })
  */
-export function createEzshopRouter(context: EzshopRouterContext, history?: RouterHistory) {
+export function createPickyRouter(context: PickyRouterContext, history?: RouterHistory) {
   return createRouter({ routeTree, context, history, defaultPreload: "intent", defaultPreloadStaleTime: 0 });
 }
 
 declare module "@tanstack/react-router" {
   interface Register {
-    router: ReturnType<typeof createEzshopRouter>;
+    router: ReturnType<typeof createPickyRouter>;
   }
 }

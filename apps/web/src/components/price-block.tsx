@@ -1,4 +1,4 @@
-import { discountPercent, formatMoney, type Money, savingsAmount } from "@ezshop/catalog";
+import { discountPercent, formatMoney, type Money, savingsAmount } from "@picky/catalog";
 
 interface PriceBlockProps {
   price: Money | null;

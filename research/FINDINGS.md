@@ -131,7 +131,7 @@ The whole page (product, cart, login) is returned as widget "slots" (`ATLAS_WIDG
 
 Server-side headless scraping or cart automation therefore violates both ToS, and fights two bot-management layers (AWS WAF + Akamai on Amazon, Akamai on Flipkart).
 
-## 6. What this means for ezshop
+## 6. What this means for Picky
 
 1. **Catalog data, legitimately**: Amazon Creators API (needs 10 sales / 30 days) and the Flipkart Affiliate API. Both give affiliate revenue as well.
 2. **Cart / user-specific data**: only reachable inside the **user's own logged-in browser** (Flipkart has no guest cart; Amazon's cart lives in the session).
@@ -152,7 +152,7 @@ Server-side headless scraping or cart automation therefore violates both ToS, an
 
 ## 7. Firecrawl self-hosted PoC (2026-10-05)
 
-Setup: `ezshop/firecrawl/` (upstream commit `4244638`), prebuilt `ghcr.io/firecrawl/*` images, plus
+Setup: `picky/firecrawl/` (upstream commit `4244638`), prebuilt `ghcr.io/firecrawl/*` images, plus
 `docker-compose.override.yaml` and `.env` tuned for an 8 GB machine. Client: `src/firecrawl-poc.ts` (Firecrawl `rawHtml` → cheerio → the §3/§4 selectors).
 
 **No AI model is needed.** `/v2/scrape` and `/v2/crawl` with `markdown | html | rawHtml | links | screenshot` use Playwright plus HTML parsing only.

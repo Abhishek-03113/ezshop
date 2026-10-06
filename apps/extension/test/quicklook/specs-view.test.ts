@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import type { ProductSnapshot } from "@ezshop/catalog";
+import type { ProductSnapshot } from "@picky/catalog";
 import { headerView } from "../../src/quicklook/header-view.ts";
 import { footerView } from "../../src/quicklook/footer-view.ts";
 import type { OverlayActions } from "../../src/quicklook/overlay-actions.ts";

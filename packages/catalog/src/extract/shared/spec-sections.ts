@@ -8,7 +8,7 @@ export interface SpecRowSelectors {
   value: string;
 }
 
-/** A spec group whose title is fixed by ezshop (the page shows no usable heading). */
+/** A spec group whose title is fixed by Picky (the page shows no usable heading). */
 export interface FixedSpecGroupSource extends SpecRowSelectors {
   kind: "fixed";
   title: string;

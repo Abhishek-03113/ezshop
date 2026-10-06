@@ -1,4 +1,4 @@
-import type { CatalogProduct, CatalogProductSummary, ProductSnapshot } from "@ezshop/catalog";
+import type { CatalogProduct, CatalogProductSummary, ProductSnapshot } from "@picky/catalog";
 import {
   productMatchesQuery,
   summarizeProduct,

@@ -4,7 +4,7 @@ import {
   formatMoney,
   type Money,
   pluralize,
-} from "@ezshop/catalog";
+} from "@picky/catalog";
 import type { ProductGroup } from "./group-products.ts";
 
 /**

@@ -9,11 +9,11 @@ export interface ExtensionSettings {
   autoOpenSheet: boolean;
   /** True once the user pressed "Got it" on the first-run screen. */
   firstRunDismissed: boolean;
-  /** The comparison Quick Look and "Add to ezshop" offer first; null until the user picks or creates one. */
+  /** The comparison Quick Look and "Add to Picky" offer first; null until the user picks or creates one. */
   lastComparisonId: string | null;
 }
 
-const SETTINGS_KEY = "ezshop.settings";
+const SETTINGS_KEY = "picky.settings";
 const DEFAULT_SETTINGS: ExtensionSettings = { autoOpenSheet: false, firstRunDismissed: false, lastComparisonId: null };
 
 function parseSettings(stored: unknown): ExtensionSettings {

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-/** Marketplaces ezshop can read; each has a SiteExtractor in src/extract/site-extractors.ts. */
+/** Marketplaces Picky can read; each has a SiteExtractor in src/extract/site-extractors.ts. */
 export const PRODUCT_SOURCES = ["amazon.in", "flipkart.com"] as const;
 
 export const MoneySchema = z.object({
@@ -29,7 +29,7 @@ export const RatingSchema = z.object({
 });
 
 /**
- * Everything ezshop keeps about one product page at one moment.
+ * Everything Picky keeps about one product page at one moment.
  * Produced by the extension (live DOM) or the API (Firecrawl HTML); both use the same extractor.
  *
  * @example ProductSnapshotSchema.parse(await request.json())

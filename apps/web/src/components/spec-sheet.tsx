@@ -1,4 +1,4 @@
-import { filterSpecGroups, specCountLabel, specGroupAnchor, type SpecGroup } from "@ezshop/catalog";
+import { filterSpecGroups, specCountLabel, specGroupAnchor, type SpecGroup } from "@picky/catalog";
 import { useState } from "react";
 import { useFlashValue } from "../hooks/use-flash-value.ts";
 import { scrollToAnchor } from "./scroll-to-anchor.ts";

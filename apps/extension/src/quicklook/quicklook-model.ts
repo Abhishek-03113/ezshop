@@ -1,4 +1,4 @@
-import type { CatalogProduct, ProductSnapshot } from "@ezshop/catalog";
+import type { CatalogProduct, ProductSnapshot } from "@picky/catalog";
 import type { QuickLookState } from "../messaging/messages.ts";
 
 /** Which body the overlay shows: the comparison matrix or the open page's own spec sheet. */

@@ -23,7 +23,7 @@ export function describeSpecCount(specCount: number, groupCount: number): string
 
 /**
  * Saved body: confirmation, product card (links to the sheet), primary "View specs"
- * button, the secondary "Open in ezshop" link and the "Open sheet automatically" switch.
+ * button, the secondary "Open in Picky" link and the "Open sheet automatically" switch.
  *
  * @example renderSavedView(dom, { summary, webBaseUrl: "http://localhost:5173", autoOpen: true }, handlers)
  */
@@ -90,7 +90,7 @@ function renderViewSpecsButton(dom: Dom, handlers: SavedHandlers): HTMLElement {
 
 function renderOpenLink(dom: Dom, sheetUrl: string): HTMLElement {
   const attrs = { href: sheetUrl, target: "_blank", rel: "noopener" };
-  return dom.el("a", { className: "button button-secondary", attrs }, ["Open in ezshop ↗"]);
+  return dom.el("a", { className: "button button-secondary", attrs }, ["Open in Picky ↗"]);
 }
 
 function renderAutoOpenRow(dom: Dom, autoOpen: boolean, handlers: SavedHandlers): HTMLElement {

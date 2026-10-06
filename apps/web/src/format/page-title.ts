@@ -1,10 +1,10 @@
-const SITE_NAME = "ezshop";
+const SITE_NAME = "Picky";
 
 /**
  * Browser-tab title: the page's own name first, then the site name, so tabs stay tell-apart-able.
- * Without it every tab reads "ezshop" and history entries are indistinguishable.
+ * Without it every tab reads "Picky" and history entries are indistinguishable.
  *
- * @example pageTitle("Budget 4K picks") // "Budget 4K picks · ezshop"
+ * @example pageTitle("Budget 4K picks") // "Budget 4K picks · Picky"
  */
 export function pageTitle(pageName: string): string {
   const trimmed = pageName.trim();

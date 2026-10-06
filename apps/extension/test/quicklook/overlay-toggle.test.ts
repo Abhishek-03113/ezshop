@@ -16,7 +16,7 @@ function setup(onProductPage = true) {
 /** Lets the controller's initial load finish; rendering into a closed (detached) root trips happy-dom only. */
 const settle = (): Promise<void> => Bun.sleep(0);
 
-const isOpen = (document: Document): boolean => document.querySelector("ezshop-quick-look") !== null;
+const isOpen = (document: Document): boolean => document.querySelector("picky-quick-look") !== null;
 
 /** Opens a fresh overlay on `view`; the shadow root is closed, so tests observe open/closed via the host element. */
 function openOn(view: QuickLookView, onProductPage = true) {

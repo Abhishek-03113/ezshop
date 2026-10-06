@@ -1,8 +1,8 @@
-# ezshop
+# Picky
 
 **Stop shopping by opening more tabs. Start shopping by making better decisions.**
 
-ezshop is a personal shopping workspace that turns scattered product research into a clear decision. It helps you
+Picky is a personal shopping workspace that turns scattered product research into a clear decision. It helps you
 collect products as you browse, understand what each one actually offers, compare them side by side, and move from
 endless research to a confident purchase.
 
@@ -20,9 +20,9 @@ Shopping platforms are designed around selling individual products. They are not
 between them, so the buyer ends up doing all the work. The more important the purchase, the worse it gets, and people
 often decide from memory, intuition or whichever product they saw last.
 
-## What ezshop does
+## What Picky does
 
-ezshop sits between discovering a product and buying it.
+Picky sits between discovering a product and buying it.
 
 1. **Save** products while you browse. You don't have to leave the page or copy anything by hand.
 2. **Understand** each product through a clean, consistent spec sheet, free of store layouts and promotional noise.
@@ -42,7 +42,7 @@ priorities vary (price, battery, performance, weight, reliability, one specific 
   the products worth considering.
 - **Consistent product pages.** Every product is presented the same way, so you can read it without learning a new
   layout each time.
-- **Comparison where you shop.** When you look at a new product, ezshop shows how it stacks up against your shortlist.
+- **Comparison where you shop.** When you look at a new product, Picky shows how it stacks up against your shortlist.
   There is no need to remember which tab held the other one or to build your own spreadsheet.
 - **A library you own.** Research doesn't vanish when a tab closes. Come back to it whenever you like, and organise it
   by category, store, brand or price.
@@ -53,8 +53,8 @@ A comparison is more than two products side by side. It reduces a decision to it
 
 - **What they have in common.** Identical information stays out of the way.
 - **Where they differ.** Only differences that could influence your choice ask for attention.
-- **Where one clearly wins.** More battery and lower weight are generally better, and ezshop can say so.
-- **Where preference matters.** A bigger screen isn't better for everyone. ezshop separates objective advantages from
+- **Where one clearly wins.** More battery and lower weight are generally better, and Picky can say so.
+- **Where preference matters.** A bigger screen isn't better for everyone. Picky separates objective advantages from
   personal taste, and it doesn't pretend every decision has one correct answer.
 
 ## Where it's going
@@ -64,21 +64,21 @@ layer for online shopping**:
 
 - **Across stores.** A product on one marketplace should be comparable with a similar one on another. The question
   stops being "what's on Amazon?" and becomes "which of the products I'm considering is best?" The store is where you
-  buy. ezshop is where you decide.
-- **From specifications to understanding.** ezshop should move from displaying numbers to explaining them: what's
+  buy. Picky is where you decide.
+- **From specifications to understanding.** Picky should move from displaying numbers to explaining them: what's
   better, what's worse, and what you actually gain by paying more.
-- **From comparison to recommendation.** Tell ezshop what matters to you ("battery life matters most, I travel often,
+- **From comparison to recommendation.** Tell Picky what matters to you ("battery life matters most, I travel often,
   I don't care about display resolution") and the comparison reshapes around your priorities. One option emerges as the
   strongest fit, with a reasoned explanation, not just a score: *"This is the best fit for you because…"*
 
 ## Principles
 
-- **Neutral.** ezshop works for the buyer. It isn't another store nudging you toward a product.
+- **Neutral.** Picky works for the buyer. It isn't another store nudging you toward a product.
 - **Clear.** No specialist knowledge required.
 - **Honest.** Unknown information stays unknown.
 - **Contextual.** A specification only matters relative to what you're trying to achieve.
 - **Decision oriented.** Every part of the experience moves toward helping you choose.
-- **You stay in control.** ezshop helps you decide and doesn't decide for you without explanation.
+- **You stay in control.** Picky helps you decide and doesn't decide for you without explanation.
 - **Research is an asset.** Every product you save reduces future effort, and you never repeat work you've already done.
 
 ## Run it locally

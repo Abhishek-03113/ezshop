@@ -1,4 +1,4 @@
-/** Where the ezshop stack runs. Baked in at build time (build.ts), which also derives host_permissions. */
+/** Where the Picky stack runs. Baked in at build time (build.ts), which also derives host_permissions. */
 export interface CaptureConfig {
   apiBaseUrl: string;
   webBaseUrl: string;
@@ -9,14 +9,14 @@ type EnvSource = Readonly<Record<string, string | undefined>>;
 const LOCAL_DEFAULTS: CaptureConfig = { apiBaseUrl: "http://localhost:8787", webBaseUrl: "http://localhost:5173" };
 
 /**
- * Reads EZSHOP_API_URL / EZSHOP_WEB_URL, defaulting to the local dev stack.
+ * Reads PICKY_API_URL / PICKY_WEB_URL, defaulting to the local dev stack.
  *
- * @example resolveCaptureConfig({ EZSHOP_API_URL: "https://api.ezshop.test" }).apiBaseUrl // "https://api.ezshop.test"
+ * @example resolveCaptureConfig({ PICKY_API_URL: "https://api.picky.test" }).apiBaseUrl // "https://api.picky.test"
  */
 export function resolveCaptureConfig(env: EnvSource): CaptureConfig {
   return {
-    apiBaseUrl: requireOrigin("EZSHOP_API_URL", env.EZSHOP_API_URL ?? LOCAL_DEFAULTS.apiBaseUrl),
-    webBaseUrl: requireOrigin("EZSHOP_WEB_URL", env.EZSHOP_WEB_URL ?? LOCAL_DEFAULTS.webBaseUrl),
+    apiBaseUrl: requireOrigin("PICKY_API_URL", env.PICKY_API_URL ?? LOCAL_DEFAULTS.apiBaseUrl),
+    webBaseUrl: requireOrigin("PICKY_WEB_URL", env.PICKY_WEB_URL ?? LOCAL_DEFAULTS.webBaseUrl),
   };
 }
 

@@ -1,11 +1,11 @@
-import type { ProductSnapshot } from "@ezshop/catalog";
+import type { ProductSnapshot } from "@picky/catalog";
 import { capturePage } from "../capture-page.ts";
 import { ChromeQuickLookApi } from "./chrome-quicklook-api.ts";
 import { QuickLookController } from "./quicklook-controller.ts";
 import type { QuickLookApi } from "./quicklook-api.ts";
 import type { QuickLookView } from "./quicklook-model.ts";
 
-const HOST_TAG = "ezshop-quick-look";
+const HOST_TAG = "picky-quick-look";
 
 export interface OverlayHostDependencies {
   document: Document;

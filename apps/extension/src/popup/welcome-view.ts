@@ -5,8 +5,8 @@ export interface WelcomeHandlers {
 }
 
 const STEPS = [
-  { title: "Pin ezshop", body: "Click the puzzle icon in Chrome's toolbar, then the pin next to ezshop." },
-  { title: "Open any product page", body: "On Amazon.in or Flipkart, click ezshop. That's it." },
+  { title: "Pin Picky", body: "Click the puzzle icon in Chrome's toolbar, then the pin next to Picky." },
+  { title: "Open any product page", body: "On Amazon.in or Flipkart, click Picky. That's it." },
 ] as const;
 
 const SHORTCUT_KEYS = ["Alt", "Shift", "E"] as const;

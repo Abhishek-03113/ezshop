@@ -1,4 +1,4 @@
-import { type SpecGroup, specGroupAnchor } from "@ezshop/catalog";
+import { type SpecGroup, specGroupAnchor } from "@picky/catalog";
 import type { MouseEvent } from "react";
 
 interface SpecGroupNavProps {

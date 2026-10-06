@@ -1,4 +1,4 @@
--- The snapshot is kept whole as jsonb: its shape is owned by @ezshop/catalog's ProductSnapshotSchema,
+-- The snapshot is kept whole as jsonb: its shape is owned by @picky/catalog's ProductSnapshotSchema,
 -- and the PoC only ever reads it back whole. Promote fields to columns once we filter on them.
 CREATE TABLE products (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),

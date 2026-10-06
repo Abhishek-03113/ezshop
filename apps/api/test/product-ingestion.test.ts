@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { ProductPageError } from "@ezshop/catalog";
+import { ProductPageError } from "@picky/catalog";
 import { InvalidSnapshotError, ProductIngestion } from "../src/products/product-ingestion.ts";
 import { FakeHtmlFetcher } from "./fakes/fake-html-fetcher.ts";
 import { InMemoryProductRepository } from "./fakes/in-memory-product-repository.ts";

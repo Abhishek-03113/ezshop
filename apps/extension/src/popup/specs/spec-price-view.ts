@@ -6,7 +6,7 @@ import {
   savingsAmount,
   type Money,
   type ProductSnapshot,
-} from "@ezshop/catalog";
+} from "@picky/catalog";
 import type { Dom } from "../dom.ts";
 
 type PriceSnapshot = Pick<ProductSnapshot, "price" | "listPrice" | "availability" | "capturedAt">;

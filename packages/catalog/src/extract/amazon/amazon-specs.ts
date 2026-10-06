@@ -6,7 +6,7 @@ const PROD_DET_ROWS = { row: "tr", label: "th", value: "td" } as const;
 const TWO_CELL_ROWS = { row: "tr", label: "td:first-child", value: "td:last-child" } as const;
 
 // Amazon spreads specs over several widgets; their presence varies by category and layout.
-// Order here is the order ezshop shows them in: the overview first, as the at-a-glance summary.
+// Order here is the order Picky shows them in: the overview first, as the at-a-glance summary.
 const AMAZON_SPEC_SOURCES: readonly SpecGroupSource[] = [
   { kind: "fixed", title: "At a glance", ...TWO_CELL_ROWS, row: "#productOverview_feature_div tr" },
   // Brand-supplied spec sheet (seen on iPhone 17, B0FQG1YHYR). Excludes the prodDetTable

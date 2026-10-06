@@ -2,7 +2,7 @@ import type { PageNode } from "../page/page-node.ts";
 import type { ProductSnapshot, ProductSource } from "../product-snapshot.ts";
 
 /**
- * Everything ezshop knows about reading one marketplace. Add a site by implementing this and
+ * Everything Picky knows about reading one marketplace. Add a site by implementing this and
  * listing it in SITE_EXTRACTORS; nothing else in the API, web app or extension changes.
  *
  * @example flipkartExtractor.productIdFromUrl("https://www.flipkart.com/x/p/itm1?pid=MOB1") // "MOB1"

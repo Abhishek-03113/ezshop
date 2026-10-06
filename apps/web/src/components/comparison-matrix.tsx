@@ -4,7 +4,7 @@ import {
   type ComparisonMatrix,
   flipkartSearchUrl,
   pluralize,
-} from "@ezshop/catalog";
+} from "@picky/catalog";
 import type { CSSProperties } from "react";
 import { ExternalLinkIcon } from "./icons.tsx";
 import { MatrixRow } from "./comparison-cells.tsx";

@@ -1,4 +1,4 @@
-import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@picky/catalog";
 import type { ComparisonRepository } from "../../src/comparisons/comparison-repository.ts";
 import type { ProductRepository } from "../../src/products/product-repository.ts";
 

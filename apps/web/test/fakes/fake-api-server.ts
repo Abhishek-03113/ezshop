@@ -4,7 +4,7 @@ export interface RecordedApiCall {
   body: string | null;
 }
 
-/** Stands in for the ezshop API: answers every call with one canned status and body, recording calls. */
+/** Stands in for the Picky API: answers every call with one canned status and body, recording calls. */
 export class FakeApiServer {
   readonly calls: RecordedApiCall[] = [];
 

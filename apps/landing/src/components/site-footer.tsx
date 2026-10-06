@@ -6,7 +6,7 @@ export function SiteFooter({ links }: { readonly links: LandingLinks }): ReactEl
   return (
     <footer className="footer">
       <div className="footer-inner">
-        <span>ezshop is not affiliated with Amazon or Flipkart.</span>
+        <span>Picky is not affiliated with Amazon or Flipkart.</span>
         <span className="footer-links">
           <a href="#top">Privacy</a>
           <a href={appHomeUrl(links)}>Open app</a>

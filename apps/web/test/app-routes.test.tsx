@@ -13,8 +13,8 @@ const populated = () =>
 describe("library route", () => {
   test("shows the welcome screen with the injected extension URL when the library is empty", async () => {
     const html = await renderAppAt("/", new FakeProductsClient());
-    expect(html).toContain("Welcome to ezshop");
-    expect(html).toContain('href="https://store.example/ezshop"');
+    expect(html).toContain("Welcome to Picky");
+    expect(html).toContain('href="https://store.example/picky"');
     expect(html).toContain("Install and pin");
     expect(html).not.toContain("sample spec sheet");
   });
@@ -72,7 +72,7 @@ describe("library search and grouping", () => {
   test("a search with no hits keeps the library, not the welcome screen", async () => {
     const html = await renderAppAt("/?q=zzz", populated());
     expect(html).toContain("No products match “zzz”.");
-    expect(html).not.toContain("Welcome to ezshop");
+    expect(html).not.toContain("Welcome to Picky");
   });
 
   test("?group=brand sections by brand and ?group=none is one flat list", async () => {

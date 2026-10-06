@@ -1,4 +1,4 @@
-import type { CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonSummary } from "@picky/catalog";
 import { useMutation, useQueryClient, type UseMutationResult } from "@tanstack/react-query";
 import { getRouteApi, useNavigate } from "@tanstack/react-router";
 import { comparisonQueryKeys, forgetDeletedComparison } from "../api/comparison-queries.ts";

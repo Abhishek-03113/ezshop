@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { ProductPageError } from "@ezshop/catalog";
+import { ProductPageError } from "@picky/catalog";
 import { BadRequestError, toErrorResponse } from "../src/http/http-errors.ts";
 import { InvalidSnapshotError } from "../src/products/product-ingestion.ts";
 import { ScrapeError } from "../src/scraping/html-fetcher.ts";

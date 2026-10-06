@@ -1,20 +1,20 @@
-// E2E check for the ezshop extension: load the unpacked build in headless Chromium, open a live product page,
-// then drive the REAL capture path: the popup's "ezshop-capture" port into the service worker (runCaptureFlow,
-// badge, settings), exactly as popup.ts does. Screenshots the popup and the resulting ezshop pages.
+// E2E check for the Picky extension: load the unpacked build in headless Chromium, open a live product page,
+// then drive the REAL capture path: the popup's "picky-capture" port into the service worker (runCaptureFlow,
+// badge, settings), exactly as popup.ts does. Screenshots the popup and the resulting Picky pages.
 //
 // A scripted run can't press the toolbar button, so it never gets activeTab. Instead this copies
-// apps/extension/dist to a temp dir and grants the product's origin as a host permission (EZSHOP_EXT_DIR overrides).
-// Usage: npx tsx src/ezshop-extension-e2e.ts [product-url] [screenshot-dir]
+// apps/extension/dist to a temp dir and grants the product's origin as a host permission (PICKY_EXT_DIR overrides).
+// Usage: npx tsx src/picky-extension-e2e.ts [product-url] [screenshot-dir]
 import { chromium, type BrowserContext, type Page, type Worker } from "playwright";
 import { cpSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const DIST = "/home/xcal/workspace/ezshop/apps/extension/dist";
-const WEB = process.env.EZSHOP_WEB_URL ?? "http://localhost:5173";
+const WEB = process.env.PICKY_WEB_URL ?? "http://localhost:5173";
 const PRODUCT = process.argv[2] ?? "https://www.amazon.in/dp/B09XS7JWHH";
 const SHOTS = process.argv[3] ?? "/tmp";
-const SETTINGS_KEY = "ezshop.settings"; // apps/extension/src/settings.ts
+const SETTINGS_KEY = "picky.settings"; // apps/extension/src/settings.ts
 
 interface SavedSummary {
   productId: string;
@@ -34,8 +34,8 @@ const fail = (message: string): never => {
   throw new Error(message);
 };
 
-const extDir = process.env.EZSHOP_EXT_DIR ?? extensionCopyWithHostAccess(PRODUCT);
-const ctx = await chromium.launchPersistentContext(mkdtempSync(join(tmpdir(), "ezshop-e2e-")), {
+const extDir = process.env.PICKY_EXT_DIR ?? extensionCopyWithHostAccess(PRODUCT);
+const ctx = await chromium.launchPersistentContext(mkdtempSync(join(tmpdir(), "picky-e2e-")), {
   headless: true,
   executablePath: "/usr/bin/chromium",
   args: [`--disable-extensions-except=${extDir}`, `--load-extension=${extDir}`, "--disable-blink-features=AutomationControlled"],
@@ -98,7 +98,7 @@ async function captureViaPort(extensionPage: Page, tab: { id: number; url: strin
   return extensionPage.evaluate(
     `new Promise((resolve) => {
       const phases = [];
-      const port = chrome.runtime.connect({ name: "ezshop-capture" });
+      const port = chrome.runtime.connect({ name: "picky-capture" });
       port.onMessage.addListener((event) => {
         if (event.type === "progress") phases.push(event.phase);
         if (event.type === "outcome") { port.disconnect(); resolve({ phases, outcome: event.outcome }); }
@@ -123,10 +123,10 @@ async function checkSpecSheet(ctx: BrowserContext, summary: SavedSummary): Promi
   if (availability.includes("{")) fail(`availability contains script JSON: ${availability.slice(0, 80)}`);
   const overflow = await app.evaluate(`document.documentElement.scrollWidth - document.documentElement.clientWidth`);
   if (Number(overflow) > 0) fail(`spec sheet scrolls sideways by ${overflow}px`);
-  await app.screenshot({ path: `${SHOTS}/ezshop-detail.png`, fullPage: true });
+  await app.screenshot({ path: `${SHOTS}/picky-detail.png`, fullPage: true });
   await app.goto(`${WEB}/`);
   await app.waitForSelector(".product-card");
-  await app.screenshot({ path: `${SHOTS}/ezshop-list.png` });
+  await app.screenshot({ path: `${SHOTS}/picky-list.png` });
   await app.close();
 }
 
@@ -146,7 +146,7 @@ async function tabIdOf(worker: Worker, url: string): Promise<number> {
 }
 
 function extensionCopyWithHostAccess(productUrl: string): string {
-  const dir = mkdtempSync(join(tmpdir(), "ezshop-ext-"));
+  const dir = mkdtempSync(join(tmpdir(), "picky-ext-"));
   cpSync(DIST, dir, { recursive: true });
   const manifestPath = join(dir, "manifest.json");
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as { host_permissions: string[] };

@@ -1,4 +1,4 @@
-import { type CatalogProduct, pluralize, sourceLabel } from "@ezshop/catalog";
+import { type CatalogProduct, pluralize, sourceLabel } from "@picky/catalog";
 
 const LIST_FORMAT = new Intl.ListFormat("en", { type: "conjunction" });
 

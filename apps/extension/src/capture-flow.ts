@@ -1,4 +1,4 @@
-import { isSupportedProductUrl } from "@ezshop/catalog";
+import { isSupportedProductUrl } from "@picky/catalog";
 import type { BrowserPort } from "./browser-port.ts";
 import type { CaptureConfig } from "./capture-config.ts";
 import { summarizeSnapshot, type CaptureOutcome, type CapturePhase, type SavedSummary } from "./capture-outcome.ts";
@@ -22,7 +22,7 @@ export type ProgressListener = (phase: CapturePhase) => void;
 
 /**
  * Popup opened → capture the page → send to the API → (when "Open sheet automatically" is on)
- * open its ezshop spec sheet. Every outcome ends in a badge, so the user always sees whether it worked.
+ * open its Picky spec sheet. Every outcome ends in a badge, so the user always sees whether it worked.
  *
  * @example const outcome = await runCaptureFlow({ id: 7, url: "https://www.amazon.in/dp/B0FQG1YHYR" }, deps)
  */

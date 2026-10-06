@@ -1,4 +1,4 @@
-import { specGroupAnchor, type SpecGroup } from "@ezshop/catalog";
+import { specGroupAnchor, type SpecGroup } from "@picky/catalog";
 import type { Dom } from "../dom.ts";
 import { GroupHighlighter } from "./group-highlight.ts";
 

@@ -27,8 +27,8 @@ import { ChromeToastPort } from "./toast/toast-port.ts";
 // chrome.action.onClicked and toggles the in-page Quick Look on Specs; Alt+Shift+V (open-comparison) toggles it on Compare; when a tab cannot be scripted the worker
 // switches that tab to popup.html, which asks this worker to capture over a port (the original flow).
 // Replaced at build time by build.ts (Bun.build `define`).
-declare const __EZSHOP_CAPTURE_CONFIG__: CaptureConfig;
-const config = __EZSHOP_CAPTURE_CONFIG__;
+declare const __PICKY_CAPTURE_CONFIG__: CaptureConfig;
+const config = __PICKY_CAPTURE_CONFIG__;
 const browser = new ChromeBrowserPort("page-capture.js");
 const settings = new SettingsStore(new ChromeKeyValueStorage());
 const log = (event: string, fields: Record<string, string | number>) =>

@@ -33,7 +33,7 @@ function setup(options: { reader?: FakeSnapshotReader; lastUsed?: string; seed?:
   const toasts = new FakeToastPort();
   const badge = new FakeBadgeText();
   const settings = new SettingsStore(
-    new FakeKeyValueStorage(options.lastUsed ? { "ezshop.settings": { lastComparisonId: options.lastUsed } } : {}),
+    new FakeKeyValueStorage(options.lastUsed ? { "picky.settings": { lastComparisonId: options.lastUsed } } : {}),
   );
   const fetcher = new FakeHtmlFetcher({ [URL_OK]: "<html></html>" });
   const changes = { count: 0 };

@@ -20,7 +20,7 @@ export function Hero({ links, navigator }: HeroProps): ReactElement {
         Without the sales pitch.
       </h1>
       <p className="lede">
-        ezshop turns a crowded product page into one clean, grouped spec sheet — one click from the page you're already
+        Picky turns a crowded product page into one clean, grouped spec sheet — one click from the page you're already
         on.
       </p>
       <div className="cta-row">

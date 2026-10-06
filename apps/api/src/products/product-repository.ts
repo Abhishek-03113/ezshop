@@ -1,4 +1,4 @@
-import type { CatalogProduct, CatalogProductSummary, ProductSnapshot } from "@ezshop/catalog";
+import type { CatalogProduct, CatalogProductSummary, ProductSnapshot } from "@picky/catalog";
 
 /** Storage for product snapshots. One row per (source, externalId); a newer capture replaces the older. */
 export interface ProductRepository {

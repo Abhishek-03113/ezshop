@@ -1,5 +1,5 @@
 {
-  "name": "@ezshop/web",
+  "name": "@picky/web",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,8 +9,8 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@ezshop/catalog": "workspace:*",
-    "@ezshop/ui-tokens": "workspace:*",
+    "@picky/catalog": "workspace:*",
+    "@picky/ui-tokens": "workspace:*",
     "@tanstack/react-query": "^5.104.1",
     "@tanstack/react-router": "^1.170.41",
     "react": "^19.3.0",

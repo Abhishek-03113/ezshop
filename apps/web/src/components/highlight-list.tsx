@@ -1,4 +1,4 @@
-import type { Highlight } from "@ezshop/catalog";
+import type { Highlight } from "@picky/catalog";
 
 interface HighlightListProps {
   highlights: readonly Highlight[];

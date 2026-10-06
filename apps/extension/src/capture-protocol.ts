@@ -2,7 +2,7 @@ import type { ActiveTab } from "./capture-flow.ts";
 import type { CaptureOutcome, CapturePhase } from "./capture-outcome.ts";
 
 /** Name of the long-lived runtime port the popup opens to the service worker. */
-export const CAPTURE_PORT_NAME = "ezshop-capture";
+export const CAPTURE_PORT_NAME = "picky-capture";
 
 /** Popup → worker. */
 export interface CaptureRequest {

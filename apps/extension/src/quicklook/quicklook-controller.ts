@@ -1,4 +1,4 @@
-import type { ProductSnapshot } from "@ezshop/catalog";
+import type { ProductSnapshot } from "@picky/catalog";
 import type { QuickLookState } from "../messaging/messages.ts";
 import { Dom } from "../popup/dom.ts";
 import { focusableControls, nextFocusTarget } from "./focus-trap.ts";

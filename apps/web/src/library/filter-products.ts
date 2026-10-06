@@ -1,4 +1,4 @@
-import type { CatalogProductSummary } from "@ezshop/catalog";
+import type { CatalogProductSummary } from "@picky/catalog";
 import type { StoreFilter } from "../format/source-label.ts";
 
 /**

@@ -6,7 +6,7 @@ import { mergeHostPermissions } from "./src/host-permissions.ts";
 import { apiHostPermission, resolveCaptureConfig } from "./src/capture-config.ts";
 
 // Builds the unpacked extension into dist/. Load it via chrome://extensions → "Load unpacked".
-// EZSHOP_API_URL / EZSHOP_WEB_URL point it at a non-local stack.
+// PICKY_API_URL / PICKY_WEB_URL point it at a non-local stack.
 const OUT_DIR = join(import.meta.dir, "dist");
 const config = resolveCaptureConfig(Bun.env);
 // Quick Look also renders the shared spec sheet, so its shadow root carries that CSS too.
@@ -28,7 +28,7 @@ const BUNDLES = [
 
 // Shadow-DOM surfaces (Quick Look, toasts) ship their own stylesheet as a string baked into the bundle.
 async function shadowStylesheet(ownCssPaths: readonly string[]): Promise<string> {
-  const tokensPath = fileURLToPath(import.meta.resolve("@ezshop/ui-tokens/tokens.css"));
+  const tokensPath = fileURLToPath(import.meta.resolve("@picky/ui-tokens/tokens.css"));
   const ownCss = await Promise.all(ownCssPaths.map((path) => Bun.file(join(import.meta.dir, path)).text()));
   return buildShadowStylesheet(await Bun.file(tokensPath).text(), ...ownCss);
 }
@@ -41,9 +41,9 @@ async function buildBundle(bundle: (typeof BUNDLES)[number]): Promise<void> {
     naming: bundle.name,
     outdir: OUT_DIR,
     define: {
-      __EZSHOP_CAPTURE_CONFIG__: JSON.stringify(config),
-      __EZSHOP_QUICKLOOK_CSS__: JSON.stringify(quickLookCss),
-      __EZSHOP_TOAST_CSS__: JSON.stringify(toastCss),
+      __PICKY_CAPTURE_CONFIG__: JSON.stringify(config),
+      __PICKY_QUICKLOOK_CSS__: JSON.stringify(quickLookCss),
+      __PICKY_TOAST_CSS__: JSON.stringify(toastCss),
     },
   });
   if (!result.success) throw new AggregateError(result.logs, `Bundling ${bundle.entry} failed`);
@@ -51,7 +51,7 @@ async function buildBundle(bundle: (typeof BUNDLES)[number]): Promise<void> {
 
 // popup.html links one stylesheet: the shared design tokens, the popup's own rules, then the spec view's.
 async function writePopupStylesheet(): Promise<void> {
-  const tokensPath = fileURLToPath(import.meta.resolve("@ezshop/ui-tokens/tokens.css"));
+  const tokensPath = fileURLToPath(import.meta.resolve("@picky/ui-tokens/tokens.css"));
   const popupCss = await Bun.file(join(import.meta.dir, "src/popup/popup.css")).text();
   const specSheetCss = await Promise.all(
     SPEC_SHEET_CSS_PATHS.map((path) => Bun.file(join(import.meta.dir, path)).text()),

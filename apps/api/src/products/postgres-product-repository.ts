@@ -1,5 +1,5 @@
 import type { SQL } from "bun";
-import type { CatalogProduct, CatalogProductSummary, ProductSnapshot } from "@ezshop/catalog";
+import type { CatalogProduct, CatalogProductSummary, ProductSnapshot } from "@picky/catalog";
 import { isUuid } from "../db/uuid.ts";
 import { summarizeProduct, type ProductRepository } from "./product-repository.ts";
 

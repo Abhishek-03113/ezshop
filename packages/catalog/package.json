@@ -1,5 +1,5 @@
 {
-  "name": "@ezshop/catalog",
+  "name": "@picky/catalog",
   "private": true,
   "type": "module",
   "exports": {

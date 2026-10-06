@@ -1,4 +1,4 @@
-import type { CatalogComparisonSummary, CatalogProduct, ProductSnapshot } from "@ezshop/catalog";
+import type { CatalogComparisonSummary, CatalogProduct, ProductSnapshot } from "@picky/catalog";
 
 /** What Quick Look shows: every comparison, the selected one in full. Plain JSON: it crosses worlds. */
 export interface QuickLookState {

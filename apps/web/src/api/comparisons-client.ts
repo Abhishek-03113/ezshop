@@ -1,4 +1,4 @@
-import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@picky/catalog";
 import { createJsonRequester, jsonRequest, type FetchFunction } from "./json-requester.ts";
 
 export interface ComparisonsClient {
@@ -17,7 +17,7 @@ export interface ComparisonsClient {
 type SummaryEnvelope = { comparison: CatalogComparisonSummary };
 
 /**
- * Typed client for the comparison endpoints of the ezshop API.
+ * Typed client for the comparison endpoints of the Picky API.
  *
  * @example await createComparisonsClient(fetch, "").createComparison("Monitors", [productId])
  */

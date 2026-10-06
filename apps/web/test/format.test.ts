@@ -42,11 +42,11 @@ describe("source labels", () => {
 
 describe("pageTitle", () => {
   test("puts the page name before the site name", () => {
-    expect(pageTitle("Budget 4K picks")).toBe("Budget 4K picks · ezshop");
+    expect(pageTitle("Budget 4K picks")).toBe("Budget 4K picks · Picky");
   });
 
   test("falls back to the site name for a blank page name", () => {
-    expect(pageTitle("  ")).toBe("ezshop");
+    expect(pageTitle("  ")).toBe("Picky");
   });
 });
 

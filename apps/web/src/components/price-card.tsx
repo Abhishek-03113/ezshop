@@ -1,4 +1,4 @@
-import { availabilityTone, type ProductSnapshot, formatCaptureTime } from "@ezshop/catalog";
+import { availabilityTone, type ProductSnapshot, formatCaptureTime } from "@picky/catalog";
 import { PriceBlock } from "./price-block.tsx";
 
 type PriceCardSnapshot = Pick<ProductSnapshot, "price" | "listPrice" | "availability" | "capturedAt">;

@@ -1,4 +1,4 @@
-import type { ProductSnapshot } from "@ezshop/catalog";
+import type { ProductSnapshot } from "@picky/catalog";
 import type { ParseProductRequest, ParseProductResponse } from "./offscreen-protocol.ts";
 import type { SnapshotReader } from "./snapshot-reader.ts";
 

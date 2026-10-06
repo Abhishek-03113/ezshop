@@ -1,4 +1,4 @@
-import { countSpecs, formatMoney, type Money, type ProductSnapshot } from "@ezshop/catalog";
+import { countSpecs, formatMoney, type Money, type ProductSnapshot } from "@picky/catalog";
 
 /** Where the capture flow is, for the popup's progress steps. */
 export type CapturePhase = "reading" | "saving";

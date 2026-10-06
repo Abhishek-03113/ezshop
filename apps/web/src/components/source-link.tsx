@@ -1,4 +1,4 @@
-import { type ProductSource, sourceLabel } from "@ezshop/catalog";
+import { type ProductSource, sourceLabel } from "@picky/catalog";
 import { ExternalLinkIcon } from "./icons.tsx";
 
 /** "View on Amazon.in" pill that opens the original product page. */

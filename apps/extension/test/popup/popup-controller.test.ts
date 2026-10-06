@@ -10,7 +10,7 @@ import { createTestDom } from "./support.ts";
 
 const TAB = { id: 7, url: "https://www.amazon.in/dp/B0FQG1YHYR" };
 const SAVED = { kind: "saved", summary: summarizeSnapshot("p1", buildSnapshot()) } as const;
-const SEEN_BEFORE = { "ezshop.settings": { firstRunDismissed: true } };
+const SEEN_BEFORE = { "picky.settings": { firstRunDismissed: true } };
 
 function createController(storage: FakeKeyValueStorage, service: FakeCaptureService, tab: typeof TAB | null = TAB) {
   const { root } = createTestDom();

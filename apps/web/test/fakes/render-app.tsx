@@ -4,7 +4,7 @@ import { renderToString } from "react-dom/server";
 import type { ProductsClient } from "../../src/api/products-client.ts";
 import { FakeComparisonsClient } from "./fake-comparisons-client.ts";
 import type { ComparisonsClient } from "../../src/api/comparisons-client.ts";
-import { createEzshopRouter } from "../../src/router.tsx";
+import { createPickyRouter } from "../../src/router.tsx";
 
 /** Renders the real router at `path` against a fake client, after loaders have run. */
 export async function renderAppAt(
@@ -13,9 +13,9 @@ export async function renderAppAt(
   comparisonsClient: ComparisonsClient = new FakeComparisonsClient(),
 ): Promise<string> {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  const config = { extensionUrl: "https://store.example/ezshop" };
+  const config = { extensionUrl: "https://store.example/picky" };
   const history = createMemoryHistory({ initialEntries: [path] });
-  const router = createEzshopRouter({ queryClient, productsClient, comparisonsClient, config }, history);
+  const router = createPickyRouter({ queryClient, productsClient, comparisonsClient, config }, history);
   await router.load();
   return renderToString(
     <QueryClientProvider client={queryClient}>

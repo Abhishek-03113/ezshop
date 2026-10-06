@@ -43,12 +43,12 @@ describe("RunOnce", () => {
 });
 
 describe("readAppConfig", () => {
-  test("uses VITE_EZSHOP_EXTENSION_URL when set", () => {
-    expect(readAppConfig({ VITE_EZSHOP_EXTENSION_URL: " https://store/x " }).extensionUrl).toBe("https://store/x");
+  test("uses VITE_PICKY_EXTENSION_URL when set", () => {
+    expect(readAppConfig({ VITE_PICKY_EXTENSION_URL: " https://store/x " }).extensionUrl).toBe("https://store/x");
   });
 
   test("falls back when missing, blank or not a string", () => {
-    for (const env of [{}, { VITE_EZSHOP_EXTENSION_URL: "  " }, { VITE_EZSHOP_EXTENSION_URL: 3 }]) {
+    for (const env of [{}, { VITE_PICKY_EXTENSION_URL: "  " }, { VITE_PICKY_EXTENSION_URL: 3 }]) {
       expect(readAppConfig(env).extensionUrl).toBe(DEFAULT_EXTENSION_URL);
     }
   });

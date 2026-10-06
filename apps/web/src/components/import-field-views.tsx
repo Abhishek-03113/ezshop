@@ -1,4 +1,4 @@
-import { PRODUCT_SOURCES, sourceLabel } from "@ezshop/catalog";
+import { PRODUCT_SOURCES, sourceLabel } from "@picky/catalog";
 import type { FormEvent } from "react";
 import { LinkIcon } from "./icons.tsx";
 

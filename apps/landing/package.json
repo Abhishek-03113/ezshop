@@ -1,5 +1,5 @@
 {
-  "name": "@ezshop/landing",
+  "name": "@picky/landing",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@ezshop/ui-tokens": "workspace:*",
+    "@picky/ui-tokens": "workspace:*",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },

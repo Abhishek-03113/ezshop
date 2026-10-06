@@ -1,4 +1,4 @@
-import type { CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonSummary } from "@picky/catalog";
 import { MenuPopover } from "./menu-popover.tsx";
 
 interface AddToComparisonMenuProps {

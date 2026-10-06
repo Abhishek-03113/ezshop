@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "ezshop",
+      "name": "picky",
       "devDependencies": {
         "@types/bun": "latest",
         "prettier": "^3.9.9",
@@ -11,20 +11,20 @@
       },
     },
     "apps/api": {
-      "name": "@ezshop/api",
+      "name": "@picky/api",
       "dependencies": {
-        "@ezshop/catalog": "workspace:*",
         "@huggingface/transformers": "^4.3.0",
+        "@picky/catalog": "workspace:*",
         "hono": "^4.13.13",
         "onnxruntime-node": "^1.30.0",
         "zod": "^4.6.5",
       },
     },
     "apps/extension": {
-      "name": "@ezshop/extension",
+      "name": "@picky/extension",
       "dependencies": {
-        "@ezshop/catalog": "workspace:*",
-        "@ezshop/ui-tokens": "workspace:*",
+        "@picky/catalog": "workspace:*",
+        "@picky/ui-tokens": "workspace:*",
       },
       "devDependencies": {
         "@types/chrome": "^0.3.4",
@@ -32,9 +32,9 @@
       },
     },
     "apps/landing": {
-      "name": "@ezshop/landing",
+      "name": "@picky/landing",
       "dependencies": {
-        "@ezshop/ui-tokens": "workspace:*",
+        "@picky/ui-tokens": "workspace:*",
         "react": "^19.3.0",
         "react-dom": "^19.3.0",
       },
@@ -47,10 +47,10 @@
       },
     },
     "apps/web": {
-      "name": "@ezshop/web",
+      "name": "@picky/web",
       "dependencies": {
-        "@ezshop/catalog": "workspace:*",
-        "@ezshop/ui-tokens": "workspace:*",
+        "@picky/catalog": "workspace:*",
+        "@picky/ui-tokens": "workspace:*",
         "@tanstack/react-query": "^5.104.1",
         "@tanstack/react-router": "^1.170.41",
         "react": "^19.3.0",
@@ -64,7 +64,7 @@
       },
     },
     "packages/catalog": {
-      "name": "@ezshop/catalog",
+      "name": "@picky/catalog",
       "dependencies": {
         "cheerio": "^1.2.0",
         "domhandler": "^6.0.1",
@@ -75,23 +75,11 @@
       },
     },
     "packages/ui-tokens": {
-      "name": "@ezshop/ui-tokens",
+      "name": "@picky/ui-tokens",
     },
   },
   "packages": {
     "@emnapi/runtime": ["@emnapi/runtime@1.11.3", "", { "dependencies": { "tslib": "^2.4.0" } }, "sha512-Xz4Tpyki7XyrpbUK1jR1AhdAdaXyhhY4lZ3neLodmhpuWfy2PAQN5B46sAiU4liOXGLkHypn/qU+jvfWSCYYLA=="],
-
-    "@ezshop/api": ["@ezshop/api@workspace:apps/api"],
-
-    "@ezshop/catalog": ["@ezshop/catalog@workspace:packages/catalog"],
-
-    "@ezshop/extension": ["@ezshop/extension@workspace:apps/extension"],
-
-    "@ezshop/landing": ["@ezshop/landing@workspace:apps/landing"],
-
-    "@ezshop/ui-tokens": ["@ezshop/ui-tokens@workspace:packages/ui-tokens"],
-
-    "@ezshop/web": ["@ezshop/web@workspace:apps/web"],
 
     "@huggingface/jinja": ["@huggingface/jinja@0.5.10", "", {}, "sha512-SgS1D1bglQ94ceD4ZCL6eayUDy9uV1xuyk61OjgSxU5GJh7upqZCKII0JoTYMc6wWsg3JUgaPRX0ElQzXPk3Cw=="],
 
@@ -154,6 +142,18 @@
     "@img/sharp-win32-x64": ["@img/sharp-win32-x64@0.35.5", "", { "os": "win32", "cpu": "x64" }, "sha512-x76eH0vEiHlcMQu8Y8IenntaACtddpT6W0wmXtWrnKcnKI7ME5DdgqhAD6SEWOEl1v2zDvkZDhFA9KnURwpfqg=="],
 
     "@oxc-project/types": ["@oxc-project/types@0.152.0", "", {}, "sha512-oM/5rLBm2tPkg0iBgkH/FOeR3PCDpY19GTgAZjMFM8h9WI9VW7cLgzp6nwtarYKmovavIQZ+Fe/RKX/8C8O/Rw=="],
+
+    "@picky/api": ["@picky/api@workspace:apps/api"],
+
+    "@picky/catalog": ["@picky/catalog@workspace:packages/catalog"],
+
+    "@picky/extension": ["@picky/extension@workspace:apps/extension"],
+
+    "@picky/landing": ["@picky/landing@workspace:apps/landing"],
+
+    "@picky/ui-tokens": ["@picky/ui-tokens@workspace:packages/ui-tokens"],
+
+    "@picky/web": ["@picky/web@workspace:apps/web"],
 
     "@protobufjs/aspromise": ["@protobufjs/aspromise@1.1.2", "", {}, "sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ=="],
 

@@ -1,4 +1,4 @@
-import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@picky/catalog";
 
 /** What POST /api/comparisons hands back that the extension relies on. */
 export interface CreatedComparison {
@@ -6,7 +6,7 @@ export interface CreatedComparison {
   name: string;
 }
 
-/** The ezshop comparisons API as the extension uses it; http-comparisons-client.ts implements it over fetch. */
+/** The Picky comparisons API as the extension uses it; http-comparisons-client.ts implements it over fetch. */
 export interface ComparisonsClient {
   list(): Promise<CatalogComparisonSummary[]>;
   get(comparisonId: string): Promise<CatalogComparisonDetail>;

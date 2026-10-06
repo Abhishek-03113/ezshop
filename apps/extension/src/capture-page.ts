@@ -1,5 +1,5 @@
-import { extractProductSnapshot } from "@ezshop/catalog";
-import { wrapDomDocument } from "@ezshop/catalog/dom";
+import { extractProductSnapshot } from "@picky/catalog";
+import { wrapDomDocument } from "@picky/catalog/dom";
 import type { CaptureResult } from "./capture-result.ts";
 
 /**

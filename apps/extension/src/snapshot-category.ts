@@ -1,4 +1,4 @@
-import type { ProductSnapshot } from "@ezshop/catalog";
+import type { ProductSnapshot } from "@picky/catalog";
 
 /** Name for a comparison created from the first product added to it. */
 export const DEFAULT_COMPARISON_NAME = "My comparison";

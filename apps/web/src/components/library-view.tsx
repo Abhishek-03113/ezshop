@@ -1,4 +1,4 @@
-import { type CatalogComparisonSummary, type CatalogProductSummary, pluralize } from "@ezshop/catalog";
+import { type CatalogComparisonSummary, type CatalogProductSummary, pluralize } from "@picky/catalog";
 import { useState } from "react";
 import { useLibrarySelection } from "../hooks/use-library-selection.ts";
 import type { StoreFilter } from "../format/source-label.ts";

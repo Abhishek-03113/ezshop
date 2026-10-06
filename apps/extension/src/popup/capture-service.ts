@@ -19,7 +19,7 @@ export class PortCaptureService implements CaptureService {
     return new Promise((resolve, reject) => {
       const port = this.connect();
       port.onReceive((event) => (event.type === "progress" ? onProgress(event.phase) : resolve(event.outcome)));
-      port.onClose(() => reject(new Error("ezshop background worker disconnected before the capture finished")));
+      port.onClose(() => reject(new Error("Picky background worker disconnected before the capture finished")));
       port.send({ type: "capture", tab });
     });
   }
