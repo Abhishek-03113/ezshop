@@ -1,5 +1,6 @@
 import { specGroupAnchor, type SpecGroup } from "@ezshop/catalog";
 import type { Dom } from "../dom.ts";
+import { GroupHighlighter } from "./group-highlight.ts";
 
 /**
  * Chips that jump to each visible group, with its spec count. The popup body is the scroll
@@ -10,19 +11,29 @@ import type { Dom } from "../dom.ts";
  */
 export function renderGroupChips(dom: Dom, groups: readonly SpecGroup[]): HTMLElement | null {
   if (groups.length === 0) return null;
-  const chips = groups.map((group) => renderChip(dom, group));
+  const highlighter = new GroupHighlighter();
+  const chips = groups.map((group) => renderChip(dom, group, highlighter));
   return dom.el("nav", { className: "group-chips", attrs: { "aria-label": "Spec groups" } }, chips);
 }
 
-function renderChip(dom: Dom, group: SpecGroup): HTMLElement {
+function renderChip(dom: Dom, group: SpecGroup, highlighter: GroupHighlighter): HTMLElement {
   const chip = dom.el("button", { attrs: { type: "button" } }, [
     `${group.title} `,
     dom.el("span", { className: "count", text: String(group.specs.length) }),
   ]);
   chip.addEventListener("click", () => {
-    findInRoot(chip, specGroupAnchor(group.title))?.scrollIntoView({ block: "start" });
+    const section = findInRoot(chip, specGroupAnchor(group.title));
+    if (section === null) return;
+    section.scrollIntoView({ block: "start", behavior: scrollBehavior(chip) });
+    highlighter.show(chip, section);
   });
   return chip;
+}
+
+/** Smooth unless the user asked for reduced motion; read from the chip's own window (works in any document). */
+function scrollBehavior(node: Node): ScrollBehavior {
+  const view = node.ownerDocument?.defaultView;
+  return view?.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
 }
 
 /**

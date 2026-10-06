@@ -78,6 +78,20 @@ describe("renderSpecSheetView", () => {
     expect(scrolled).toEqual(["group-battery"]);
   });
 
+  test("a chip highlights its group and is marked current; picking another moves the highlight", () => {
+    const { view } = mount();
+    for (const section of view.querySelectorAll("section.spec-group")) {
+      (section as HTMLElement).scrollIntoView = () => {};
+    }
+    const chips = view.querySelectorAll(".group-chips button");
+    (chips[0] as HTMLButtonElement).click();
+    expect(view.querySelectorAll(".spec-group.highlighted")).toHaveLength(1);
+    expect(chips[0]?.getAttribute("aria-current")).toBe("true");
+    (chips[1] as HTMLButtonElement).click();
+    expect(view.querySelector(".spec-group.highlighted")?.id).toBe("group-battery");
+    expect(chips[0]?.getAttribute("aria-current")).toBeNull();
+  });
+
   // Regression: Quick Look mounts the sheet in a closed shadow root, where document.getElementById
   // found nothing and chips silently did not scroll.
   test("a chip scrolls its group inside a closed shadow root", () => {
