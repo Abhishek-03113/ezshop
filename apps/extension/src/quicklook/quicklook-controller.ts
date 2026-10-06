@@ -82,11 +82,6 @@ export class QuickLookController implements OverlayActions {
     void this.load(() => this.deps.api.remove(selectedId, productId));
   }
 
-  setDifferencesOnly(differencesOnly: boolean): void {
-    this.model = { ...this.model, differencesOnly };
-    this.render();
-  }
-
   /**
    * Switches between the comparison matrix and this page's spec sheet. Asking for "specs" on a page
    * with no snapshot is ignored: there is nothing to show.

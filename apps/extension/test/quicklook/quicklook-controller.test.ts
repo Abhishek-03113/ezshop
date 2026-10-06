@@ -76,14 +76,17 @@ describe("QuickLookController", () => {
     expect(text(root, ".pill")).toEqual(["Lowest", "Best"]);
   });
 
-  test("Differences hides identical rows with a count; All specs shows them", async () => {
+  test("hides identical rows and says how many", async () => {
     const { root, controller } = setup({ page: null });
     await controller.open("compare");
     expect(root.querySelector(".identical-note")?.textContent).toBe("1 identical spec hidden");
     expect(text(root, ".label")).not.toContain("Panel");
-    controller.setDifferencesOnly(false);
-    expect(text(root, ".label")).toContain("Panel");
-    expect(root.querySelector(".identical-note")).toBeNull();
+  });
+
+  test("has no Differences / All specs switch", async () => {
+    const { root, controller } = setup();
+    await controller.open("compare");
+    expect(root.querySelector('[aria-label="Rows"]')).toBeNull();
   });
 
   test("on a non-product page there is no This page column", async () => {

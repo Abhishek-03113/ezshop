@@ -41,9 +41,6 @@ class RecordingActions implements OverlayActions {
   select(comparisonId: string): void {
     this.calls.push(`select ${comparisonId}`);
   }
-  setDifferencesOnly(differencesOnly: boolean): void {
-    this.calls.push(`differences ${differencesOnly}`);
-  }
   setView(view: string): void {
     this.calls.push(`view ${view}`);
   }
@@ -132,7 +129,7 @@ describe("QuickLookController.setView", () => {
   test("falls back to the dialog when the focused control disappears", async () => {
     const { root, controller } = setup();
     await controller.open("compare");
-    root.querySelector<HTMLElement>('[data-focus="mode-All specs"]')?.focus();
+    root.querySelector<HTMLElement>('[data-focus="picker"]')?.focus();
     controller.setView("specs");
     expect(root.ownerDocument.activeElement?.getAttribute("data-focus")).toBe("dialog");
   });
