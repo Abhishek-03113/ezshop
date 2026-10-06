@@ -21,6 +21,10 @@ function setup(failInit = false) {
     },
     linkCapture: {
       add: async (job) => void jobs.push(job),
+      importLink: async (url) => {
+        calls.push(`import ${url}`);
+        return "p1";
+      },
       undo: async (id, productId) => void calls.push(`undo ${id} ${productId}`),
     },
     openQuickLook: async (tabId) => void calls.push(`open ${tabId}`),
@@ -51,8 +55,15 @@ describe("routeRequest", () => {
     const { deps, jobs } = setup();
     await routeRequest({ type: "link:add", url: "https://www.amazon.in/dp/B0FQG1YHYR", label: "LG" }, sender, deps);
     expect(jobs).toEqual([
-      { url: "https://www.amazon.in/dp/B0FQG1YHYR", label: "LG", target: { kind: "last" }, tabId: 7 },
+      { url: "https://www.amazon.in/dp/B0FQG1YHYR", label: "LG", target: { kind: "last" }, tabId: 7, source: "link" },
     ]);
+  });
+
+  test("web:import-link saves the link and answers with the stored product id", async () => {
+    const { deps, calls } = setup();
+    const reply = await routeRequest({ type: "web:import-link", url: "https://www.amazon.in/dp/X" }, sender, deps);
+    expect(calls).toEqual(["import https://www.amazon.in/dp/X"]);
+    expect(reply).toEqual({ ok: true, body: "p1" });
   });
 
   test("toast buttons undo or open Quick Look in the sender's tab", async () => {

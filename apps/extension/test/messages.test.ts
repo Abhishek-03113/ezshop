@@ -5,6 +5,7 @@ import { comparisonNameFor } from "../src/snapshot-category.ts";
 describe("isExtensionRequest", () => {
   test("accepts our message types", () => {
     expect(isExtensionRequest({ type: "link:add", url: "u", label: "l" })).toBe(true);
+    expect(isExtensionRequest({ type: "web:import-link", url: "u" })).toBe(true);
     expect(isExtensionRequest({ type: "toast:quicklook" })).toBe(true);
   });
   test("rejects everything else", () => {

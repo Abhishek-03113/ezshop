@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildShadowStylesheet } from "./src/quicklook/shadow-css.ts";
 import { mergeHostPermissions } from "./src/host-permissions.ts";
-import { apiHostPermission, resolveCaptureConfig } from "./src/capture-config.ts";
+import { apiHostPermission, resolveCaptureConfig, webBridgeContentScript } from "./src/capture-config.ts";
 
 // Builds the unpacked extension into dist/. Load it via chrome://extensions → "Load unpacked".
 // PICKY_API_URL / PICKY_WEB_URL point it at a non-local stack.
@@ -24,6 +24,7 @@ const BUNDLES = [
   { entry: "src/toast/toast-entry.ts", name: "toast.js", format: "iife" },
   { entry: "src/link-capture/link-alt-click-entry.ts", name: "link-alt-click.js", format: "iife" },
   { entry: "src/link-capture/offscreen-entry.ts", name: "offscreen.js", format: "iife" },
+  { entry: "src/web-bridge/web-bridge-entry.ts", name: "web-bridge.js", format: "iife" },
 ] as const;
 
 // Shadow-DOM surfaces (Quick Look, toasts) ship their own stylesheet as a string baked into the bundle.
@@ -63,6 +64,8 @@ async function writePopupStylesheet(): Promise<void> {
 async function writeManifest(): Promise<void> {
   const manifest = await Bun.file(join(import.meta.dir, "public/manifest.json")).json();
   manifest.host_permissions = mergeHostPermissions(manifest.host_permissions, apiHostPermission(config));
+  // The web app's origin is only known at build time, so its bridge script is added here.
+  manifest.content_scripts.push(webBridgeContentScript(config));
   await Bun.write(join(OUT_DIR, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
 }
 

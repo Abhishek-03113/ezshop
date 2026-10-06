@@ -3,6 +3,7 @@ import { RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createComparisonsClient } from "./api/comparisons-client.ts";
+import { createWindowExtensionBridge } from "./api/extension-bridge.ts";
 import { createProductsClient } from "./api/products-client.ts";
 import { readAppConfig } from "./config/app-config.ts";
 import { createPickyRouter } from "./router.tsx";
@@ -15,6 +16,7 @@ const router = createPickyRouter({
   queryClient,
   productsClient: createProductsClient(fetch.bind(window), ""),
   comparisonsClient: createComparisonsClient(fetch.bind(window), ""),
+  extensionBridge: createWindowExtensionBridge(window, () => crypto.randomUUID()),
   config: readAppConfig(import.meta.env),
 });
 

@@ -1,10 +1,10 @@
 import type { ExtensionRequest, ExtensionResponse, QuickLookRequest } from "./messaging/messages.ts";
-import type { LinkAddJob } from "./link-capture/link-capture-service.ts";
+import type { LinkCaptureService } from "./link-capture/link-capture-service.ts";
 import type { QuickLookService } from "./quicklook/quicklook-service.ts";
 
 export interface RouterDependencies {
   quickLook: Pick<QuickLookService, "init" | "select" | "add" | "remove">;
-  linkCapture: { add(job: LinkAddJob): Promise<void>; undo(comparisonId: string, productId: string): Promise<void> };
+  linkCapture: Pick<LinkCaptureService, "add" | "importLink" | "undo">;
   /** Opens Quick Look in the tab a toast button was pressed in. */
   openQuickLook: (tabId: number) => Promise<void>;
 }
@@ -35,6 +35,8 @@ function dispatch(
   switch (request.type) {
     case "link:add":
       return Promise.resolve(startLinkAdd(request.url, request.label, sender.tabId, deps));
+    case "web:import-link":
+      return deps.linkCapture.importLink(request.url);
     case "toast:undo":
       return deps.linkCapture.undo(request.comparisonId, request.productId);
     case "toast:quicklook":
@@ -59,5 +61,5 @@ function dispatchQuickLook(request: QuickLookRequest, quickLook: RouterDependenc
 
 /** Replies at once and keeps working: a link fetch can take seconds and the toast reports progress. */
 function startLinkAdd(url: string, label: string, tabId: number | null, deps: RouterDependencies): void {
-  void deps.linkCapture.add({ url, label, target: { kind: "last" }, tabId });
+  void deps.linkCapture.add({ url, label, target: { kind: "last" }, tabId, source: "link" });
 }

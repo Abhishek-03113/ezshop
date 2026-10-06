@@ -83,8 +83,9 @@ layer for online shopping**:
 
 ## Run it locally
 
-Prerequisites: [Bun](https://bun.sh) and Docker. Importing a product by pasting its URL also needs a self-hosted
-Firecrawl instance (see `infra/firecrawl/README.md`).
+Prerequisites: [Bun](https://bun.sh) and Docker. Importing a product by pasting its URL in the web app also needs
+the extension (`bun run build:extension`, then load `apps/extension/dist` unpacked): it downloads and parses the page in your
+browser, then sends the snapshot to the API.
 
 ```bash
 bun install

@@ -1,4 +1,5 @@
 import { describeSupportedProductUrls, isSupportedProductUrl, type ProductSnapshot } from "@picky/catalog";
+import type { CaptureResult } from "../capture-result.ts";
 import type { ComparisonsClient } from "../comparisons/comparisons-client.ts";
 import { comparisonNameFor } from "../snapshot-category.ts";
 import type { ToastMessage } from "../toast/toast-message.ts";
@@ -11,8 +12,13 @@ import type { SnapshotReader } from "./snapshot-reader.ts";
 
 export interface LinkCaptureDependencies {
   fetcher: HtmlFetcher;
+  /** Parses downloaded page HTML into a snapshot. */
   reader: SnapshotReader;
+  /** Reads the product from an open tab's live DOM. */
+  capturePage: (tabId: number) => Promise<CaptureResult>;
   sendSnapshot: (snapshot: ProductSnapshot) => Promise<string>;
+  /** Opens Quick Look in a tab on a product that is not that tab's page. */
+  showQuickLook: (tabId: number, snapshot: ProductSnapshot) => Promise<void>;
   comparisons: ComparisonsClient;
   settings: {
     lastComparisonId(): Promise<string | null>;
@@ -32,6 +38,13 @@ export interface LinkAddJob {
   target: AddTarget;
   /** The tab to show toasts in; null shows none. */
   tabId: number | null;
+  /** "page": `url` is open in `tabId`, so its live DOM is read; "link": the page is downloaded and parsed here. */
+  source: "link" | "page";
+}
+
+interface CapturedProduct {
+  productId: string;
+  snapshot: ProductSnapshot;
 }
 
 interface Placement {
@@ -41,7 +54,8 @@ interface Placement {
 }
 
 /**
- * Add a product from a link without opening it: fetch → parse → save → add to a comparison, with toasts
+ * "Add to Picky" from the context menu or Alt+click: read the product (the open page's DOM, or a link
+ * downloaded with the user's cookies and parsed in the extension) → save → add to a comparison, with toasts
  * and a toolbar badge while it runs. Failures end in an error toast and never throw.
  *
  * @example await new LinkCaptureService(deps).add({ url, label, target: { kind: "last" }, tabId: 7 })
@@ -51,7 +65,7 @@ export class LinkCaptureService {
 
   async add(job: LinkAddJob): Promise<void> {
     const id = this.deps.newToastId();
-    if (!isSupportedProductUrl(job.url)) return this.rejectLink(job, id);
+    if (!isSupportedProductUrl(job.url)) return this.rejectLink(job.url, job.tabId, id);
     await this.deps.badge.begin();
     await this.deps.toasts.show(job.tabId, {
       kind: "reading",
@@ -71,10 +85,43 @@ export class LinkCaptureService {
   }
 
   /** Refuses before any network request: the menu patterns are coarse and an Alt+click target is page-controlled. */
-  private async rejectLink(job: LinkAddJob, id: string): Promise<void> {
-    const reason = `"${job.url}" is not a product link; expected ${describeSupportedProductUrls()}`;
-    this.deps.log("link_capture.rejected", { url: job.url });
-    await this.deps.toasts.show(job.tabId, { kind: "failed", id, reason });
+  private async rejectLink(url: string, tabId: number | null, id: string): Promise<void> {
+    const reason = `"${url}" is not a product link; expected ${describeSupportedProductUrls()}`;
+    this.deps.log("link_capture.rejected", { url });
+    await this.deps.toasts.show(tabId, { kind: "failed", id, reason });
+  }
+
+  /**
+   * Saves a product link to the library only, with no toasts or badge (the web app's paste-a-link), and
+   * returns the stored product's id. Throws on unsupported links and failed fetches, parses or saves.
+   */
+  async importLink(url: string): Promise<string> {
+    if (!isSupportedProductUrl(url)) {
+      throw new Error(`"${url}" is not a product link; expected ${describeSupportedProductUrls()}`);
+    }
+    const { productId, snapshot } = await this.readLink(url);
+    this.deps.log("link_capture.imported", { url, productId, externalId: snapshot.externalId });
+    return productId;
+  }
+
+  /**
+   * "Quick Look" on a link: download and parse it, then show its specs over the current page without
+   * saving anything. The badge counts while it runs; a failure ends in an error toast and never throws.
+   */
+  async quickLook(url: string, tabId: number): Promise<void> {
+    if (!isSupportedProductUrl(url)) return this.rejectLink(url, tabId, this.deps.newToastId());
+    await this.deps.badge.begin();
+    try {
+      const snapshot = await this.deps.reader.read(await this.deps.fetcher.fetchHtml(url), url);
+      await this.deps.showQuickLook(tabId, snapshot);
+      this.deps.log("link_capture.quicklook", { url, externalId: snapshot.externalId });
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : String(error);
+      this.deps.log("link_capture.quicklook_failed", { url, reason });
+      await this.deps.toasts.show(tabId, { kind: "failed", id: this.deps.newToastId(), reason });
+    } finally {
+      await this.deps.badge.end();
+    }
   }
 
   /** Removes a just-added product again (the toast's Undo). */
@@ -84,11 +131,14 @@ export class LinkCaptureService {
   }
 
   private async captureAndPlace(job: LinkAddJob, id: string): Promise<ToastMessage> {
-    const html = await this.deps.fetcher.fetchHtml(job.url);
-    const snapshot = await this.deps.reader.read(html, job.url);
-    const productId = await this.deps.sendSnapshot(snapshot);
+    const { productId, snapshot } = await this.capture(job);
     const placement = await this.place(productId, snapshot, job.target);
-    this.deps.log("link_capture.added", { url: job.url, productId, externalId: snapshot.externalId });
+    this.deps.log("link_capture.added", {
+      url: job.url,
+      source: job.source,
+      productId,
+      externalId: snapshot.externalId,
+    });
     return {
       kind: "added",
       id,
@@ -97,6 +147,19 @@ export class LinkCaptureService {
       placement: placement === null ? null : { comparisonName: placement.comparisonName, count: placement.count },
       undo: placement === null ? null : { comparisonId: placement.comparisonId, productId },
     };
+  }
+
+  private async capture(job: LinkAddJob): Promise<CapturedProduct> {
+    if (job.source === "link") return this.readLink(job.url);
+    if (job.tabId === null) throw new Error(`Cannot read ${job.url}: no tab to capture it from`);
+    const result = await this.deps.capturePage(job.tabId);
+    if (!result.ok) throw new Error(result.message);
+    return { productId: await this.deps.sendSnapshot(result.snapshot), snapshot: result.snapshot };
+  }
+
+  private async readLink(url: string): Promise<CapturedProduct> {
+    const snapshot = await this.deps.reader.read(await this.deps.fetcher.fetchHtml(url), url);
+    return { productId: await this.deps.sendSnapshot(snapshot), snapshot };
   }
 
   private async place(productId: string, snapshot: ProductSnapshot, target: AddTarget): Promise<Placement | null> {

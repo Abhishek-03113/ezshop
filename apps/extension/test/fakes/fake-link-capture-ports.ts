@@ -1,4 +1,5 @@
 import type { ProductSnapshot } from "@picky/catalog";
+import type { CaptureResult } from "../../src/capture-result.ts";
 import type { BadgeText } from "../../src/link-capture/badge-counter.ts";
 import type { ContextMenuPort } from "../../src/link-capture/chrome-context-menu.ts";
 import type { MenuEntry } from "../../src/link-capture/context-menu-model.ts";
@@ -21,17 +22,27 @@ export class FakeHtmlFetcher implements HtmlFetcher {
   }
 }
 
-/** Returns a canned snapshot, or throws when `failure` is set. */
-export class FakeSnapshotReader implements SnapshotReader {
+/** Stands in for parsing fetched HTML (link) and the tab's DOM capture (page); `failure` makes both fail. */
+export class FakeProductReader implements SnapshotReader {
+  readonly parsed: { url: string; html: string }[] = [];
+  readonly capturedTabs: number[] = [];
+
   constructor(
     private readonly snapshot: ProductSnapshot,
     private readonly failure: Error | null = null,
   ) {}
 
-  async read(): Promise<ProductSnapshot> {
+  async read(html: string, url: string): Promise<ProductSnapshot> {
+    this.parsed.push({ url, html });
     if (this.failure !== null) throw this.failure;
     return this.snapshot;
   }
+
+  readonly capturePage = async (tabId: number): Promise<CaptureResult> => {
+    this.capturedTabs.push(tabId);
+    if (this.failure !== null) return { ok: false, message: this.failure.message };
+    return { ok: true, snapshot: this.snapshot };
+  };
 }
 
 export class FakeToastPort implements ToastPort {

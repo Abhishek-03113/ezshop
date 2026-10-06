@@ -11,15 +11,18 @@ which is published to the Chrome Web Store instead.
 
 ## How products get in
 
-- **Default: DOM capture only.** The extension reads the product page in the user's browser and
-  posts a snapshot to `POST /api/snapshots`. No scraping service is needed.
-- **Optional: URL import through Firecrawl.** This is off unless the API has `FIRECRAWL_API_KEY`
-  (hosted Firecrawl at `api.firecrawl.dev`) or `FIRECRAWL_URL` (a self-hosted instance).
-  - When off, `POST /api/imports` returns **501** with a message pointing to the extension.
-  - `GET /api/capabilities` returns `{ "urlImport": false }`. The web app reads it before the first
-    render and greys out its paste-a-link fields.
-  - Setting the key on the API project and redeploying turns import back on. The web project needs
-    no change.
+Everything goes through the extension, so no scraping service is needed:
+
+- **On a product page** (toolbar, Quick Look, right-click on the page → "Add to Picky"): the extension
+  reads the open page's DOM and posts a snapshot to `POST /api/snapshots`.
+- **From a link** (Alt+click, right-click on a link → "Picky ▸ Add to …", or the web app's
+  paste-a-link field): the extension downloads the page with the user's cookies, parses it in an
+  offscreen document with the same extractor, and posts the snapshot to `POST /api/snapshots`. The
+  web app talks to the extension through a content script on its own origin (`PICKY_WEB_URL` at
+  extension build time) and greys out paste-a-link when the extension is not installed.
+  "Picky ▸ Quick Look" on a link reads it the same way but only shows its specs, saving nothing.
+- **Unused: URL import through Firecrawl** (`POST /api/imports`, `GET /api/capabilities`). It is still
+  wired when `FIRECRAWL_API_KEY` or `FIRECRAWL_URL` is set, but no client calls it any more.
 
 ## What's already in the repo
 
@@ -115,12 +118,10 @@ GitHub setup, in the `production` environment (only `feat/vercel-deploy` may dep
 ## Before launch
 
 - **Landing page:**
-  - The hero's paste-a-link form opens the web app with `?import=`. With URL import off, the web
-    app ignores the link, so hide or reword the form for a DOM-capture-only launch.
+  - The hero's paste-a-link form opens the web app with `?import=`. Without the extension the web
+    app ignores the link, so hide or reword the form for visitors who have not installed it.
   - "Add to Chrome" points to `#how` until `VITE_PICKY_EXTENSION_URL` is set, which needs the store
     listing.
   - "Open app" silently falls back to `http://localhost:5173` if `VITE_PICKY_WEB_URL` is missing.
   - The page has no favicon and no `og:` or `twitter:` preview tags.
 - **Bun 1.4.x is in beta on Vercel.** If something breaks, set `bunVersion` to `"1.x"` (Bun 1.3).
-- **Scrape duration:** a Firecrawl scrape takes about 5 seconds and may take up to 90, which fits
-  within Vercel's default 300-second function limit.
