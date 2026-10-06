@@ -49,6 +49,12 @@ describe("route guards", () => {
     expect(products.listedQueries).toEqual([]);
   });
 
+  test("a new account's empty library still offers Sign out", async () => {
+    const { html } = await renderAppWithRouter("/", new FakeProductsClient());
+    expect(html).toContain("Welcome to Picky");
+    expect(html).toContain("Sign out");
+  });
+
   test("signed in, the nav offers Sign out with the account's email", async () => {
     const { html } = await renderAppWithRouter("/comparisons", new FakeProductsClient());
     expect(html).toContain("Sign out");

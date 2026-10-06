@@ -22,7 +22,8 @@ function WelcomeScreen({ autoImportUrl, extensionUrl }: ScreenProps & { extensio
     <>
       <AppBar>
         <BrandLink />
-        <span className="app-bar-title">Library</span>
+        {/* The nav, not a bare title: a brand-new account lands here and must still be able to sign out. */}
+        <MainNav />
       </AppBar>
       <WelcomeView extensionUrl={extensionUrl} autoImportUrl={autoImportUrl} />
     </>

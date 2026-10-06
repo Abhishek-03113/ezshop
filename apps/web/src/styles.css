@@ -82,10 +82,6 @@ input::placeholder {
   gap: var(--ez-space-16);
   flex-wrap: wrap;
 }
-.app-bar-title {
-  font-size: 15px;
-  font-weight: 600;
-}
 .brand {
   display: flex;
   align-items: center;
