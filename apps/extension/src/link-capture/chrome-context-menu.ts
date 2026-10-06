@@ -1,5 +1,5 @@
 import { PRODUCT_LINK_PATTERNS } from "./product-link.ts";
-import { ROOT_MENU_ID, type MenuEntry } from "./context-menu-model.ts";
+import type { MenuEntry } from "./context-menu-model.ts";
 
 /** Replaces the whole link menu; chrome-context-menu.ts implements it over chrome.contextMenus. */
 export interface ContextMenuPort {
@@ -16,17 +16,27 @@ function createItem(properties: chrome.contextMenus.CreateProperties): Promise<v
   });
 }
 
-const LINK_CONTEXT: [chrome.contextMenus.ContextType] = [chrome.contextMenus.ContextType.LINK];
+const CONTEXT_TYPES: Record<MenuEntry["context"], [chrome.contextMenus.ContextType]> = {
+  link: [chrome.contextMenus.ContextType.LINK],
+  page: [chrome.contextMenus.ContextType.PAGE],
+};
+
+// Only top-level items carry patterns (children show only under their root): link items match the
+// link's target, the page root matches the open page. Separators too, or they would show on any link.
+function rootPatternsFor(entry: MenuEntry): { targetUrlPatterns?: string[]; documentUrlPatterns?: string[] } {
+  if (entry.parentId !== undefined) return {};
+  const patterns = [...PRODUCT_LINK_PATTERNS];
+  return entry.context === "link" ? { targetUrlPatterns: patterns } : { documentUrlPatterns: patterns };
+}
 
 function propertiesFor(entry: MenuEntry): chrome.contextMenus.CreateProperties {
-  const base = { id: entry.id, contexts: LINK_CONTEXT, parentId: entry.parentId };
-  if (entry.kind === "separator") return { ...base, type: "separator" };
-  const patterns = entry.id === ROOT_MENU_ID ? { targetUrlPatterns: [...PRODUCT_LINK_PATTERNS] } : {};
-  return { ...base, ...patterns, title: entry.title };
+  const base = { id: entry.id, contexts: CONTEXT_TYPES[entry.context], parentId: entry.parentId };
+  if (entry.kind === "separator") return { ...base, ...rootPatternsFor(entry), type: "separator" };
+  return { ...base, ...rootPatternsFor(entry), title: entry.title };
 }
 
 /**
- * ContextMenuPort over chrome.contextMenus, shown only on supported product links. Rebuilds are queued
+ * ContextMenuPort over chrome.contextMenus, shown only on supported product links and product pages. Rebuilds are queued
  * so two quick changes cannot interleave and create duplicate ids.
  *
  * @example await new ChromeContextMenu().replaceAll(buildMenuEntries(comparisons, lastUsedId))

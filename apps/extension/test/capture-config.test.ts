@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { apiHostPermission, resolveCaptureConfig } from "../src/capture-config.ts";
+import { apiHostPermission, resolveCaptureConfig, webBridgeContentScript } from "../src/capture-config.ts";
 
 describe("resolveCaptureConfig", () => {
   test("defaults to the local dev stack", () => {
@@ -23,5 +23,16 @@ describe("resolveCaptureConfig", () => {
 describe("apiHostPermission", () => {
   test("grants the API origin", () => {
     expect(apiHostPermission(resolveCaptureConfig({}))).toBe("http://localhost:8787/*");
+  });
+});
+
+describe("webBridgeContentScript", () => {
+  test("injects the bridge into the web app's origin before it renders", () => {
+    const config = resolveCaptureConfig({ PICKY_WEB_URL: "https://picky.test/library" });
+    expect(webBridgeContentScript(config)).toEqual({
+      matches: ["https://picky.test/*"],
+      js: ["web-bridge.js"],
+      run_at: "document_start",
+    });
   });
 });

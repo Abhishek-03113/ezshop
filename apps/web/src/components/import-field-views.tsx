@@ -7,12 +7,12 @@ export interface ImportFieldViewProps {
   onUrlChange: (url: string) => void;
   onSubmit: (event: FormEvent) => void;
   isPending: boolean;
-  /** The API has no URL import configured: the field is greyed out and points to the extension. */
+  /** The extension is not installed: the field is greyed out and points to it. */
   isUnavailable: boolean;
   errorMessage: string | null;
 }
 
-const UNAVAILABLE_NOTE = "Adding by link isn't set up on this server. Use the Picky extension on a product page.";
+const UNAVAILABLE_NOTE = "Adding by link needs the Picky extension. Install it, then reload this page.";
 
 const SUPPORTED_STORES = new Intl.ListFormat("en", { type: "conjunction" }).format(PRODUCT_SOURCES.map(sourceLabel));
 

@@ -13,8 +13,8 @@ interface ImportProductFormProps {
 }
 
 /**
- * Paste a product URL from any supported site; the API reads it and the spec sheet opens.
- * Greyed out when the API has no URL import configured, and `?import=` is then left alone.
+ * Paste a product URL from any supported site; the extension reads it and the spec sheet opens.
+ * Greyed out when the extension is not installed, and `?import=` is then left alone.
  */
 export function ImportProductForm({ variant, autoImportUrl }: ImportProductFormProps) {
   const urlImportEnabled = useUrlImportEnabled();

@@ -23,11 +23,17 @@ export interface LinkAddRequest {
   label: string;
 }
 
+/** Web app bridge (content script on the Picky web app) → service worker: import a pasted product link. */
+export interface WebImportRequest {
+  type: "web:import-link";
+  url: string;
+}
+
 /** Toast buttons → service worker. */
 export type ToastActionRequest =
   { type: "toast:quicklook" } | { type: "toast:undo"; comparisonId: string; productId: string };
 
-export type ExtensionRequest = QuickLookRequest | LinkAddRequest | ToastActionRequest;
+export type ExtensionRequest = QuickLookRequest | LinkAddRequest | WebImportRequest | ToastActionRequest;
 
 export type ExtensionResponse<Body> = { ok: true; body: Body } | { ok: false; message: string };
 
@@ -37,6 +43,7 @@ const REQUEST_TYPES: ReadonlySet<string> = new Set([
   "quicklook:add",
   "quicklook:remove",
   "link:add",
+  "web:import-link",
   "toast:quicklook",
   "toast:undo",
 ]);

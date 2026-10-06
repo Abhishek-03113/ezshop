@@ -8,7 +8,7 @@ import { HttpComparisonsClient } from "./comparisons/http-comparisons-client.ts"
 import { BadgeCounter, ChromeBadgeText } from "./link-capture/badge-counter.ts";
 import { ChromeContextMenu } from "./link-capture/chrome-context-menu.ts";
 import { ChromeSnapshotReader } from "./link-capture/chrome-snapshot-reader.ts";
-import { addTargetFromMenuItem } from "./link-capture/context-menu-model.ts";
+import { menuClickFromItem } from "./link-capture/context-menu-model.ts";
 import { FetchHtmlFetcher } from "./link-capture/html-fetcher.ts";
 import { LinkCaptureService } from "./link-capture/link-capture-service.ts";
 import { MenuRefresher } from "./link-capture/menu-refresher.ts";
@@ -49,7 +49,9 @@ const quickLook = new QuickLookService({
 const linkCapture = new LinkCaptureService({
   fetcher: new FetchHtmlFetcher(fetch),
   reader: new ChromeSnapshotReader("offscreen.html"),
+  capturePage: (tabId) => browser.capturePageInTab(tabId),
   sendSnapshot: post,
+  showQuickLook: (tabId, snapshot) => tabPort.injectAndShowProduct(tabId, snapshot),
   comparisons,
   settings,
   toasts: new ChromeToastPort("toast.js", log),
@@ -73,10 +75,19 @@ chrome.runtime.onInstalled.addListener(refreshMenu);
 chrome.runtime.onStartup.addListener(refreshMenu);
 refreshMenu();
 
+// Right-click on a product link downloads it; right-click on an open product page reads its DOM.
+// "Quick Look" on a link shows the linked product over the current page without saving it.
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  const target = addTargetFromMenuItem(info.menuItemId);
-  if (target === null || info.linkUrl === undefined) return;
-  void linkCapture.add({ url: info.linkUrl, label: "", target, tabId: tab?.id ?? null });
+  const click = menuClickFromItem(info.menuItemId);
+  if (click === null) return;
+  if (click.action === "quicklook") {
+    if (info.linkUrl !== undefined && tab?.id !== undefined) void linkCapture.quickLook(info.linkUrl, tab.id);
+    return;
+  }
+  const url = click.source === "page" ? info.pageUrl : info.linkUrl;
+  if (url === undefined) return;
+  const label = click.source === "page" ? (tab?.title ?? "") : "";
+  void linkCapture.add({ url, label, target: click.target, tabId: tab?.id ?? null, source: click.source });
 });
 
 chrome.runtime.onMessage.addListener((message: unknown, sender, sendResponse) => {

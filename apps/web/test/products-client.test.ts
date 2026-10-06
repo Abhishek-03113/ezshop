@@ -15,26 +15,10 @@ describe("createProductsClient", () => {
     expect(server.calls[0]?.url).toBe("/api/products/a%2Fb");
   });
 
-  test("posts the URL to import", async () => {
-    const server = new FakeApiServer(201, { product: { id: "p1" } });
-    await createProductsClient(server.fetch, "").importProduct("https://www.amazon.in/dp/B0FQG1YHYR");
-    expect(server.calls[0]).toEqual({
-      url: "/api/imports",
-      method: "POST",
-      body: '{"url":"https://www.amazon.in/dp/B0FQG1YHYR"}',
-    });
-  });
-
-  test("reads what the API can do", async () => {
-    const server = new FakeApiServer(200, { urlImport: false });
-    expect(await createProductsClient(server.fetch, "").getCapabilities()).toEqual({ urlImport: false });
-    expect(server.calls[0]?.url).toBe("/api/capabilities");
-  });
-
   test("throws the API's message and status on failure", async () => {
-    const server = new FakeApiServer(422, { message: "Unsupported product URL" });
-    await expect(createProductsClient(server.fetch, "").importProduct("x")).rejects.toThrow(
-      new ApiRequestError("Unsupported product URL", 422),
+    const server = new FakeApiServer(404, { message: 'No product with id "x"' });
+    await expect(createProductsClient(server.fetch, "").getProduct("x")).rejects.toThrow(
+      new ApiRequestError('No product with id "x"', 404),
     );
   });
 

@@ -2,7 +2,8 @@ import type { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, createRoute, createRouter, type RouterHistory } from "@tanstack/react-router";
 import { comparisonDetailQuery, comparisonListQuery, productComparisonsQuery } from "./api/comparison-queries.ts";
 import type { ComparisonsClient } from "./api/comparisons-client.ts";
-import { apiCapabilitiesQuery, productDetailQuery, productListQuery } from "./api/product-queries.ts";
+import type { ExtensionBridge } from "./api/extension-bridge.ts";
+import { productDetailQuery, productListQuery } from "./api/product-queries.ts";
 import type { ProductsClient } from "./api/products-client.ts";
 import type { AppConfig } from "./config/app-config.ts";
 import { AppLayout } from "./components/app-layout.tsx";
@@ -18,17 +19,14 @@ export interface PickyRouterContext {
   queryClient: QueryClient;
   productsClient: ProductsClient;
   comparisonsClient: ComparisonsClient;
+  /** Paste-a-link import goes through the Picky extension, which can fetch store pages. */
+  extensionBridge: ExtensionBridge;
   config: AppConfig;
 }
 
 const rootRoute = createRootRouteWithContext<PickyRouterContext>()({
   // Every page shows the comparison count in the app bar, so the list is loaded once at the root.
-  // Capabilities load here too, so the import form renders greyed out (or not) without a flash.
-  loader: ({ context }) =>
-    Promise.all([
-      context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient)),
-      context.queryClient.ensureQueryData(apiCapabilitiesQuery(context.productsClient)),
-    ]),
+  loader: ({ context }) => context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient)),
   component: AppLayout,
   errorComponent: RouteErrorPanel,
 });
@@ -76,7 +74,7 @@ const routeTree = rootRoute.addChildren([productListRoute, productDetailRoute, c
  *
  * `history` defaults to the browser history; tests pass a memory history.
  *
- * @example createPickyRouter({ queryClient, productsClient: createProductsClient(fetch, ""), comparisonsClient: createComparisonsClient(fetch, ""), config: readAppConfig(import.meta.env) })
+ * @example createPickyRouter({ queryClient, productsClient, comparisonsClient, extensionBridge, config: readAppConfig(import.meta.env) })
  */
 export function createPickyRouter(context: PickyRouterContext, history?: RouterHistory) {
   return createRouter({ routeTree, context, history, defaultPreload: "intent", defaultPreloadStaleTime: 0 });
