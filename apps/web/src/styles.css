@@ -242,3 +242,17 @@ input::placeholder {
     padding-right: var(--ez-space-16);
   }
 }
+
+/* Detail page on a phone: back link and "View on" pill share the first row, the nav gets its own. */
+@media (max-width: 600px) {
+  .back-link ~ .main-nav {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .back-link {
+    margin-right: 0;
+  }
+  .back-link ~ .pill-link {
+    margin-left: auto;
+  }
+}

@@ -512,3 +512,46 @@
     flex-basis: 100%;
   }
 }
+
+/* Tablet and down: the comparison list becomes one swipeable row of chips above the matrix, instead of a
+   column that pushes the table below the fold with half the screen empty beside it. */
+@media (max-width: 900px) {
+  .compare-sidebar {
+    flex: 1 1 100%;
+    max-width: none;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ez-space-8);
+    overflow-x: auto;
+    padding-bottom: var(--ez-space-4);
+  }
+  .side-link,
+  .side-new {
+    flex: none;
+    margin-top: 0;
+    background: var(--ez-surface-raised);
+    box-shadow: var(--ez-shadow-card);
+    border-radius: var(--ez-radius-full);
+  }
+  .new-comparison-form {
+    flex: 0 0 280px;
+    margin-top: 0;
+  }
+}
+
+/* A sticky header three lines tall plus a 88px photo would fill a quarter of a phone screen while scrolling. */
+@media (max-width: 600px) {
+  .mx-head-image {
+    width: 56px;
+    height: 56px;
+  }
+  .mx-head-name {
+    font-size: 15px;
+    line-height: 20px;
+    -webkit-line-clamp: 2;
+  }
+  .mx-head {
+    padding-top: var(--ez-space-12);
+    padding-bottom: var(--ez-space-12);
+  }
+}
