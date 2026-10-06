@@ -1,4 +1,4 @@
-import type { CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonSummary } from "@picky/catalog";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useCreateComparison, useSetMembership } from "../hooks/use-comparison-mutations.ts";

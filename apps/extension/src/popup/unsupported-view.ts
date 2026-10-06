@@ -15,7 +15,7 @@ export function renderUnsupportedView(dom: Dom, webBaseUrl: string): HTMLElement
   const model = {
     icon: "noProduct",
     title: "No product on this page",
-    body: "Open a single product on one of these sites, then click ezshop again.",
+    body: "Open a single product on one of these sites, then click Picky again.",
   } as const;
   return renderNoticeView(dom, model, [renderSupportedSites(dom)], [renderLibraryButton(dom, webBaseUrl)]);
 }

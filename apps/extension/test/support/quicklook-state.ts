@@ -1,4 +1,4 @@
-import type { CatalogProduct } from "@ezshop/catalog";
+import type { CatalogProduct } from "@picky/catalog";
 import type { QuickLookState } from "../../src/messaging/messages.ts";
 
 /** A QuickLookState selecting `selectedId` among `ids` (default just that one). */

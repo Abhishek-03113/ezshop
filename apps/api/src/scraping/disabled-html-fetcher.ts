@@ -14,7 +14,7 @@ export class UrlImportDisabledError extends Error {
 export class DisabledHtmlFetcher implements HtmlFetcher {
   async fetchHtml(url: string): Promise<string> {
     throw new UrlImportDisabledError(
-      `Cannot import "${url}": URL import is off on this server. Capture the page with the ezshop extension, ` +
+      `Cannot import "${url}": URL import is off on this server. Capture the page with the Picky extension, ` +
         "or set FIRECRAWL_API_KEY (hosted) or FIRECRAWL_URL (self-hosted) to enable it.",
     );
   }

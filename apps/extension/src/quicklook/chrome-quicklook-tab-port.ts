@@ -20,11 +20,11 @@ export class ChromeQuickLookTabPort implements QuickLookTabPort {
       // The page-side function receives the view as an argument: executeScript cannot close over `view`.
       args: [view],
       func: (requested: QuickLookView): boolean => {
-        globalThis.ezshopQuickLookToggle?.(requested);
-        return globalThis.ezshopQuickLookToggle !== undefined;
+        globalThis.pickyQuickLookToggle?.(requested);
+        return globalThis.pickyQuickLookToggle !== undefined;
       },
     });
-    if (injection?.result !== true) throw new Error(`ezshop Quick Look script did not load in tab ${tabId}`);
+    if (injection?.result !== true) throw new Error(`Picky Quick Look script did not load in tab ${tabId}`);
   }
 
   async openPopupFor(tabId: number): Promise<void> {

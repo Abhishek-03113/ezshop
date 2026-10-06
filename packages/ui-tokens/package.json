@@ -1,5 +1,5 @@
 {
-  "name": "@ezshop/ui-tokens",
+  "name": "@picky/ui-tokens",
   "private": true,
   "type": "module",
   "exports": {

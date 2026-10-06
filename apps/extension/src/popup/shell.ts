@@ -32,7 +32,7 @@ function renderHeader(dom: Dom, options: ShellOptions): HTMLElement {
 
 function renderHeaderLead(dom: Dom, options: ShellOptions): Node[] {
   if (options.onBack === undefined)
-    return [dom.icon("logo", "logo"), dom.el("span", { className: "brand", text: "ezshop" })];
+    return [dom.icon("logo", "logo"), dom.el("span", { className: "brand", text: "Picky" })];
   const back = dom.el("button", { className: "back-button", attrs: { type: "button" } }, [
     dom.icon("chevronLeft", "icon-md"),
     "Back",

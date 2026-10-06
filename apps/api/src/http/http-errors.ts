@@ -1,4 +1,4 @@
-import { ProductPageError } from "@ezshop/catalog";
+import { ProductPageError } from "@picky/catalog";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { DecisionError } from "../decisions/decision-model.ts";
 import { InvalidSnapshotError } from "../products/product-ingestion.ts";

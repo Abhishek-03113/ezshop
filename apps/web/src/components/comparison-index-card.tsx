@@ -1,4 +1,4 @@
-import { pluralize, type CatalogComparisonSummary } from "@ezshop/catalog";
+import { pluralize, type CatalogComparisonSummary } from "@picky/catalog";
 import { Link } from "@tanstack/react-router";
 import { formatUpdatedLabel } from "../format/format-relative-date.ts";
 

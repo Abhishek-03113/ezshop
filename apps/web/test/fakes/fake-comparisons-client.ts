@@ -1,4 +1,4 @@
-import type { CatalogComparisonDetail, CatalogComparisonSummary, CatalogProduct } from "@ezshop/catalog";
+import type { CatalogComparisonDetail, CatalogComparisonSummary, CatalogProduct } from "@picky/catalog";
 import type { ComparisonsClient } from "../../src/api/comparisons-client.ts";
 
 export interface SeededComparison {

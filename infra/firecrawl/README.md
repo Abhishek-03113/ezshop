@@ -1,4 +1,4 @@
-# Self-hosted Firecrawl for ezshop
+# Self-hosted Firecrawl for Picky
 
 Firecrawl itself is not vendored. Clone it next to this repo's root and drop in our low-memory override:
 
@@ -10,4 +10,4 @@ cd firecrawl && docker compose up -d                              # API on http:
 ```
 
 The override uses prebuilt images and caps the stack at ~3.9 GB (peak ~2.55 GB). The research behind those limits
-is in `research/FINDINGS.md` §6. No LLM is needed: ezshop only asks for `rawHtml`.
+is in `research/FINDINGS.md` §6. No LLM is needed: Picky only asks for `rawHtml`.

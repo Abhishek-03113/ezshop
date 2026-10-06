@@ -1,4 +1,4 @@
-import { type ProductSnapshot, sourceLabel } from "@ezshop/catalog";
+import { type ProductSnapshot, sourceLabel } from "@picky/catalog";
 import { HighlightList } from "./highlight-list.tsx";
 import { ImageGallery } from "./image-gallery.tsx";
 import { PriceCard } from "./price-card.tsx";

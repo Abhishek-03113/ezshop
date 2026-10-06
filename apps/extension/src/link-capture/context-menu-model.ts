@@ -1,4 +1,4 @@
-import type { CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonSummary } from "@picky/catalog";
 import type { AddTarget } from "./add-target.ts";
 
 export interface MenuEntry {
@@ -8,10 +8,10 @@ export interface MenuEntry {
   kind: "normal" | "separator";
 }
 
-export const ROOT_MENU_ID = "ezshop:add";
-const COMPARISON_PREFIX = "ezshop:cmp:";
-const LIBRARY_ID = "ezshop:library";
-const NEW_ID = "ezshop:new";
+export const ROOT_MENU_ID = "picky:add";
+const COMPARISON_PREFIX = "picky:cmp:";
+const LIBRARY_ID = "picky:library";
+const NEW_ID = "picky:new";
 
 /** Chrome reads "&" in a menu title as an accelerator marker; doubling it shows a literal "&". */
 function menuTitle(text: string): string {
@@ -30,11 +30,11 @@ function comparisonEntries(comparisons: readonly CatalogComparisonSummary[], las
 }
 
 /**
- * The "Add to ezshop" submenu: last-used comparison first (labelled), the others, a separator, then
+ * The "Add to Picky" submenu: last-used comparison first (labelled), the others, a separator, then
  * "Library only" and "New comparison…". The root entry comes first.
  *
  * @example buildMenuEntries(comparisons, "c1").map((entry) => entry.title)
- * // ["Add to ezshop", "Monitors (last used)", "Home office", "", "Library only", "New comparison…"]
+ * // ["Add to Picky", "Monitors (last used)", "Home office", "", "Library only", "New comparison…"]
  */
 export function buildMenuEntries(
   comparisons: readonly CatalogComparisonSummary[],
@@ -47,9 +47,9 @@ export function buildMenuEntries(
     kind,
   });
   return [
-    { id: ROOT_MENU_ID, title: "Add to ezshop", kind: "normal" },
+    { id: ROOT_MENU_ID, title: "Add to Picky", kind: "normal" },
     ...comparisonEntries(comparisons, lastUsedId),
-    ...(comparisons.length > 0 ? [child("ezshop:separator", "", "separator")] : []),
+    ...(comparisons.length > 0 ? [child("picky:separator", "", "separator")] : []),
     child(LIBRARY_ID, "Library only"),
     child(NEW_ID, "New comparison…"),
   ];
@@ -58,7 +58,7 @@ export function buildMenuEntries(
 /**
  * What a clicked menu item means, or null for the root and foreign items.
  *
- * @example addTargetFromMenuItem("ezshop:cmp:c1") // { kind: "comparison", comparisonId: "c1" }
+ * @example addTargetFromMenuItem("picky:cmp:c1") // { kind: "comparison", comparisonId: "c1" }
  */
 export function addTargetFromMenuItem(menuItemId: string | number): AddTarget | null {
   const id = String(menuItemId);

@@ -1,4 +1,4 @@
-import type { ProductSnapshot } from "@ezshop/catalog";
+import type { ProductSnapshot } from "@picky/catalog";
 import type { BadgeText } from "../../src/link-capture/badge-counter.ts";
 import type { ContextMenuPort } from "../../src/link-capture/chrome-context-menu.ts";
 import type { MenuEntry } from "../../src/link-capture/context-menu-model.ts";

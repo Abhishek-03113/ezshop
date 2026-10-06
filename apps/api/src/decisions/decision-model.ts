@@ -9,7 +9,7 @@ export interface DecisionAnswer {
   probabilities: Readonly<Record<string, number>>;
 }
 
-/** ezshop's interface over the Laya decision model; the HTTP layer and tests only see this. */
+/** Picky's interface over the Laya decision model; the HTTP layer and tests only see this. */
 export interface DecisionModel {
   decide(state: string, question: DecisionQuestion): Promise<DecisionAnswer>;
 }

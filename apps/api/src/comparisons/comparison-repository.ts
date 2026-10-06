@@ -1,4 +1,4 @@
-import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@picky/catalog";
 
 /**
  * Storage for named product sets. Many-to-many: a product can be in several comparisons.

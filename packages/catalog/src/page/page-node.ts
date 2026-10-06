@@ -1,5 +1,5 @@
 /**
- * Read-only view of one element of a parsed page. ezshop's thin interface over the HTML
+ * Read-only view of one element of a parsed page. Picky's thin interface over the HTML
  * library in use: cheerio on the server (`./cheerio-page.ts`), the live DOM in the extension
  * (`./dom-page.ts`). Extractors depend only on this, so one extractor serves both.
  *

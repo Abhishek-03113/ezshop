@@ -1,4 +1,4 @@
-import type { CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonSummary } from "@picky/catalog";
 import { Link } from "@tanstack/react-router";
 import { NewComparisonEntry } from "./new-comparison-entry.tsx";
 

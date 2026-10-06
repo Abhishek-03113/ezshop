@@ -1,4 +1,4 @@
-import { describeSupportedProductUrls, isSupportedProductUrl, type ProductSnapshot } from "@ezshop/catalog";
+import { describeSupportedProductUrls, isSupportedProductUrl, type ProductSnapshot } from "@picky/catalog";
 import type { ComparisonsClient } from "../comparisons/comparisons-client.ts";
 import { comparisonNameFor } from "../snapshot-category.ts";
 import type { ToastMessage } from "../toast/toast-message.ts";

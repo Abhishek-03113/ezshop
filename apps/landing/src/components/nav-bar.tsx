@@ -9,7 +9,7 @@ export function NavBar({ links }: { readonly links: LandingLinks }): ReactElemen
       <nav className="nav-inner" aria-label="Primary">
         <a className="brand" href="#top">
           <LogoMark />
-          <span className="brand-name">ezshop</span>
+          <span className="brand-name">Picky</span>
         </a>
         <span className="nav-spacer" />
         <a className="nav-link nav-link-section" href="#how">

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { DirectoryFixtureFiles, PAGE_FIXTURES_DIR, PageFixtureStore } from "@ezshop/catalog/testing";
+import { DirectoryFixtureFiles, PAGE_FIXTURES_DIR, PageFixtureStore } from "@picky/catalog/testing";
 import { Window } from "happy-dom";
 import { capturePage } from "../src/capture-page.ts";
 

@@ -18,7 +18,7 @@ const PageFixtureRecordSchema = z.object({
 });
 type PageFixtureRecord = z.infer<typeof PageFixtureRecordSchema>;
 
-/** A captured product page and the snapshot ezshop is expected to read from it. */
+/** A captured product page and the snapshot Picky is expected to read from it. */
 export interface PageFixture extends PageFixtureRecord {
   name: string;
   html: string;

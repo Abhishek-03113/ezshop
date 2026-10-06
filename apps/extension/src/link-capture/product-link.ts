@@ -48,7 +48,7 @@ const PRODUCT_PATH_HINT =
 
 /**
  * Cheap link test for the always-on content script, which must stay tiny: importing the real
- * isSupportedProductUrl would bundle all of @ezshop/catalog (zod, extractors) into every Amazon page.
+ * isSupportedProductUrl would bundle all of @picky/catalog (zod, extractors) into every Amazon page.
  * The service worker re-checks with the real extractor before fetching anything.
  *
  * @example looksLikeProductLink("https://www.amazon.in/Some-Item/dp/B0FQG1YHYR") // true

@@ -3,8 +3,8 @@
 //   e.g. bun run fixtures:capture "https://www.flipkart.com/…/p/itm…?pid=…" iphone-17-white-256gb
 // The fixture lands in packages/catalog/test/fixtures/<source>/<slug>.{html,json} and is picked up
 // by the generic fixture test automatically.
-import { findSiteExtractor, describeSupportedProductUrls } from "@ezshop/catalog";
-import { DirectoryFixtureFiles, PAGE_FIXTURES_DIR, PageFixtureStore } from "@ezshop/catalog/testing";
+import { findSiteExtractor, describeSupportedProductUrls } from "@picky/catalog";
+import { DirectoryFixtureFiles, PAGE_FIXTURES_DIR, PageFixtureStore } from "@picky/catalog/testing";
 import { FirecrawlHtmlFetcher } from "../src/scraping/firecrawl-html-fetcher.ts";
 
 const [url, slug] = Bun.argv.slice(2);

@@ -1,4 +1,4 @@
-import { filterSpecGroups, specCountLabel, type ProductSnapshot, type SpecGroup } from "@ezshop/catalog";
+import { filterSpecGroups, specCountLabel, type ProductSnapshot, type SpecGroup } from "@picky/catalog";
 import type { Dom } from "../dom.ts";
 import { renderSpecHighlightsView } from "./spec-highlights-view.ts";
 import { renderGroupChips, renderGroupSections, renderNoMatches } from "./spec-groups-view.ts";

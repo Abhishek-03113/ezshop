@@ -13,7 +13,7 @@ describe("buildMenuEntries", () => {
   test("puts the labelled last-used comparison first, then others, a separator, Library only and New", () => {
     const entries = buildMenuEntries(COMPARISONS, "c2");
     expect(entries.map((entry) => entry.title)).toEqual([
-      "Add to ezshop",
+      "Add to Picky",
       "Monitors (last used)",
       "Home && office",
       "",
@@ -21,12 +21,12 @@ describe("buildMenuEntries", () => {
       "New comparison…",
     ]);
     expect(entries[3]?.kind).toBe("separator");
-    expect(entries.slice(1).every((entry) => entry.parentId === "ezshop:add")).toBe(true);
+    expect(entries.slice(1).every((entry) => entry.parentId === "picky:add")).toBe(true);
   });
   test("keeps order and omits the separator when nothing is remembered or nothing exists", () => {
     expect(buildMenuEntries(COMPARISONS, null).map((entry) => entry.title)[1]).toBe("Home && office");
     expect(buildMenuEntries([], null).map((entry) => entry.title)).toEqual([
-      "Add to ezshop",
+      "Add to Picky",
       "Library only",
       "New comparison…",
     ]);
@@ -35,12 +35,12 @@ describe("buildMenuEntries", () => {
 
 describe("addTargetFromMenuItem", () => {
   test("maps item ids to targets", () => {
-    expect(addTargetFromMenuItem("ezshop:cmp:c9")).toEqual({ kind: "comparison", comparisonId: "c9" });
-    expect(addTargetFromMenuItem("ezshop:library")).toEqual({ kind: "library" });
-    expect(addTargetFromMenuItem("ezshop:new")).toEqual({ kind: "new" });
+    expect(addTargetFromMenuItem("picky:cmp:c9")).toEqual({ kind: "comparison", comparisonId: "c9" });
+    expect(addTargetFromMenuItem("picky:library")).toEqual({ kind: "library" });
+    expect(addTargetFromMenuItem("picky:new")).toEqual({ kind: "new" });
   });
   test("ignores the root and foreign items", () => {
-    expect(addTargetFromMenuItem("ezshop:add")).toBeNull();
+    expect(addTargetFromMenuItem("picky:add")).toBeNull();
     expect(addTargetFromMenuItem(42)).toBeNull();
   });
 });
@@ -68,7 +68,7 @@ describe("MenuRefresher", () => {
       async () => null,
       (event) => void logged.push(event),
     ).refresh();
-    expect(menu.menus[0]?.map((entry) => entry.title)).toEqual(["Add to ezshop", "Library only", "New comparison…"]);
+    expect(menu.menus[0]?.map((entry) => entry.title)).toEqual(["Add to Picky", "Library only", "New comparison…"]);
     expect(logged).toEqual(["menu.comparisons_unavailable"]);
   });
 });

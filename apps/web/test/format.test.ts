@@ -42,11 +42,19 @@ describe("source labels", () => {
 
 describe("pageTitle", () => {
   test("puts the page name before the site name", () => {
-    expect(pageTitle("Budget 4K picks")).toBe("Budget 4K picks · ezshop");
+    expect(pageTitle("Budget 4K picks")).toBe("Budget 4K picks · Picky");
   });
 
   test("falls back to the site name for a blank page name", () => {
-    expect(pageTitle("  ")).toBe("ezshop");
+    expect(pageTitle("  ")).toBe("Picky");
+  });
+});
+
+describe("formatUpdatedLabel", () => {
+  test("uses the same day scale as the capture label", () => {
+    const now = new Date("2026-10-05T12:00:00Z");
+    expect(formatUpdatedLabel("2026-10-04T08:00:00Z", now, "UTC")).toBe("Updated yesterday");
+    expect(formatUpdatedLabel("2026-10-03T08:00:00Z", now, "UTC")).toBe("Updated 3 Oct");
   });
 });
 

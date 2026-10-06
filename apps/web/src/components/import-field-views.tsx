@@ -1,4 +1,4 @@
-import { PRODUCT_SOURCES, sourceLabel } from "@ezshop/catalog";
+import { PRODUCT_SOURCES, sourceLabel } from "@picky/catalog";
 import type { FormEvent } from "react";
 import { LinkIcon } from "./icons.tsx";
 
@@ -12,7 +12,7 @@ export interface ImportFieldViewProps {
   errorMessage: string | null;
 }
 
-const UNAVAILABLE_NOTE = "Adding by link isn't set up on this server. Use the ezshop extension on a product page.";
+const UNAVAILABLE_NOTE = "Adding by link isn't set up on this server. Use the Picky extension on a product page.";
 
 const SUPPORTED_STORES = new Intl.ListFormat("en", { type: "conjunction" }).format(PRODUCT_SOURCES.map(sourceLabel));
 

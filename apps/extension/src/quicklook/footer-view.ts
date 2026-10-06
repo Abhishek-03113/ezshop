@@ -9,7 +9,7 @@ function hint(dom: Dom, keys: readonly string[], text: string): HTMLElement {
 }
 
 /**
- * Footer: keyboard hints and the "Open in ezshop" link to the web compare page. The specs view is a
+ * Footer: keyboard hints and the "Open in Picky" link to the web compare page. The specs view is a
  * read-only look at this page, so it keeps only the Esc hint and the shortcut to the comparison: Return,
  * the arrows and the comparison link all act on the comparison, which that view does not show. The
  * compare view ends its hints with the shortcut back to specs.
@@ -33,7 +33,7 @@ export function footerView(dom: Dom, model: QuickLookModel): HTMLElement {
   const href = `${state.webBaseUrl}/comparisons/${encodeURIComponent(state.selectedId)}`;
   const link = dom.el("a", {
     className: "open-link",
-    text: "Open in ezshop ↗",
+    text: "Open in Picky ↗",
     attrs: { href, target: "_blank", rel: "noopener" },
   });
   return dom.el("footer", { className: "footer" }, [...hints, link]);

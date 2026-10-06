@@ -1,4 +1,4 @@
-/* Colours, fonts, spacing and radii all come from @ezshop/ui-tokens (imported in main.tsx). */
+/* Colours, fonts, spacing and radii all come from @picky/ui-tokens (imported in main.tsx). */
 @import "./styles/library.css";
 @import "./styles/library-groups.css";
 @import "./styles/menus.css";

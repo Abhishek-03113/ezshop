@@ -1,4 +1,4 @@
-import type { ProductSnapshot } from "@ezshop/catalog";
+import type { ProductSnapshot } from "@picky/catalog";
 import type { ExtensionResponse, QuickLookRequest, QuickLookState } from "../messaging/messages.ts";
 import type { QuickLookApi } from "./quicklook-api.ts";
 
@@ -31,8 +31,7 @@ export class ChromeQuickLookApi implements QuickLookApi {
 
   private async ask(request: QuickLookRequest): Promise<QuickLookState> {
     const response = await this.sendMessage(request);
-    if (response === undefined)
-      throw new Error(`ezshop service worker did not answer ${request.type}; reload the page`);
+    if (response === undefined) throw new Error(`Picky service worker did not answer ${request.type}; reload the page`);
     if (!response.ok) throw new Error(response.message);
     return response.body;
   }

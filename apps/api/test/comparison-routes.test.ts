@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test } from "bun:test";
-import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@picky/catalog";
 import { createApp } from "../src/http/create-app.ts";
 import { ProductIngestion } from "../src/products/product-ingestion.ts";
 import { FakeHtmlFetcher } from "./fakes/fake-html-fetcher.ts";

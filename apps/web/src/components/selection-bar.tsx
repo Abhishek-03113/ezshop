@@ -1,4 +1,4 @@
-import type { CatalogComparisonSummary, CatalogProductSummary } from "@ezshop/catalog";
+import type { CatalogComparisonSummary, CatalogProductSummary } from "@picky/catalog";
 import { useAddProductsToComparison, useCreateComparison } from "../hooks/use-comparison-mutations.ts";
 import { nameForSelection } from "../library/selection.ts";
 import { AddToComparisonMenu } from "./add-to-comparison-menu.tsx";

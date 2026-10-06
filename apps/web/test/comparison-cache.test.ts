@@ -1,4 +1,4 @@
-import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@picky/catalog";
 import { describe, expect, test } from "bun:test";
 import { QueryClient } from "@tanstack/react-query";
 import { comparisonQueryKeys, forgetDeletedComparison } from "../src/api/comparison-queries.ts";

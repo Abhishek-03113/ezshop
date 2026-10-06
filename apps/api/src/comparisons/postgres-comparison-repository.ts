@@ -4,7 +4,7 @@ import type {
   CatalogComparisonSummary,
   CatalogProduct,
   ProductSnapshot,
-} from "@ezshop/catalog";
+} from "@picky/catalog";
 import { isUuid } from "../db/uuid.ts";
 import type { ComparisonRepository } from "./comparison-repository.ts";
 

@@ -1,4 +1,4 @@
-import type { ProductSnapshot } from "@ezshop/catalog";
+import type { ProductSnapshot } from "@picky/catalog";
 import { buildSnapshot } from "./build-snapshot.ts";
 
 /** A snapshot with price, discount, rating, highlights and three spec groups, for spec-view tests. */

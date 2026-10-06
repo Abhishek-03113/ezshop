@@ -23,7 +23,7 @@ export class ChromeToastPort implements ToastPort {
       await chrome.scripting.executeScript({ target: { tabId }, files: [this.toastScriptFile] });
       await chrome.scripting.executeScript({
         target: { tabId },
-        func: (toast: ToastMessage) => globalThis.ezshopToast?.(toast),
+        func: (toast: ToastMessage) => globalThis.pickyToast?.(toast),
         args: [message],
       });
     } catch (error) {

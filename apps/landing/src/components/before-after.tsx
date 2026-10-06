@@ -49,7 +49,7 @@ function ClutteredPage(): ReactElement {
 function SampleSheet(): ReactElement {
   return (
     <figure className="after">
-      <figcaption className="caption caption-accent">Your ezshop sheet</figcaption>
+      <figcaption className="caption caption-accent">Your Picky sheet</figcaption>
       <div className="after-head">
         <div className="after-image">
           <HeadphonesIcon />
@@ -77,7 +77,7 @@ function SampleSheet(): ReactElement {
   );
 }
 
-/** Abstract cluttered page next to the real ezshop sheet; target of "See a sample sheet". */
+/** Abstract cluttered page next to the real Picky sheet; target of "See a sample sheet". */
 export function BeforeAfter(): ReactElement {
   return (
     <section id="sample" className="section before-after" aria-label="Before and after">

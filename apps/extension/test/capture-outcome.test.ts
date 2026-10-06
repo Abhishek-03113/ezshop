@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { formatMoney } from "@ezshop/catalog";
+import { formatMoney } from "@picky/catalog";
 import { summarizeSnapshot } from "../src/capture-outcome.ts";
 import { stateFromOutcome } from "../src/popup/popup-state.ts";
 import { buildSnapshot } from "./support/build-snapshot.ts";

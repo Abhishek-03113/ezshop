@@ -16,7 +16,7 @@ function setup(options: { lastUsed?: string } = {}) {
     { p1 },
   );
   const settings = new SettingsStore(
-    new FakeKeyValueStorage(options.lastUsed ? { "ezshop.settings": { lastComparisonId: options.lastUsed } } : {}),
+    new FakeKeyValueStorage(options.lastUsed ? { "picky.settings": { lastComparisonId: options.lastUsed } } : {}),
   );
   const changes = { count: 0 };
   const service = new QuickLookService({

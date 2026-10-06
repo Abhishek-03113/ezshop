@@ -1,4 +1,4 @@
-import type { ProductSnapshot } from "@ezshop/catalog";
+import type { ProductSnapshot } from "@picky/catalog";
 import type { QuickLookState } from "../messaging/messages.ts";
 
 /** What the overlay needs from the service worker; chrome-quicklook-api.ts implements it over runtime messages. */

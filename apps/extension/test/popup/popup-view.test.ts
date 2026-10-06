@@ -34,13 +34,13 @@ describe("renderPopupView", () => {
     expect(view.querySelectorAll(".progress-done").length).toBe(2);
   });
 
-  test("saved: card, struck list price, View specs button, ezshop and library links, no HTML injection", () => {
+  test("saved: card, struck list price, View specs button, Picky and library links, no HTML injection", () => {
     const { dom } = createTestDom();
     const view = renderPopupView(dom, { kind: "saved", summary: SUMMARY }, createTestContext().context);
     const hrefs = [...view.querySelectorAll("a")].map((link) => link.getAttribute("href"));
     expect(hrefs).toEqual(["http://web/", "http://web/products/p1", "http://web/products/p1"]);
     const links = [...view.querySelectorAll("a.button-secondary")].map((link) => link.textContent);
-    expect(links).toEqual(["Open in ezshop ↗"]);
+    expect(links).toEqual(["Open in Picky ↗"]);
     expect(view.querySelector("button.button-primary")?.textContent).toBe("View specs");
     expect(view.querySelector(".list-price")?.tagName).toBe("S");
     expect(view.querySelector(".product-title")?.textContent).toBe(SUMMARY.title);

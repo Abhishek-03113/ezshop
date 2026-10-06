@@ -1,4 +1,4 @@
-import type { CatalogProduct, ProductSnapshot } from "@ezshop/catalog";
+import type { CatalogProduct, ProductSnapshot } from "@picky/catalog";
 
 export function buildSnapshot(): ProductSnapshot {
   return {

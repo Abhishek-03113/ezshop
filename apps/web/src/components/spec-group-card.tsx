@@ -1,4 +1,4 @@
-import { type SpecGroup, specGroupAnchor } from "@ezshop/catalog";
+import { type SpecGroup, specGroupAnchor } from "@picky/catalog";
 
 /** One titled group of label/value specs as a description list; `highlighted` rings it after a chip jump. */
 export function SpecGroupCard({ group, highlighted = false }: { group: SpecGroup; highlighted?: boolean }) {

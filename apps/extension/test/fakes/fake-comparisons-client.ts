@@ -1,4 +1,4 @@
-import type { CatalogComparisonDetail, CatalogComparisonSummary, CatalogProduct } from "@ezshop/catalog";
+import type { CatalogComparisonDetail, CatalogComparisonSummary, CatalogProduct } from "@picky/catalog";
 import type { ComparisonsClient, CreatedComparison } from "../../src/comparisons/comparisons-client.ts";
 
 /** In-memory ComparisonsClient: seed comparisons and products, inspect `calls` afterwards. */

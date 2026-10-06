@@ -1,4 +1,4 @@
-import type { ComparisonCell } from "@ezshop/catalog";
+import type { ComparisonCell } from "@picky/catalog";
 
 interface MatrixCellProps {
   cell: ComparisonCell;

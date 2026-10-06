@@ -3,7 +3,7 @@ import {
   type ComparisonCell,
   type ComparisonMatrix,
   type ProductSnapshot,
-} from "@ezshop/catalog";
+} from "@picky/catalog";
 import { Dom } from "../popup/dom.ts";
 import type { OverlayActions } from "./overlay-actions.ts";
 import { thisPageColumn, type QuickLookModel } from "./quicklook-model.ts";

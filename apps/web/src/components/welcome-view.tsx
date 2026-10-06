@@ -9,7 +9,7 @@ interface WelcomeViewProps {
 const EXTENSION_STEPS: readonly { title: string; hint: string }[] = [
   { title: "Install and pin", hint: "Keep it one click away." },
   { title: "Open a product", hint: "Amazon.in or Flipkart." },
-  { title: "Click ezshop", hint: "Or press Alt + Shift + E." },
+  { title: "Click Picky", hint: "Or press Alt + Shift + E." },
 ];
 
 function ExtensionCard({ extensionUrl }: { extensionUrl: string }) {
@@ -45,7 +45,7 @@ export function WelcomeView({ extensionUrl, autoImportUrl }: WelcomeViewProps) {
         <span className="welcome-badge">
           <DocumentIcon size={36} />
         </span>
-        <h1>Welcome to ezshop</h1>
+        <h1>Welcome to Picky</h1>
         <p>Your library is empty. Add your first product and its spec sheet will show up here.</p>
       </div>
       <ImportProductForm variant="card" autoImportUrl={autoImportUrl} />

@@ -5,8 +5,8 @@ import {
   ProductPageError,
   ProductSnapshotSchema,
   type CatalogProduct,
-} from "@ezshop/catalog";
-import { parseHtmlPage } from "@ezshop/catalog/cheerio";
+} from "@picky/catalog";
+import { parseHtmlPage } from "@picky/catalog/cheerio";
 import type { HtmlFetcher } from "../scraping/html-fetcher.ts";
 import type { ProductRepository } from "./product-repository.ts";
 
@@ -22,7 +22,7 @@ export class InvalidSnapshotError extends Error {
 }
 
 /**
- * The two ways products enter ezshop: a snapshot captured by the extension in the user's
+ * The two ways products enter picky: a snapshot captured by the extension in the user's
  * browser, or a URL the API scrapes itself through the HtmlFetcher (Firecrawl).
  *
  * @example await new ProductIngestion(repository, fetcher, () => new Date()).importFromUrl(url)

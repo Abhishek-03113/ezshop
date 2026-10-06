@@ -1,4 +1,4 @@
-import { DirectoryFixtureFiles, PAGE_FIXTURES_DIR, PageFixtureStore, type PageFixture } from "@ezshop/catalog/testing";
+import { DirectoryFixtureFiles, PAGE_FIXTURES_DIR, PageFixtureStore, type PageFixture } from "@picky/catalog/testing";
 
 /** Every captured product page from the catalog package, so API tests cover each supported site. */
 export async function loadPageFixtures(): Promise<PageFixture[]> {

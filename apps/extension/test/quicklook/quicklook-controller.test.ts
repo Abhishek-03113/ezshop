@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import type { CatalogProduct } from "@ezshop/catalog";
+import type { CatalogProduct } from "@picky/catalog";
 import { QuickLookController } from "../../src/quicklook/quicklook-controller.ts";
 import { FakeQuickLookApi } from "../fakes/fake-quicklook-api.ts";
 import { createTestDom } from "../popup/support.ts";

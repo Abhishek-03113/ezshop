@@ -1,4 +1,4 @@
-import type { CatalogProduct } from "@ezshop/catalog";
+import type { CatalogProduct } from "@picky/catalog";
 import { Link } from "@tanstack/react-router";
 import { ratingLine, shortProductName } from "../comparison/comparison-labels.ts";
 import { BoxIcon, CloseIcon } from "./icons.tsx";

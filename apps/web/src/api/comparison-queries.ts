@@ -1,4 +1,4 @@
-import type { CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonSummary } from "@picky/catalog";
 import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import type { ComparisonsClient } from "./comparisons-client.ts";
 

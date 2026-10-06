@@ -1,4 +1,4 @@
-/** Fetches a page's fully rendered HTML. ezshop's interface over the scraping backend (Firecrawl). */
+/** Fetches a page's fully rendered HTML. Picky's interface over the scraping backend (Firecrawl). */
 export interface HtmlFetcher {
   fetchHtml(url: string): Promise<string>;
 }

@@ -7,6 +7,6 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
-    proxy: { "/api": process.env.EZSHOP_API_URL ?? "http://localhost:8787" },
+    proxy: { "/api": process.env.PICKY_API_URL ?? "http://localhost:8787" },
   },
 });

@@ -1,5 +1,5 @@
 /*
- * ezshop design tokens, shared by apps/web, apps/landing and the extension popup.
+ * Picky design tokens, shared by apps/web, apps/landing and the extension popup.
  * Values come from the "Apple HIG" design system (claude.ai/artifact/TiFCULRVtSBGMNiXwdaHtM).
  * --ez-label-secondary is darkened from the HIG's rgba(60,60,67,0.6) because that value is only
  * ~3.4:1 on white, below the 4.5:1 floor for small body text.

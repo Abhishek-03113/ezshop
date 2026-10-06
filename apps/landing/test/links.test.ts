@@ -8,14 +8,14 @@ describe("buildLandingLinks", () => {
 
   test("uses env values and trims trailing slashes from the web url", () => {
     const links = buildLandingLinks({
-      VITE_EZSHOP_WEB_URL: "https://app.example/",
-      VITE_EZSHOP_EXTENSION_URL: "https://store.example/x",
+      VITE_PICKY_WEB_URL: "https://app.example/",
+      VITE_PICKY_EXTENSION_URL: "https://store.example/x",
     });
     expect(links).toEqual({ webUrl: "https://app.example", extensionUrl: "https://store.example/x" });
   });
 
   test("treats blank env values as unset", () => {
-    expect(buildLandingLinks({ VITE_EZSHOP_WEB_URL: "  " }).webUrl).toBe(DEFAULT_WEB_URL);
+    expect(buildLandingLinks({ VITE_PICKY_WEB_URL: "  " }).webUrl).toBe(DEFAULT_WEB_URL);
   });
 });
 

@@ -1,4 +1,4 @@
-import type { ProductSnapshot } from "@ezshop/catalog";
+import type { ProductSnapshot } from "@picky/catalog";
 
 /** A valid snapshot; override any field per test. */
 export function buildSampleSnapshot(overrides: Partial<ProductSnapshot> = {}): ProductSnapshot {

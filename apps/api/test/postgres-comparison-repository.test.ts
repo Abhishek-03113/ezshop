@@ -6,9 +6,9 @@ import { applyMigrations, loadMigrationFiles } from "../src/db/migrate.ts";
 import { PostgresProductRepository } from "../src/products/postgres-product-repository.ts";
 import { buildSampleSnapshot } from "./support/sample-snapshot.ts";
 
-// Integration test; skipped unless EZSHOP_TEST_DATABASE_URL is set (see postgres-product-repository.test.ts).
+// Integration test; skipped unless PICKY_TEST_DATABASE_URL is set (see postgres-product-repository.test.ts).
 // It uses its own schema so it cannot race that file when bun runs both files in one process.
-const TEST_DATABASE_URL = Bun.env.EZSHOP_TEST_DATABASE_URL;
+const TEST_DATABASE_URL = Bun.env.PICKY_TEST_DATABASE_URL;
 
 describe.skipIf(!TEST_DATABASE_URL)("PostgresComparisonRepository", () => {
   const sql = new SQL(TEST_DATABASE_URL ?? "");

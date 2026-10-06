@@ -1,4 +1,4 @@
-import { type CatalogProductSummary, formatMoney, sourceLabel } from "@ezshop/catalog";
+import { type CatalogProductSummary, formatMoney, sourceLabel } from "@picky/catalog";
 import { Link } from "@tanstack/react-router";
 import type { MouseEvent } from "react";
 import { formatCapturedLabel } from "../format/format-relative-date.ts";

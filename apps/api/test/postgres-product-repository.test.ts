@@ -5,9 +5,9 @@ import { applyMigrations, loadMigrationFiles } from "../src/db/migrate.ts";
 import { likePattern, PostgresProductRepository } from "../src/products/postgres-product-repository.ts";
 import { buildSampleSnapshot } from "./support/sample-snapshot.ts";
 
-// Integration test against a real, throwaway database. Skipped unless EZSHOP_TEST_DATABASE_URL is set
+// Integration test against a real, throwaway database. Skipped unless PICKY_TEST_DATABASE_URL is set
 // (the repo-root .env sets it to the docker-compose Postgres).
-const TEST_DATABASE_URL = Bun.env.EZSHOP_TEST_DATABASE_URL;
+const TEST_DATABASE_URL = Bun.env.PICKY_TEST_DATABASE_URL;
 
 describe.skipIf(!TEST_DATABASE_URL)("PostgresProductRepository + migrations", () => {
   const sql = new SQL(TEST_DATABASE_URL ?? "");

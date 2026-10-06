@@ -1,25 +1,25 @@
-# Local Postgres for ezshop, tuned for a small footprint (the 8 GB dev box also runs Firecrawl).
+# Local Postgres for Picky, tuned for a small footprint (the 8 GB dev box also runs Firecrawl).
 services:
   postgres:
     image: postgres:17-alpine
-    container_name: ezshop-postgres
+    container_name: picky-postgres
     mem_limit: 192m
     memswap_limit: 192m
     shm_size: 32m
     environment:
-      POSTGRES_USER: ezshop
-      POSTGRES_PASSWORD: ezshop
-      POSTGRES_DB: ezshop
+      POSTGRES_USER: picky
+      POSTGRES_PASSWORD: picky
+      POSTGRES_DB: picky
     command: >
       postgres -c shared_buffers=16MB -c work_mem=1MB -c maintenance_work_mem=8MB
                -c effective_cache_size=48MB -c max_connections=20 -c wal_buffers=1MB
     ports:
       - "127.0.0.1:5433:5432"
     volumes:
-      - ezshop-pgdata:/var/lib/postgresql/data
+      - picky-pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ezshop"]
+      test: ["CMD-SHELL", "pg_isready -U picky"]
       interval: 5s
       retries: 10
 volumes:
-  ezshop-pgdata:
+  picky-pgdata:

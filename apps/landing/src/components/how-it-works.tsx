@@ -26,7 +26,7 @@ const STEPS: readonly Step[] = [
   { icon: <BrowserIcon />, title: "Open a product page", body: "Browse Amazon.in or Flipkart as you normally would." },
   {
     icon: <PointerIcon />,
-    title: "Click ezshop",
+    title: "Click Picky",
     body: (
       <>
         Use the toolbar button, or press <Shortcut />.

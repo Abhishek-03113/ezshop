@@ -20,7 +20,7 @@ export class ChromeBrowserPort implements BrowserPort {
     await chrome.scripting.executeScript({ target: { tabId }, files: [this.captureScriptFile] });
     const [injection] = await chrome.scripting.executeScript({
       target: { tabId },
-      func: () => globalThis.ezshopCapturePage?.() ?? { ok: false, message: "ezshop capture script did not load" },
+      func: () => globalThis.pickyCapturePage?.() ?? { ok: false, message: "Picky capture script did not load" },
     });
     return (
       (injection?.result as CaptureResult | undefined) ?? { ok: false, message: `No capture result from tab ${tabId}` }

@@ -6,7 +6,7 @@ export interface DecisionInputs {
   typeId: number;
 }
 
-/** ezshop's interface over the ONNX runtime: one logit per option marker, in marker order. */
+/** Picky's interface over the ONNX runtime: one logit per option marker, in marker order. */
 export interface InferenceRunner {
   markerLogits(inputs: DecisionInputs): Promise<number[]>;
 }

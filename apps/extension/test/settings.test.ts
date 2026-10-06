@@ -21,9 +21,9 @@ describe("SettingsStore", () => {
   });
 
   test("ignores corrupt stored values", async () => {
-    const store = new SettingsStore(new FakeKeyValueStorage({ "ezshop.settings": { autoOpenSheet: "no" } }));
+    const store = new SettingsStore(new FakeKeyValueStorage({ "picky.settings": { autoOpenSheet: "no" } }));
     expect(await store.load()).toEqual({ autoOpenSheet: false, firstRunDismissed: false, lastComparisonId: null });
-    expect(await new SettingsStore(new FakeKeyValueStorage({ "ezshop.settings": 7 })).load()).toEqual({
+    expect(await new SettingsStore(new FakeKeyValueStorage({ "picky.settings": 7 })).load()).toEqual({
       autoOpenSheet: false,
       firstRunDismissed: false,
       lastComparisonId: null,

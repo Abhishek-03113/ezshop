@@ -1,4 +1,4 @@
-# ezshop
+# Picky
 
 Turns Amazon.in product pages into a clean, structured spec sheet.
 Research behind the design: `research/FINDINGS.md`.

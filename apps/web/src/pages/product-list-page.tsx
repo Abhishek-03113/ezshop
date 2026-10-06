@@ -1,4 +1,4 @@
-import type { CatalogComparisonSummary, CatalogProductSummary } from "@ezshop/catalog";
+import type { CatalogComparisonSummary, CatalogProductSummary } from "@picky/catalog";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getRouteApi } from "@tanstack/react-router";
 import { useState } from "react";

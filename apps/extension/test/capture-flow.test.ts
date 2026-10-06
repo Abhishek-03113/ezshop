@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import type { ProductSnapshot } from "@ezshop/catalog";
+import type { ProductSnapshot } from "@picky/catalog";
 import type { CaptureResult } from "../src/capture-result.ts";
 import { runCaptureFlow } from "../src/capture-flow.ts";
 import { SettingsStore } from "../src/settings.ts";
@@ -32,7 +32,7 @@ function createDeps(
 
 describe("runCaptureFlow", () => {
   test("captures, sends and opens the spec sheet when auto-open is on", async () => {
-    const storage = new FakeKeyValueStorage({ "ezshop.settings": { autoOpenSheet: true } });
+    const storage = new FakeKeyValueStorage({ "picky.settings": { autoOpenSheet: true } });
     const { browser, events, deps } = createDeps({ ok: true, snapshot: buildSnapshot() }, async () => "p1", storage);
     const outcome = await runCaptureFlow(PRODUCT_TAB, deps);
     expect(outcome.kind).toBe("saved");

@@ -13,7 +13,7 @@ export type ToastMessage =
   | { kind: "failed"; id: string; reason: string };
 
 declare global {
-  var ezshopToast: ((message: ToastMessage) => void) | undefined;
+  var pickyToast: ((message: ToastMessage) => void) | undefined;
 }
 
 /**

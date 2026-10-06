@@ -38,7 +38,7 @@ describe("import field views", () => {
     expect(html).toContain("is-unavailable");
     expect(html).toMatch(/<input[^>]*disabled/);
     expect(html).toMatch(/<button[^>]*disabled/);
-    expect(html).toContain("Use the ezshop extension on a product page");
+    expect(html).toContain("Use the Picky extension on a product page");
     expect(html).not.toContain("Amazon.in and Flipkart product pages");
   });
 

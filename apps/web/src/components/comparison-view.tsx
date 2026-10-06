@@ -1,4 +1,4 @@
-import { buildComparisonMatrix, type CatalogComparisonDetail, type CatalogProduct } from "@ezshop/catalog";
+import { buildComparisonMatrix, type CatalogComparisonDetail, type CatalogProduct } from "@picky/catalog";
 import { useState } from "react";
 import { comparisonSubtitle } from "../comparison/comparison-labels.ts";
 import { useMatrixControls } from "../hooks/use-matrix-controls.ts";

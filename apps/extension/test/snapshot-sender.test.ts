@@ -14,7 +14,7 @@ describe("sendSnapshot", () => {
   test("throws with the API's message", async () => {
     const api = new FakeSnapshotApi(400, { message: "title: Too small" });
     await expect(sendSnapshot(api.fetch, "http://api", buildSnapshot())).rejects.toThrow(
-      "ezshop API rejected snapshot B0FQG1YHYR: title: Too small",
+      "Picky API rejected snapshot B0FQG1YHYR: title: Too small",
     );
   });
 

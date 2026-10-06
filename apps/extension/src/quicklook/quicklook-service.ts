@@ -1,4 +1,4 @@
-import type { CatalogComparisonSummary, ProductSnapshot } from "@ezshop/catalog";
+import type { CatalogComparisonSummary, ProductSnapshot } from "@picky/catalog";
 import type { ComparisonsClient } from "../comparisons/comparisons-client.ts";
 import type { QuickLookState } from "../messaging/messages.ts";
 import { comparisonNameFor } from "../snapshot-category.ts";

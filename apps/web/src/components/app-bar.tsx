@@ -9,7 +9,7 @@ export function BrandLink() {
   return (
     <Link to="/" className="brand">
       <LogoMark />
-      <span className="brand-name">ezshop</span>
+      <span className="brand-name">Picky</span>
     </Link>
   );
 }

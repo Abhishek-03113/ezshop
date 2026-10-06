@@ -10,13 +10,13 @@ describe("resolveCaptureConfig", () => {
   });
 
   test("normalises overrides to origins", () => {
-    expect(resolveCaptureConfig({ EZSHOP_API_URL: "https://api.ezshop.test/ignored/path" }).apiBaseUrl).toBe(
-      "https://api.ezshop.test",
+    expect(resolveCaptureConfig({ PICKY_API_URL: "https://api.picky.test/ignored/path" }).apiBaseUrl).toBe(
+      "https://api.picky.test",
     );
   });
 
   test("rejects non-http values with the offending value", () => {
-    expect(() => resolveCaptureConfig({ EZSHOP_WEB_URL: "ftp://x" })).toThrow('EZSHOP_WEB_URL is "ftp://x"');
+    expect(() => resolveCaptureConfig({ PICKY_WEB_URL: "ftp://x" })).toThrow('PICKY_WEB_URL is "ftp://x"');
   });
 });
 

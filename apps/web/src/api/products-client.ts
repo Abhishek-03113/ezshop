@@ -1,4 +1,4 @@
-import type { CatalogProduct, CatalogProductSummary } from "@ezshop/catalog";
+import type { CatalogProduct, CatalogProductSummary } from "@picky/catalog";
 import { createJsonRequester, jsonRequest, type FetchFunction } from "./json-requester.ts";
 
 export { ApiRequestError } from "./json-requester.ts";
@@ -17,7 +17,7 @@ export interface ProductsClient {
 }
 
 /**
- * Typed client for the ezshop API. `baseUrl` is "" in the browser (Vite proxies /api).
+ * Typed client for the Picky API. `baseUrl` is "" in the browser (Vite proxies /api).
  *
  * @example await createProductsClient(fetch, "").getProduct(id)
  */

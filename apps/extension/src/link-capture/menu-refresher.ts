@@ -5,7 +5,7 @@ import { buildMenuEntries } from "./context-menu-model.ts";
 type Logger = (event: string, fields: Record<string, string | number>) => void;
 
 /**
- * Rebuilds the "Add to ezshop" menu from the API. When the API is unreachable the menu still offers
+ * Rebuilds the "Add to Picky" menu from the API. When the API is unreachable the menu still offers
  * "Library only" and "New comparison…" so right-click never goes dead.
  *
  * @example await new MenuRefresher(client, menu, () => settings.lastComparisonId(), log).refresh()

@@ -1,4 +1,4 @@
-import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@ezshop/catalog";
+import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@picky/catalog";
 import type { ComparisonsClient, CreatedComparison } from "./comparisons-client.ts";
 
 type FetchFunction = (input: string, init: RequestInit) => Promise<Response>;
@@ -9,7 +9,7 @@ function asRecord(value: unknown): JsonRecord | null {
 }
 
 /**
- * ComparisonsClient over the ezshop HTTP API. Failures throw with the method, path and the API's
+ * ComparisonsClient over the Picky HTTP API. Failures throw with the method, path and the API's
  * message (or status), so toasts and logs can say what went wrong.
  *
  * @example const comparisons = await new HttpComparisonsClient(fetch, "http://localhost:8787").list()
@@ -66,10 +66,10 @@ export class HttpComparisonsClient implements ComparisonsClient {
     const body = asRecord(await response.json().catch(() => null)) ?? {};
     if (response.ok) return body;
     const reason = typeof body.message === "string" ? body.message : `HTTP ${response.status}`;
-    throw new Error(`ezshop API ${method} ${path} failed: ${reason}`);
+    throw new Error(`Picky API ${method} ${path} failed: ${reason}`);
   }
 
   private malformed(method: string, path: string, expected: string, received: unknown): Error {
-    return new Error(`ezshop API ${method} ${path} returned ${JSON.stringify(received)}; expected ${expected}`);
+    return new Error(`Picky API ${method} ${path} returned ${JSON.stringify(received)}; expected ${expected}`);
   }
 }

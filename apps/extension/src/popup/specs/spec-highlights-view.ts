@@ -1,4 +1,4 @@
-import type { Highlight } from "@ezshop/catalog";
+import type { Highlight } from "@picky/catalog";
 import type { Dom } from "../dom.ts";
 
 /** Popup height budget: more bullets than this are folded behind "Show all". */
