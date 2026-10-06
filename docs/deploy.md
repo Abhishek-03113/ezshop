@@ -3,8 +3,8 @@
 Picky deploys as three Vercel projects built from this one repo, plus the browser extension,
 which is published to the Chrome Web Store instead.
 
-| Project          | Root directory | What it is                                  |
-| ---------------- | -------------- | ------------------------------------------- |
+| Project         | Root directory | What it is                                  |
+| --------------- | -------------- | ------------------------------------------- |
 | `picky-api`     | `apps/api`     | Hono API on the Bun runtime (Fluid compute) |
 | `picky-web`     | `apps/web`     | Vite SPA: library and spec sheets           |
 | `picky-landing` | `apps/landing` | Vite static landing page                    |
@@ -51,11 +51,11 @@ Import the repo three times and set each project's **Root Directory** from the t
 
 Environment variables:
 
-| Project          | Variable                    | Value                                          |
-| ---------------- | --------------------------- | ---------------------------------------------- |
-| `picky-api`     | `DATABASE_URL`              | From the Neon integration                      |
-| `picky-api`     | `WEB_ORIGIN`                | `https://<web domain>`                         |
-| `picky-api`     | `FIRECRAWL_API_KEY`         | Optional; turns on URL import                  |
+| Project         | Variable                   | Value                                          |
+| --------------- | -------------------------- | ---------------------------------------------- |
+| `picky-api`     | `DATABASE_URL`             | From the Neon integration                      |
+| `picky-api`     | `WEB_ORIGIN`               | `https://<web domain>`                         |
+| `picky-api`     | `FIRECRAWL_API_KEY`        | Optional; turns on URL import                  |
 | `picky-web`     | `VITE_PICKY_EXTENSION_URL` | Chrome Web Store listing                       |
 | `picky-landing` | `VITE_PICKY_WEB_URL`       | `https://<web domain>` (defaults to localhost) |
 | `picky-landing` | `VITE_PICKY_EXTENSION_URL` | Chrome Web Store listing (defaults to `#how`)  |
@@ -89,6 +89,28 @@ The build derives the manifest's `host_permissions` from `PICKY_API_URL`.
 
 If you add domains such as `picky.in`, `app.picky.in` and `api.picky.in`, update `WEB_ORIGIN`,
 the rewrite in `apps/web/vercel.json`, the landing variables and the extension build to match.
+
+## Continuous deployment
+
+`feat/vercel-deploy` is the deployment branch. Every push to it runs `.github/workflows/deploy.yml`:
+
+1. **verify**: typecheck and the full test suite, including the Postgres integration tests against a
+   throwaway Postgres service.
+2. **deploy-api**: `vercel deploy --prod` for `picky-api`. Its build applies migrations first.
+3. **deploy-frontends**: `picky-web` and `picky-landing` in parallel, after the API is live.
+
+Rollouts run one at a time (`concurrency: production-deploy`), so two pushes never migrate at once.
+The Vercel projects aren't connected to Git, so this workflow is the only thing that deploys them.
+
+GitHub setup, in the `production` environment (only `feat/vercel-deploy` may deploy to it):
+
+| Kind     | Name                        | Value                                                 |
+| -------- | --------------------------- | ----------------------------------------------------- |
+| Secret   | `VERCEL_TOKEN`              | A token from https://vercel.com/account/tokens        |
+| Variable | `VERCEL_ORG_ID`             | `orgId` in `.vercel/project.json` after `vercel link` |
+| Variable | `VERCEL_API_PROJECT_ID`     | `vercel project inspect picky-api`                    |
+| Variable | `VERCEL_WEB_PROJECT_ID`     | `vercel project inspect picky-web`                    |
+| Variable | `VERCEL_LANDING_PROJECT_ID` | `vercel project inspect picky-landing`                |
 
 ## Before launch
 
