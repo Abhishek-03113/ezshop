@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import { BeforeAfter } from "../src/components/before-after.tsx";
+import { ComparePreview } from "../src/components/compare-preview.tsx";
 import { FinalCta } from "../src/components/final-cta.tsx";
 import { Features } from "../src/components/features.tsx";
 import { Hero } from "../src/components/hero.tsx";
@@ -17,8 +18,9 @@ const links: LandingLinks = { webUrl: "http://app.test", extensionUrl: "https://
 const render = renderToStaticMarkup;
 
 describe("NavBar", () => {
-  test("links to app root and the extension", () => {
+  test("shows the logo and links to app root and the extension", () => {
     const html = render(<NavBar links={links} />);
+    expect(html).toContain('src="/logo-128.png"');
     expect(html).toContain('href="http://app.test/"');
     expect(html).toContain('href="https://store.test/ext"');
     expect(html).toContain("How it works");
@@ -28,7 +30,8 @@ describe("NavBar", () => {
 describe("Hero", () => {
   test("renders headline, both calls to action and the form", () => {
     const html = render(<Hero links={links} navigator={new FakeNavigator()} />);
-    expect(html).toContain("The specs.<br/>Without the sales pitch.");
+    expect(html).toContain("Stop shopping by opening more tabs.");
+    expect(html).toContain("/mascot.png");
     expect(html).toContain('href="#sample"');
     expect(html).toContain("<form");
   });
@@ -53,19 +56,27 @@ describe("BeforeAfter", () => {
 });
 
 describe("HowItWorks", () => {
-  test("lists three steps with the keyboard shortcut", () => {
+  test("lists save, understand, compare and decide with the keyboard shortcut", () => {
     const html = render(<HowItWorks />);
-    expect(html).toContain("One click. That&#x27;s the whole workflow.");
-    expect(html).toContain("Step 3");
+    for (const step of ["Save", "Understand", "Compare", "Decide"]) expect(html).toContain(`<h3>${step}</h3>`);
     expect(html).toContain("<kbd>Alt</kbd>");
   });
 });
 
+describe("ComparePreview", () => {
+  test("marks clear winners and leaves preference rows unmarked", () => {
+    const html = render(<ComparePreview />);
+    expect(html.match(/Better/g)).toHaveLength(3);
+    expect(html).toContain("Same on both");
+    expect(html).toContain("Sample data");
+  });
+});
+
 describe("Features", () => {
-  test("renders all six features", () => {
+  test("renders the four principles", () => {
     const html = render(<Features />);
-    expect(html.match(/<h3>/g)).toHaveLength(6);
-    expect(html).toContain("Light and dark");
+    expect(html.match(/<dt>/g)).toHaveLength(4);
+    expect(html).toContain("Neutral");
   });
 });
 
@@ -79,7 +90,7 @@ describe("SupportedSites", () => {
 
 describe("FinalCta and SiteFooter", () => {
   test("render closing copy and disclaimer", () => {
-    expect(render(<FinalCta links={links} />)).toContain("Shop on facts.");
+    expect(render(<FinalCta links={links} />)).toContain("Decide with confidence.");
     expect(render(<SiteFooter links={links} />)).toContain("not affiliated with Amazon or Flipkart");
   });
 });

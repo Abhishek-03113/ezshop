@@ -2,11 +2,13 @@ import type { ReactElement } from "react";
 import type { LandingLinks } from "../lib/links.ts";
 import type { Navigator } from "../lib/product-link.ts";
 import { BeforeAfter } from "./before-after.tsx";
+import { ComparePreview } from "./compare-preview.tsx";
 import { FinalCta } from "./final-cta.tsx";
 import { Features } from "./features.tsx";
 import { Hero } from "./hero.tsx";
 import { HowItWorks } from "./how-it-works.tsx";
 import { NavBar } from "./nav-bar.tsx";
+import { Problem } from "./problem.tsx";
 import { SiteFooter } from "./site-footer.tsx";
 import { SupportedSites } from "./supported-sites.tsx";
 
@@ -22,8 +24,10 @@ export function LandingPage({ links, navigator }: LandingPageProps): ReactElemen
       <NavBar links={links} />
       <main>
         <Hero links={links} navigator={navigator} />
+        <Problem />
         <BeforeAfter />
         <HowItWorks />
+        <ComparePreview />
         <Features />
         <SupportedSites />
         <FinalCta links={links} />

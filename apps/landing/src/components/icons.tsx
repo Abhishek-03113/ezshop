@@ -25,13 +25,9 @@ function Icon({ size = 20, strokeWidth = 2, children }: IconProps): ReactElement
   );
 }
 
-export function LogoMark(): ReactElement {
-  return (
-    <svg className="logo-mark" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
-      <rect width="28" height="28" rx="8" fill="currentColor" />
-      <path d="M8 10h12M8 14h8M8 18h10" stroke="var(--ez-on-accent)" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
+/** The Picky mascot; decorative next to the wordmark, so the alt text is empty. */
+export function LogoMark({ size = 28 }: { readonly size?: number }): ReactElement {
+  return <img className="logo-mark" src="/logo-128.png" width={size} height={size} alt="" />;
 }
 
 export const DownloadIcon = (): ReactElement => (
@@ -76,24 +72,4 @@ export const HeadphonesIcon = (): ReactElement => (
     <rect x="3" y="14" width="4" height="7" rx="2" />
     <rect x="17" y="14" width="4" height="7" rx="2" />
   </svg>
-);
-
-export const BrowserIcon = (): ReactElement => (
-  <Icon size={22}>
-    <rect x="3" y="4" width="18" height="16" rx="3" />
-    <path d="M3 9h18" />
-  </Icon>
-);
-
-export const PointerIcon = (): ReactElement => (
-  <Icon size={22}>
-    <path d="M9 4l10 9-5 1 3 6-2 1-3-6-3 4z" />
-  </Icon>
-);
-
-export const SheetIcon = (): ReactElement => (
-  <Icon size={22}>
-    <path d="M7 3h7l5 5v13H7z" />
-    <path d="M14 3v5h5M10 13h6M10 17h4" />
-  </Icon>
 );

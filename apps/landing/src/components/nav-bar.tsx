@@ -15,8 +15,8 @@ export function NavBar({ links }: { readonly links: LandingLinks }): ReactElemen
         <a className="nav-link nav-link-section" href="#how">
           How it works
         </a>
-        <a className="nav-link nav-link-section" href="#sites">
-          Supported sites
+        <a className="nav-link nav-link-section" href="#compare">
+          Compare
         </a>
         <a className="nav-link" href={appHomeUrl(links)}>
           Open app
