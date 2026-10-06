@@ -2,7 +2,7 @@ import { Dom } from "../popup/dom.ts";
 import { footerView } from "./footer-view.ts";
 import { headerView } from "./header-view.ts";
 import { matrixView } from "./matrix-view.ts";
-import { emptyComparisonView, emptyView, failedView, loadingView } from "./notice-view.ts";
+import { emptyComparisonView, emptyView, failedView, loadingView, signedOutView } from "./notice-view.ts";
 import type { OverlayActions } from "./overlay-actions.ts";
 import { renderSpecSheetContent } from "../popup/specs/spec-sheet-view.ts";
 import { showsSpecs, thisPageColumn, type QuickLookModel } from "./quicklook-model.ts";
@@ -13,6 +13,7 @@ function bodyContent(dom: Dom, model: QuickLookModel, actions: OverlayActions): 
   if (model.status === "loading") return loadingView(dom);
   if (model.status === "failed") return failedView(dom, model.message ?? "unknown error", actions);
   const state = model.state;
+  if (state?.signedIn === false) return signedOutView(dom, state.webBaseUrl);
   if (state === null || state.comparisons.length === 0) return emptyView(dom, model, actions);
   const hasProducts = state.products.length > 0 || thisPageColumn(model) !== null;
   return hasProducts ? matrixView(dom, model, actions) : emptyComparisonView(dom);

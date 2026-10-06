@@ -1,5 +1,7 @@
 import { ProductPageError } from "@picky/catalog";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
+import { EmailTakenError } from "../auth/account-repository.ts";
+import { InvalidCredentialsError, UnauthorizedError } from "../auth/auth-service.ts";
 import { DecisionError } from "../decisions/decision-model.ts";
 import { InvalidSnapshotError } from "../products/product-ingestion.ts";
 import { ScrapeError } from "../scraping/html-fetcher.ts";
@@ -18,6 +20,9 @@ export interface ErrorResponse {
 const STATUS_BY_ERROR: readonly [new (...args: never[]) => Error, ContentfulStatusCode][] = [
   [BadRequestError, 400],
   [InvalidSnapshotError, 400],
+  [InvalidCredentialsError, 401],
+  [UnauthorizedError, 401],
+  [EmailTakenError, 409],
   [ProductPageError, 422],
   [DecisionError, 422],
   [ScrapeError, 502],

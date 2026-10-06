@@ -36,29 +36,35 @@ const SUMMARY_COLUMNS = (sql: SQL) => sql`
 export class PostgresComparisonRepository implements ComparisonRepository {
   constructor(private readonly sql: SQL) {}
 
-  async listComparisons(): Promise<CatalogComparisonSummary[]> {
+  async listComparisons(userId: string): Promise<CatalogComparisonSummary[]> {
     const rows: SummaryRow[] = await this.sql`
       SELECT ${SUMMARY_COLUMNS(this.sql)} FROM comparisons c
       LEFT JOIN comparison_products cp ON cp.comparison_id = c.id
+      WHERE c.user_id = ${userId}
       GROUP BY c.id ORDER BY c.updated_at DESC, c.created_at DESC`;
     return rows.map(toSummary);
   }
 
-  async createComparison(name: string, productIds: readonly string[]): Promise<CatalogComparisonSummary> {
+  async createComparison(
+    userId: string,
+    name: string,
+    productIds: readonly string[],
+  ): Promise<CatalogComparisonSummary> {
     const created = await this.sql.begin(async (tx) => {
-      const [row]: { id: string }[] = await tx`INSERT INTO comparisons (name) VALUES (${name}) RETURNING id`;
+      const [row]: { id: string }[] = await tx`
+        INSERT INTO comparisons (user_id, name) VALUES (${userId}, ${name}) RETURNING id`;
       const id = row?.id ?? "";
       for (const [position, productId] of productIds.entries()) {
-        await tx`INSERT INTO comparison_products (comparison_id, product_id, position)
-                 VALUES (${id}, ${productId}, ${position}) ON CONFLICT DO NOTHING`;
+        await tx`INSERT INTO comparison_products (user_id, comparison_id, product_id, position)
+                 VALUES (${userId}, ${id}, ${productId}, ${position}) ON CONFLICT DO NOTHING`;
       }
       return id;
     });
-    return requireSummary(await this.findSummary(created), created);
+    return requireSummary(await this.findSummary(userId, created), created);
   }
 
-  async findComparison(id: string): Promise<CatalogComparisonDetail | null> {
-    const summary = await this.findSummary(id);
+  async findComparison(userId: string, id: string): Promise<CatalogComparisonDetail | null> {
+    const summary = await this.findSummary(userId, id);
     if (summary === null) return null;
     const rows: ProductRow[] = await this.sql`
       SELECT p.id, p.snapshot, p.created_at, p.updated_at FROM comparison_products cp
@@ -67,50 +73,54 @@ export class PostgresComparisonRepository implements ComparisonRepository {
     return { id: summary.id, name: summary.name, updatedAt: summary.updatedAt, products: rows.map(toProduct) };
   }
 
-  async renameComparison(id: string, name: string): Promise<CatalogComparisonSummary | null> {
+  async renameComparison(userId: string, id: string, name: string): Promise<CatalogComparisonSummary | null> {
     if (!isUuid(id)) return null;
-    await this.sql`UPDATE comparisons SET name = ${name}, updated_at = now() WHERE id = ${id}`;
-    return this.findSummary(id);
+    await this.sql`UPDATE comparisons SET name = ${name}, updated_at = now() WHERE user_id = ${userId} AND id = ${id}`;
+    return this.findSummary(userId, id);
   }
 
-  async deleteComparison(id: string): Promise<boolean> {
+  async deleteComparison(userId: string, id: string): Promise<boolean> {
     if (!isUuid(id)) return false;
-    const rows: { id: string }[] = await this.sql`DELETE FROM comparisons WHERE id = ${id} RETURNING id`;
+    const rows: { id: string }[] = await this.sql`
+      DELETE FROM comparisons WHERE user_id = ${userId} AND id = ${id} RETURNING id`;
     return rows.length > 0;
   }
 
-  async addProduct(id: string, productId: string): Promise<CatalogComparisonSummary | null> {
+  async addProduct(userId: string, id: string, productId: string): Promise<CatalogComparisonSummary | null> {
     if (!isUuid(id) || !isUuid(productId)) return null;
     await this.sql.begin(async (tx) => {
-      const [locked]: { id: string }[] = await tx`SELECT id FROM comparisons WHERE id = ${id} FOR UPDATE`;
+      const [locked]: { id: string }[] = await tx`
+        SELECT id FROM comparisons WHERE user_id = ${userId} AND id = ${id} FOR UPDATE`;
       if (locked === undefined) return;
-      await tx`INSERT INTO comparison_products (comparison_id, product_id, position)
-               VALUES (${id}, ${productId}, (SELECT COALESCE(MAX(position) + 1, 0) FROM comparison_products WHERE comparison_id = ${id}))
+      await tx`INSERT INTO comparison_products (user_id, comparison_id, product_id, position)
+               VALUES (${userId}, ${id}, ${productId}, (SELECT COALESCE(MAX(position) + 1, 0) FROM comparison_products WHERE comparison_id = ${id}))
                ON CONFLICT DO NOTHING`;
       await tx`UPDATE comparisons SET updated_at = now() WHERE id = ${id}`;
     });
-    return this.findSummary(id);
+    return this.findSummary(userId, id);
   }
 
-  async removeProduct(id: string, productId: string): Promise<CatalogComparisonSummary | null> {
+  async removeProduct(userId: string, id: string, productId: string): Promise<CatalogComparisonSummary | null> {
     if (!isUuid(id) || !isUuid(productId)) return null;
-    await this.sql`DELETE FROM comparison_products WHERE comparison_id = ${id} AND product_id = ${productId}`;
-    await this.sql`UPDATE comparisons SET updated_at = now() WHERE id = ${id}`;
-    return this.findSummary(id);
+    // user_id in the WHERE: a guessed comparison id of another user deletes and touches nothing.
+    await this.sql`
+      DELETE FROM comparison_products WHERE user_id = ${userId} AND comparison_id = ${id} AND product_id = ${productId}`;
+    await this.sql`UPDATE comparisons SET updated_at = now() WHERE user_id = ${userId} AND id = ${id}`;
+    return this.findSummary(userId, id);
   }
 
-  async listComparisonsForProduct(productId: string): Promise<CatalogComparisonSummary[]> {
+  async listComparisonsForProduct(userId: string, productId: string): Promise<CatalogComparisonSummary[]> {
     if (!isUuid(productId)) return [];
-    const all = await this.listComparisons();
+    const all = await this.listComparisons(userId);
     return all.filter((summary) => summary.productIds.includes(productId));
   }
 
-  private async findSummary(id: string): Promise<CatalogComparisonSummary | null> {
+  private async findSummary(userId: string, id: string): Promise<CatalogComparisonSummary | null> {
     if (!isUuid(id)) return null;
     const rows: SummaryRow[] = await this.sql`
       SELECT ${SUMMARY_COLUMNS(this.sql)} FROM comparisons c
       LEFT JOIN comparison_products cp ON cp.comparison_id = c.id
-      WHERE c.id = ${id} GROUP BY c.id`;
+      WHERE c.user_id = ${userId} AND c.id = ${id} GROUP BY c.id`;
     return rows[0] === undefined ? null : toSummary(rows[0]);
   }
 }

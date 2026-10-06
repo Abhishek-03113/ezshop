@@ -9,6 +9,8 @@ dist/
 .env
 .env.*
 !.env.example
+# Generated account credentials (bun run user:create)
+*.credentials.json
 
 # Upstream Firecrawl checkout; our overrides live in infra/firecrawl/
 /firecrawl/

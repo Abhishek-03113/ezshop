@@ -1,4 +1,5 @@
 import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@picky/catalog";
+import { needsSignIn, SignInRequiredError } from "../sign-in-required.ts";
 import type { ComparisonsClient, CreatedComparison } from "./comparisons-client.ts";
 
 type FetchFunction = (input: string, init: RequestInit) => Promise<Response>;
@@ -9,8 +10,9 @@ function asRecord(value: unknown): JsonRecord | null {
 }
 
 /**
- * ComparisonsClient over the Picky HTTP API. Failures throw with the method, path and the API's
- * message (or status), so toasts and logs can say what went wrong.
+ * ComparisonsClient over the Picky HTTP API, as the user signed in to the web app (its session cookie
+ * goes along). A 401 throws SignInRequiredError; other failures throw with the method, path and the
+ * API's message (or status), so toasts and logs can say what went wrong.
  *
  * @example const comparisons = await new HttpComparisonsClient(fetch, "http://localhost:8787").list()
  */
@@ -62,7 +64,9 @@ export class HttpComparisonsClient implements ComparisonsClient {
       method,
       headers: payload === undefined ? {} : { "content-type": "application/json" },
       body: payload === undefined ? undefined : JSON.stringify(payload),
+      credentials: "include",
     });
+    if (needsSignIn(response)) throw new SignInRequiredError();
     const body = asRecord(await response.json().catch(() => null)) ?? {};
     if (response.ok) return body;
     const reason = typeof body.message === "string" ? body.message : `HTTP ${response.status}`;

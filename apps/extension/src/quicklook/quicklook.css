@@ -315,6 +315,8 @@ select {
   color: var(--ez-on-accent);
   font-size: 13px;
   font-weight: 600;
+  /* Also styles the signed-out "Sign in to Picky" link. */
+  text-decoration: none;
   cursor: pointer;
 }
 .add:disabled {

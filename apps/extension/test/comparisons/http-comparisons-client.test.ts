@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { HttpComparisonsClient } from "../../src/comparisons/http-comparisons-client.ts";
+import { SignInRequiredError } from "../../src/sign-in-required.ts";
 import { FakeHttpApi } from "../fakes/fake-http-api.ts";
 import { ReceiverStrictFetch } from "../fakes/receiver-strict-fetch.ts";
 
@@ -17,7 +18,12 @@ describe("HttpComparisonsClient", () => {
   test("list reads comparisons", async () => {
     const api = new FakeHttpApi(200, { comparisons: [{ id: "c1", name: "A", productIds: [], updatedAt: "t" }] });
     expect((await clientFor(api).list()).map((comparison) => comparison.id)).toEqual(["c1"]);
-    expect(api.requests[0]).toMatchObject({ method: "GET", url: "http://api/api/comparisons" });
+    expect(api.requests[0]).toMatchObject({ method: "GET", url: "http://api/api/comparisons", credentials: "include" });
+  });
+
+  test("a 401 throws SignInRequiredError", async () => {
+    const api = new FakeHttpApi(401, { error: "UnauthorizedError", message: "Sign in" });
+    await expect(clientFor(api).list()).rejects.toBeInstanceOf(SignInRequiredError);
   });
 
   test("get unwraps the comparison and encodes the id", async () => {

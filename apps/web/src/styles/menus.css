@@ -93,3 +93,8 @@
   width: 16px;
   color: var(--ez-blue);
 }
+.nav-button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+}

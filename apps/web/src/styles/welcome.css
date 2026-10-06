@@ -120,3 +120,49 @@
   line-height: 1.4;
   color: var(--ez-label-secondary);
 }
+
+/* ---- sign in / create account ---- */
+/* Three classes: beats .page.narrow, which styles.css declares after this file is imported. */
+.page.narrow.sign-in {
+  max-width: 440px;
+}
+.sign-in-intro h1 {
+  margin: 0 0 var(--ez-space-8);
+  font-size: 28px;
+  letter-spacing: -0.02em;
+}
+.sign-in-intro p {
+  margin: 0;
+}
+.sign-in-card {
+  padding: var(--ez-space-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ez-space-16);
+}
+.sign-in-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.sign-in-field input {
+  height: 48px;
+  padding: 0 var(--ez-space-16);
+  border-radius: var(--ez-radius-control);
+  border: 1px solid var(--ez-border);
+  background: var(--ez-surface-raised);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--ez-label);
+}
+.sign-in-field input:focus {
+  outline: none;
+  border-color: var(--ez-blue);
+  box-shadow: 0 0 0 3px var(--ez-blue-soft);
+}
+.sign-in-switch {
+  margin: 0;
+  text-align: center;
+}

@@ -29,30 +29,30 @@ const SEARCH_TEXT_SQL = `concat_ws(' ', snapshot->>'title', snapshot->>'brand', 
 export class PostgresProductRepository implements ProductRepository {
   constructor(private readonly sql: SQL) {}
 
-  async saveSnapshot(snapshot: ProductSnapshot): Promise<CatalogProduct> {
+  async saveSnapshot(userId: string, snapshot: ProductSnapshot): Promise<CatalogProduct> {
     // Pass the object itself: Bun encodes it for ::jsonb. A pre-stringified value is stored as a JSON string.
     const rows: ProductRow[] = await this.sql`
-      INSERT INTO products (source, external_id, snapshot)
-      VALUES (${snapshot.source}, ${snapshot.externalId}, ${snapshot}::jsonb)
-      ON CONFLICT (source, external_id)
+      INSERT INTO products (user_id, source, external_id, snapshot)
+      VALUES (${userId}, ${snapshot.source}, ${snapshot.externalId}, ${snapshot}::jsonb)
+      ON CONFLICT (user_id, source, external_id)
       DO UPDATE SET snapshot = EXCLUDED.snapshot, updated_at = now()
       RETURNING id, snapshot, created_at, updated_at`;
     return toCatalogProduct(requireRow(rows, snapshot.externalId));
   }
 
-  async findProductById(id: string): Promise<CatalogProduct | null> {
+  async findProductById(userId: string, id: string): Promise<CatalogProduct | null> {
     // Postgres rejects a malformed uuid with an error; to callers it is simply "not found".
     if (!isUuid(id)) return null;
     const rows: ProductRow[] = await this.sql`
-      SELECT id, snapshot, created_at, updated_at FROM products WHERE id = ${id}`;
+      SELECT id, snapshot, created_at, updated_at FROM products WHERE user_id = ${userId} AND id = ${id}`;
     return rows[0] === undefined ? null : toCatalogProduct(rows[0]);
   }
 
-  async listProductSummaries(query = ""): Promise<CatalogProductSummary[]> {
+  async listProductSummaries(userId: string, query = ""): Promise<CatalogProductSummary[]> {
     const pattern = likePattern(query);
     const rows: ProductRow[] = await this.sql`
       SELECT id, snapshot, created_at, updated_at FROM products
-      WHERE ${pattern}::text IS NULL OR ${this.sql.unsafe(SEARCH_TEXT_SQL)} ILIKE ${pattern}
+      WHERE user_id = ${userId} AND (${pattern}::text IS NULL OR ${this.sql.unsafe(SEARCH_TEXT_SQL)} ILIKE ${pattern})
       ORDER BY updated_at DESC LIMIT ${LIST_LIMIT}`;
     return rows.map((row) => summarizeProduct(toCatalogProduct(row)));
   }

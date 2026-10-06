@@ -1,34 +1,31 @@
 import { beforeEach, describe, expect, test } from "bun:test";
 import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@picky/catalog";
-import { createApp } from "../src/http/create-app.ts";
-import { ProductIngestion } from "../src/products/product-ingestion.ts";
-import { FakeHtmlFetcher } from "./fakes/fake-html-fetcher.ts";
-import { InMemoryComparisonRepository } from "./fakes/in-memory-comparison-repository.ts";
-import { InMemoryProductRepository } from "./fakes/in-memory-product-repository.ts";
-import { RecordingLogger } from "./fakes/recording-logger.ts";
+import type { RecordingLogger } from "./fakes/recording-logger.ts";
 import { buildSampleSnapshot } from "./support/sample-snapshot.ts";
+import { createTestApp } from "./support/test-app.ts";
 
-let repository: InMemoryProductRepository;
-let app: ReturnType<typeof createApp>;
+let harness: ReturnType<typeof createTestApp>;
 let logger: RecordingLogger;
+let cookie: string;
 
-beforeEach(() => {
-  repository = new InMemoryProductRepository();
-  logger = new RecordingLogger();
-  const ingestion = new ProductIngestion(repository, new FakeHtmlFetcher(new Map()), () => new Date());
-  const comparisons = new InMemoryComparisonRepository(repository);
-  app = createApp({ repository, comparisons, ingestion, logger, webOrigin: "http://web.test" });
+beforeEach(async () => {
+  harness = createTestApp();
+  logger = harness.logger;
+  cookie = await harness.signUp("me@example.com");
 });
 
+/** Sends as the signed-in test user. */
 function send(method: string, path: string, body?: unknown): Promise<Response> {
-  const init: RequestInit = { method };
-  if (body !== undefined)
-    Object.assign(init, { body: JSON.stringify(body), headers: { "content-type": "application/json" } });
-  return Promise.resolve(app.request(`http://api.test${path}`, init));
+  return harness.send(method, path, { body, cookie });
 }
 
 async function saveProduct(externalId: string): Promise<string> {
-  return (await repository.saveSnapshot(buildSampleSnapshot({ externalId, title: `Product ${externalId}` }))).id;
+  const response = await send(
+    "POST",
+    "/api/snapshots",
+    buildSampleSnapshot({ externalId, title: `Product ${externalId}` }),
+  );
+  return ((await response.json()) as { product: { id: string } }).product.id;
 }
 
 async function createComparison(name: string, productIds: string[] = []): Promise<CatalogComparisonSummary> {
@@ -43,7 +40,7 @@ describe("comparison CRUD", () => {
     expect(response.status).toBe(201);
     const { comparison } = (await response.json()) as { comparison: CatalogComparisonSummary };
     expect(comparison).toMatchObject({ name: "Monitors", productIds: [first] });
-    expect(logger.entries[0]?.event).toBe("comparison.created");
+    expect(logger.entries.at(-1)?.event).toBe("comparison.created");
   });
 
   test("POST rejects blank names and unknown product ids with 400", async () => {
@@ -116,8 +113,12 @@ describe("comparison membership", () => {
 
 describe("product search route", () => {
   test("GET /api/products?q= filters summaries and includes the category", async () => {
-    await repository.saveSnapshot(buildSampleSnapshot({ externalId: "M1", title: "Dell", category: "Monitors" }));
-    await repository.saveSnapshot(buildSampleSnapshot({ externalId: "P1", title: "Pixel", category: "Phones" }));
+    await send(
+      "POST",
+      "/api/snapshots",
+      buildSampleSnapshot({ externalId: "M1", title: "Dell", category: "Monitors" }),
+    );
+    await send("POST", "/api/snapshots", buildSampleSnapshot({ externalId: "P1", title: "Pixel", category: "Phones" }));
     const response = await send("GET", "/api/products?q=monitors");
     const { products } = (await response.json()) as { products: { title: string; category: string }[] };
     expect(products).toEqual([expect.objectContaining({ title: "Dell", category: "Monitors" })]);

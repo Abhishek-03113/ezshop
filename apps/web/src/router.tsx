@@ -1,9 +1,12 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, createRoute, createRouter, type RouterHistory } from "@tanstack/react-router";
+import type { AuthClient } from "./api/auth-client.ts";
 import { comparisonDetailQuery, comparisonListQuery, productComparisonsQuery } from "./api/comparison-queries.ts";
 import type { ComparisonsClient } from "./api/comparisons-client.ts";
 import { productDetailQuery, productListQuery } from "./api/product-queries.ts";
 import type { ProductsClient } from "./api/products-client.ts";
+import { SIGN_IN_PATH, requireSignedIn, skipSignInWhenSignedIn } from "./auth/route-guards.ts";
+import { parseSignInSearch } from "./auth/sign-in-search.ts";
 import type { AppConfig } from "./config/app-config.ts";
 import { AppLayout } from "./components/app-layout.tsx";
 import { RouteErrorPanel } from "./components/route-error-panel.tsx";
@@ -12,18 +15,24 @@ import { ComparisonPage } from "./pages/comparison-page.tsx";
 import { ComparisonsIndexPage } from "./pages/comparisons-index-page.tsx";
 import { ProductDetailPage } from "./pages/product-detail-page.tsx";
 import { ProductListPage } from "./pages/product-list-page.tsx";
+import { SignInPage } from "./pages/sign-in-page.tsx";
 
 /** Dependencies handed to every route through router context, instead of module-level singletons. */
 export interface PickyRouterContext {
   queryClient: QueryClient;
+  authClient: AuthClient;
   productsClient: ProductsClient;
   comparisonsClient: ComparisonsClient;
   config: AppConfig;
 }
 
 const rootRoute = createRootRouteWithContext<PickyRouterContext>()({
-  // Every page shows the comparison count in the app bar, so the list is loaded once at the root.
-  loader: ({ context }) => context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient)),
+  beforeLoad: ({ context, location }) => requireSignedIn(context, location),
+  // Every signed-in page shows the comparison count in the app bar, so the list is loaded once at the root.
+  loader: ({ context, location }) =>
+    location.pathname === SIGN_IN_PATH
+      ? undefined
+      : context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient)),
   component: AppLayout,
   errorComponent: RouteErrorPanel,
 });
@@ -64,14 +73,28 @@ const comparisonRoute = createRoute({
   component: ComparisonPage,
 });
 
-const routeTree = rootRoute.addChildren([productListRoute, productDetailRoute, comparisonsIndexRoute, comparisonRoute]);
+const signInRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: SIGN_IN_PATH,
+  validateSearch: parseSignInSearch,
+  beforeLoad: ({ context, search }) => skipSignInWhenSignedIn(context, search),
+  component: SignInPage,
+});
+
+const routeTree = rootRoute.addChildren([
+  signInRoute,
+  productListRoute,
+  productDetailRoute,
+  comparisonsIndexRoute,
+  comparisonRoute,
+]);
 
 /**
  * Builds the app router around injected dependencies.
  *
  * `history` defaults to the browser history; tests pass a memory history.
  *
- * @example createPickyRouter({ queryClient, productsClient: createProductsClient(fetch, ""), comparisonsClient: createComparisonsClient(fetch, ""), config: readAppConfig(import.meta.env) })
+ * @example createPickyRouter({ queryClient, authClient: createAuthClient(fetch, ""), productsClient: createProductsClient(fetch, ""), comparisonsClient: createComparisonsClient(fetch, ""), config: readAppConfig(import.meta.env) })
  */
 export function createPickyRouter(context: PickyRouterContext, history?: RouterHistory) {
   return createRouter({ routeTree, context, history, defaultPreload: "intent", defaultPreloadStaleTime: 0 });

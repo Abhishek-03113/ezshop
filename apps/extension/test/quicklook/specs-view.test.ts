@@ -172,6 +172,26 @@ describe("headerView", () => {
   });
 });
 
+describe("overlayView signed out", () => {
+  const signedOut = { signedIn: false, comparisons: [], selectedId: null, products: [], webBaseUrl: "http://web" };
+
+  test("Compare offers to sign in on the web app, in a new tab", () => {
+    const { dom } = createTestDom();
+    const view = overlayView(dom, modelWith({ view: "compare", state: signedOut }), new RecordingActions());
+    const link = view.querySelector<HTMLAnchorElement>('[data-focus="sign-in"]');
+    expect(link?.getAttribute("href")).toBe("http://web/login");
+    expect(link?.getAttribute("target")).toBe("_blank");
+    expect(view.textContent).toContain("Specs work without an account");
+  });
+
+  test("Specs still render this page's sheet", () => {
+    const { dom } = createTestDom();
+    const view = overlayView(dom, modelWith({ view: "specs", state: signedOut }), new RecordingActions());
+    expect(view.querySelector(".spec-view")).not.toBeNull();
+    expect(view.querySelector('[data-focus="sign-in"]')).toBeNull();
+  });
+});
+
 describe("overlayView in the specs view", () => {
   test("renders this page's spec sheet inside the scroll body, with sticky tools", () => {
     const { dom } = createTestDom();

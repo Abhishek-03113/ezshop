@@ -1,7 +1,9 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, getRouteApi } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { currentUserQuery } from "../api/auth-queries.ts";
 import { comparisonListQuery } from "../api/comparison-queries.ts";
+import { useSignOut } from "../hooks/use-session.ts";
 import { LogoMark } from "./icons.tsx";
 
 /** Logo mark plus wordmark, linking home. */
@@ -16,7 +18,7 @@ export function BrandLink() {
 
 const rootRouteApi = getRouteApi("__root__");
 
-/** Library and Comparisons links; Comparisons carries the number of saved comparisons. */
+/** Library and Comparisons links (Comparisons carries the number of saved comparisons), then Sign out. */
 export function MainNav() {
   const { comparisonsClient } = rootRouteApi.useRouteContext();
   const { data: comparisons } = useSuspenseQuery(comparisonListQuery(comparisonsClient));
@@ -29,7 +31,26 @@ export function MainNav() {
         Comparisons
         <span className="nav-count">{comparisons.length}</span>
       </Link>
+      <SignOutButton />
     </nav>
+  );
+}
+
+/** Ends the session; the tooltip says whose. */
+function SignOutButton() {
+  const { authClient } = rootRouteApi.useRouteContext();
+  const { data: user } = useSuspenseQuery(currentUserQuery(authClient));
+  const signOut = useSignOut();
+  return (
+    <button
+      type="button"
+      className="nav-link nav-button"
+      title={user === null ? undefined : `Signed in as ${user.email}`}
+      disabled={signOut.isPending}
+      onClick={() => signOut.mutate()}
+    >
+      Sign out
+    </button>
   );
 }
 

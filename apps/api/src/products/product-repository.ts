@@ -1,11 +1,14 @@
 import type { CatalogProduct, CatalogProductSummary, ProductSnapshot } from "@picky/catalog";
 
-/** Storage for product snapshots. One row per (source, externalId); a newer capture replaces the older. */
+/**
+ * Storage for product snapshots, each owned by one user. One row per (user, source, externalId); a newer
+ * capture by the same user replaces the older. Another user's product is indistinguishable from a missing one.
+ */
 export interface ProductRepository {
-  saveSnapshot(snapshot: ProductSnapshot): Promise<CatalogProduct>;
-  findProductById(id: string): Promise<CatalogProduct | null>;
+  saveSnapshot(userId: string, snapshot: ProductSnapshot): Promise<CatalogProduct>;
+  findProductById(userId: string, id: string): Promise<CatalogProduct | null>;
   /** Newest first; a non-blank query keeps products whose title, brand, category or specs contain it. */
-  listProductSummaries(query?: string): Promise<CatalogProductSummary[]>;
+  listProductSummaries(userId: string, query?: string): Promise<CatalogProductSummary[]>;
 }
 
 /**

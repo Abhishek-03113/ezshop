@@ -8,6 +8,7 @@ export function stateWith(
   ids: readonly string[] = [selectedId],
 ): QuickLookState {
   return {
+    signedIn: true,
     comparisons: ids.map((id) => ({ id, name: `Comparison ${id}`, productIds: [], updatedAt: "t" })),
     selectedId,
     products,

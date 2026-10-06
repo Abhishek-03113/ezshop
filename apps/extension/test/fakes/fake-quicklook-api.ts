@@ -50,6 +50,12 @@ export class FakeQuickLookApi implements QuickLookApi {
       throw failure;
     }
     const products = this.selectedId === null ? [] : [...(this.products[this.selectedId] ?? [])];
-    return { comparisons: [...this.comparisons], selectedId: this.selectedId, products, webBaseUrl: "http://web" };
+    return {
+      signedIn: true,
+      comparisons: [...this.comparisons],
+      selectedId: this.selectedId,
+      products,
+      webBaseUrl: "http://web",
+    };
   }
 }

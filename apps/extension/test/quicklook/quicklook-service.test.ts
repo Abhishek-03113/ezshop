@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { QuickLookService } from "../../src/quicklook/quicklook-service.ts";
 import { SettingsStore } from "../../src/settings.ts";
+import { SignInRequiredError } from "../../src/sign-in-required.ts";
 import { FakeComparisonsClient } from "../fakes/fake-comparisons-client.ts";
 import { FakeKeyValueStorage } from "../fakes/fake-key-value-storage.ts";
 import { buildCatalogProduct } from "../support/build-snapshot.ts";
@@ -52,6 +53,25 @@ describe("QuickLookService", () => {
       onComparisonsChanged: () => {},
     });
     expect(await service.init()).toMatchObject({ selectedId: null, products: [], comparisons: [] });
+  });
+
+  test("init signed out answers an empty signed-out state instead of failing", async () => {
+    const { client, service, changes } = setup();
+    client.failWith = new SignInRequiredError();
+    expect(await service.init()).toEqual({
+      signedIn: false,
+      comparisons: [],
+      selectedId: null,
+      products: [],
+      webBaseUrl: "http://web",
+    });
+    expect(changes.count).toBe(0);
+  });
+
+  test("init still fails on any other error", async () => {
+    const { client, service } = setup();
+    client.failWith = new Error("API down");
+    await expect(service.init()).rejects.toThrow("API down");
   });
 
   test("select remembers the comparison", async () => {

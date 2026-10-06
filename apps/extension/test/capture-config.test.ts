@@ -2,11 +2,15 @@ import { describe, expect, test } from "bun:test";
 import { apiHostPermission, resolveCaptureConfig } from "../src/capture-config.ts";
 
 describe("resolveCaptureConfig", () => {
-  test("defaults to the local dev stack", () => {
+  test("defaults to the local web app, which also serves /api (so its session cookie applies)", () => {
     expect(resolveCaptureConfig({})).toEqual({
-      apiBaseUrl: "http://localhost:8787",
+      apiBaseUrl: "http://localhost:5173",
       webBaseUrl: "http://localhost:5173",
     });
+  });
+
+  test("the API follows PICKY_WEB_URL unless PICKY_API_URL is set", () => {
+    expect(resolveCaptureConfig({ PICKY_WEB_URL: "https://app.picky.test" }).apiBaseUrl).toBe("https://app.picky.test");
   });
 
   test("normalises overrides to origins", () => {
@@ -22,6 +26,6 @@ describe("resolveCaptureConfig", () => {
 
 describe("apiHostPermission", () => {
   test("grants the API origin", () => {
-    expect(apiHostPermission(resolveCaptureConfig({}))).toBe("http://localhost:8787/*");
+    expect(apiHostPermission(resolveCaptureConfig({}))).toBe("http://localhost:5173/*");
   });
 });

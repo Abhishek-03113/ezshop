@@ -1,6 +1,7 @@
 import type { CatalogComparisonSummary, ProductSnapshot } from "@picky/catalog";
 import type { ComparisonsClient } from "../comparisons/comparisons-client.ts";
 import type { QuickLookState } from "../messaging/messages.ts";
+import { SignInRequiredError } from "../sign-in-required.ts";
 import { comparisonNameFor } from "../snapshot-category.ts";
 
 export interface QuickLookServiceDependencies {
@@ -24,9 +25,13 @@ export interface QuickLookServiceDependencies {
 export class QuickLookService {
   constructor(private readonly deps: QuickLookServiceDependencies) {}
 
-  /** All comparisons with the last-used one (or the first) loaded in full. */
+  /** All comparisons with the last-used one (or the first) loaded in full; signed out, an empty signed-out state. */
   async init(): Promise<QuickLookState> {
-    const comparisons = await this.deps.comparisons.list();
+    const comparisons = await this.deps.comparisons.list().catch((error: unknown) => {
+      if (error instanceof SignInRequiredError) return null;
+      throw error;
+    });
+    if (comparisons === null) return this.signedOutState();
     this.deps.onComparisonsChanged();
     return this.stateFor(comparisons, pickInitial(comparisons, await this.deps.settings.lastComparisonId()));
   }
@@ -54,7 +59,11 @@ export class QuickLookService {
 
   private async stateFor(comparisons: CatalogComparisonSummary[], selectedId: string | null): Promise<QuickLookState> {
     const products = selectedId === null ? [] : (await this.deps.comparisons.get(selectedId)).products;
-    return { comparisons, selectedId, products, webBaseUrl: this.deps.webBaseUrl };
+    return { signedIn: true, comparisons, selectedId, products, webBaseUrl: this.deps.webBaseUrl };
+  }
+
+  private signedOutState(): QuickLookState {
+    return { signedIn: false, comparisons: [], selectedId: null, products: [], webBaseUrl: this.deps.webBaseUrl };
   }
 }
 

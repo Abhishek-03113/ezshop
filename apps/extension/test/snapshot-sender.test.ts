@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { SignInRequiredError } from "../src/sign-in-required.ts";
 import { sendSnapshot } from "../src/snapshot-sender.ts";
 import { FakeSnapshotApi } from "./fakes/fake-snapshot-api.ts";
 import { buildSnapshot } from "./support/build-snapshot.ts";
@@ -9,6 +10,12 @@ describe("sendSnapshot", () => {
     expect(await sendSnapshot(api.fetch, "http://api", buildSnapshot())).toBe("p1");
     expect(api.posts[0]?.url).toBe("http://api/api/snapshots");
     expect(api.posts[0]?.body).toMatchObject({ externalId: "B0FQG1YHYR" });
+    expect(api.posts[0]?.credentials).toBe("include");
+  });
+
+  test("a 401 means nobody is signed in to Picky", async () => {
+    const api = new FakeSnapshotApi(401, { message: "Sign in" });
+    await expect(sendSnapshot(api.fetch, "http://api", buildSnapshot())).rejects.toBeInstanceOf(SignInRequiredError);
   });
 
   test("throws with the API's message", async () => {

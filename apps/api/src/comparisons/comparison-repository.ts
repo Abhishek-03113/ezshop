@@ -1,21 +1,22 @@
 import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@picky/catalog";
 
 /**
- * Storage for named product sets. Many-to-many: a product can be in several comparisons.
- * Methods taking a comparison id resolve to null when it does not exist (including malformed ids).
+ * Storage for named product sets, each owned by one user. Many-to-many: a product can be in several of
+ * its owner's comparisons. Every method is scoped to `userId`: another user's comparison resolves exactly
+ * like a missing one (null), so ids never leak across accounts.
  */
 export interface ComparisonRepository {
   /** Most recently updated first. */
-  listComparisons(): Promise<CatalogComparisonSummary[]>;
-  /** Creates a comparison holding the given products in order; unknown product ids are the caller's to check. */
-  createComparison(name: string, productIds: readonly string[]): Promise<CatalogComparisonSummary>;
-  findComparison(id: string): Promise<CatalogComparisonDetail | null>;
-  renameComparison(id: string, name: string): Promise<CatalogComparisonSummary | null>;
+  listComparisons(userId: string): Promise<CatalogComparisonSummary[]>;
+  /** Creates a comparison holding the given products in order; the caller checks they are the user's own. */
+  createComparison(userId: string, name: string, productIds: readonly string[]): Promise<CatalogComparisonSummary>;
+  findComparison(userId: string, id: string): Promise<CatalogComparisonDetail | null>;
+  renameComparison(userId: string, id: string, name: string): Promise<CatalogComparisonSummary | null>;
   /** True when a comparison was deleted. Its products stay in the library. */
-  deleteComparison(id: string): Promise<boolean>;
+  deleteComparison(userId: string, id: string): Promise<boolean>;
   /** Idempotent: adding a product already in the comparison changes nothing. */
-  addProduct(id: string, productId: string): Promise<CatalogComparisonSummary | null>;
-  removeProduct(id: string, productId: string): Promise<CatalogComparisonSummary | null>;
+  addProduct(userId: string, id: string, productId: string): Promise<CatalogComparisonSummary | null>;
+  removeProduct(userId: string, id: string, productId: string): Promise<CatalogComparisonSummary | null>;
   /** The comparisons a product belongs to, most recently updated first. */
-  listComparisonsForProduct(productId: string): Promise<CatalogComparisonSummary[]>;
+  listComparisonsForProduct(userId: string, productId: string): Promise<CatalogComparisonSummary[]>;
 }

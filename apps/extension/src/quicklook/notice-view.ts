@@ -28,6 +28,26 @@ export function loadingView(dom: Dom): HTMLElement {
   ]);
 }
 
+/**
+ * Compare when nobody is signed in. Specs never need an account; this says so and links to sign-in,
+ * which opens in a new tab because the overlay sits on the shop's page.
+ *
+ * @example signedOutView(dom, "http://localhost:5173")
+ */
+export function signedOutView(dom: Dom, webBaseUrl: string): HTMLElement {
+  const link = dom.el("a", {
+    className: "add add-wide",
+    text: "Sign in to Picky",
+    attrs: { href: `${webBaseUrl}/login`, target: "_blank", rel: "noopener", "data-focus": "sign-in" },
+  });
+  return notice(
+    dom,
+    "Sign in to compare",
+    "Specs work without an account. Sign in to save products and compare them side by side.",
+    link,
+  );
+}
+
 /** Shown when the first load failed; `message` is the worker's reason. */
 export function failedView(dom: Dom, message: string, actions: OverlayActions): HTMLElement {
   return notice(

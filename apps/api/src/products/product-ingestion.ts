@@ -22,10 +22,10 @@ export class InvalidSnapshotError extends Error {
 }
 
 /**
- * The two ways products enter picky: a snapshot captured by the extension in the user's
+ * The two ways products enter a user's library: a snapshot captured by the extension in the user's
  * browser, or a URL the API scrapes itself through the HtmlFetcher (Firecrawl).
  *
- * @example await new ProductIngestion(repository, fetcher, () => new Date()).importFromUrl(url)
+ * @example await new ProductIngestion(repository, fetcher, () => new Date()).importFromUrl(userId, url)
  */
 export class ProductIngestion {
   constructor(
@@ -34,19 +34,19 @@ export class ProductIngestion {
     private readonly now: () => Date,
   ) {}
 
-  async ingestSnapshot(candidate: unknown): Promise<CatalogProduct> {
+  async ingestSnapshot(userId: string, candidate: unknown): Promise<CatalogProduct> {
     const parsed = ProductSnapshotSchema.safeParse(candidate);
-    if (parsed.success) return this.repository.saveSnapshot(parsed.data);
+    if (parsed.success) return this.repository.saveSnapshot(userId, parsed.data);
     const issues = parsed.error.issues.map((issue) => `${issue.path.join(".") || "(root)"}: ${issue.message}`);
     throw new InvalidSnapshotError(`Snapshot rejected: ${issues.join("; ")}`, issues);
   }
 
-  async importFromUrl(url: string): Promise<CatalogProduct> {
+  async importFromUrl(userId: string, url: string): Promise<CatalogProduct> {
     if (!isSupportedProductUrl(url)) {
       throw new ProductPageError(`Cannot import "${url}"; expected ${describeSupportedProductUrls()}`);
     }
     const html = await this.htmlFetcher.fetchHtml(url);
     const snapshot = extractProductSnapshot(parseHtmlPage(html), url, this.now());
-    return this.repository.saveSnapshot(snapshot);
+    return this.repository.saveSnapshot(userId, snapshot);
   }
 }

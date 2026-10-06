@@ -2,6 +2,8 @@ import type { CatalogComparisonSummary, CatalogProduct, ProductSnapshot } from "
 
 /** What Quick Look shows: every comparison, the selected one in full. Plain JSON: it crosses worlds. */
 export interface QuickLookState {
+  /** False when nobody is signed in to Picky: no comparisons to show, and Compare offers to sign in. */
+  signedIn: boolean;
   comparisons: CatalogComparisonSummary[];
   selectedId: string | null;
   products: CatalogProduct[];
