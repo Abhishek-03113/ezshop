@@ -108,11 +108,22 @@ describe("comparison routes", () => {
   test("/comparisons shows the empty state when nothing is saved", async () => {
     const html = await renderAppAt("/comparisons", populated());
     expect(html).toContain("No comparisons yet");
+    expect(html).toContain("New comparison");
+  });
+
+  test("/comparisons lists every comparison as a card instead of redirecting to the latest", async () => {
+    const html = await renderAppAt("/comparisons", populated(), seeded());
+    expect(html).toContain('href="/comparisons/c1"');
+    expect(html).toContain("Cans");
+    expect(html).toContain("2 products · Updated");
+    expect(html).toContain("New comparison");
+    expect(html).not.toContain("No comparisons yet");
   });
 
   test("the compare page renders sidebar, toolbar and a matrix with a Lowest price pill", async () => {
     const html = await renderAppAt("/comparisons/c1", populated(), seeded());
     expect(html).toContain('aria-label="Comparisons"');
+    expect(html).toContain("All comparisons");
     expect(html).toContain("Differences");
     expect(html).toContain("Mark best values");
     expect(html).toContain("Lowest");
