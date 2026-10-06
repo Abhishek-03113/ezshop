@@ -2,7 +2,6 @@ import { describe, expect, test } from "bun:test";
 import { createApp } from "../src/http/create-app.ts";
 import { ProductIngestion } from "../src/products/product-ingestion.ts";
 import { FakeDecisionModel } from "./fakes/fake-decision-model.ts";
-import { FakeHtmlFetcher } from "./fakes/fake-html-fetcher.ts";
 import { InMemoryComparisonRepository } from "./fakes/in-memory-comparison-repository.ts";
 import { InMemoryProductRepository } from "./fakes/in-memory-product-repository.ts";
 import { RecordingLogger } from "./fakes/recording-logger.ts";
@@ -11,7 +10,7 @@ const answer = { label: "true", probability: 0.9, probabilities: { false: 0.1, t
 
 function createTestApp(withModel: boolean) {
   const repository = new InMemoryProductRepository();
-  const ingestion = new ProductIngestion(repository, new FakeHtmlFetcher(new Map()), () => new Date());
+  const ingestion = new ProductIngestion(repository);
   const decisionModel = withModel ? new FakeDecisionModel(answer) : undefined;
   const app = createApp({
     repository,
@@ -19,7 +18,6 @@ function createTestApp(withModel: boolean) {
     ingestion,
     logger: new RecordingLogger(),
     webOrigin: "http://web.test",
-    urlImportEnabled: true,
     decisionModel,
   });
   return { app, decisionModel };

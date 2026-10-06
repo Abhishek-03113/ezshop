@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, test } from "bun:test";
 import type { CatalogComparisonDetail, CatalogComparisonSummary } from "@picky/catalog";
 import { createApp } from "../src/http/create-app.ts";
 import { ProductIngestion } from "../src/products/product-ingestion.ts";
-import { FakeHtmlFetcher } from "./fakes/fake-html-fetcher.ts";
 import { InMemoryComparisonRepository } from "./fakes/in-memory-comparison-repository.ts";
 import { InMemoryProductRepository } from "./fakes/in-memory-product-repository.ts";
 import { RecordingLogger } from "./fakes/recording-logger.ts";
@@ -15,9 +14,9 @@ let logger: RecordingLogger;
 beforeEach(() => {
   repository = new InMemoryProductRepository();
   logger = new RecordingLogger();
-  const ingestion = new ProductIngestion(repository, new FakeHtmlFetcher(new Map()), () => new Date());
+  const ingestion = new ProductIngestion(repository);
   const comparisons = new InMemoryComparisonRepository(repository);
-  app = createApp({ repository, comparisons, ingestion, logger, webOrigin: "http://web.test", urlImportEnabled: true });
+  app = createApp({ repository, comparisons, ingestion, logger, webOrigin: "http://web.test" });
 });
 
 function send(method: string, path: string, body?: unknown): Promise<Response> {

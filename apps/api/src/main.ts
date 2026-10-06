@@ -15,6 +15,5 @@ logger.info("db.migrated", { applied: applied.join(",") || "none" });
 
 const app = await composeApi(config, logger, sql);
 
-// Firecrawl scrapes of Amazon take ~5 s; Bun's default 10 s idle timeout is too tight under load.
-Bun.serve({ port: config.port, fetch: app.fetch, idleTimeout: 120 });
-logger.info("api.started", { port: config.port, firecrawlUrl: config.firecrawlUrl });
+Bun.serve({ port: config.port, fetch: app.fetch });
+logger.info("api.started", { port: config.port });

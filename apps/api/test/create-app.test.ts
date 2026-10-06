@@ -1,20 +1,15 @@
 import { describe, expect, test } from "bun:test";
 import { createApp } from "../src/http/create-app.ts";
 import { ProductIngestion } from "../src/products/product-ingestion.ts";
-import { FakeHtmlFetcher } from "./fakes/fake-html-fetcher.ts";
 import { InMemoryComparisonRepository } from "./fakes/in-memory-comparison-repository.ts";
 import { InMemoryProductRepository } from "./fakes/in-memory-product-repository.ts";
 import { RecordingLogger } from "./fakes/recording-logger.ts";
-import { htmlByFixtureUrl, loadPageFixtures } from "./support/page-fixtures.ts";
 import { buildSampleSnapshot } from "./support/sample-snapshot.ts";
 
-const fixtures = await loadPageFixtures();
-
-function createTestApp(urlImportEnabled = true) {
+function createTestApp() {
   const repository = new InMemoryProductRepository();
-  const fetcher = new FakeHtmlFetcher(htmlByFixtureUrl(fixtures));
   const logger = new RecordingLogger();
-  const ingestion = new ProductIngestion(repository, fetcher, () => new Date("2026-10-05T10:00:00Z"));
+  const ingestion = new ProductIngestion(repository);
   return {
     logger,
     app: createApp({
@@ -23,7 +18,6 @@ function createTestApp(urlImportEnabled = true) {
       ingestion,
       logger,
       webOrigin: "http://web.test",
-      urlImportEnabled,
     }),
   };
 }
@@ -35,18 +29,6 @@ function postJson(path: string, body: unknown): Request {
     body: JSON.stringify(body),
   });
 }
-
-describe("GET /api/capabilities", () => {
-  test("reports URL import as on when a scraping backend is configured", async () => {
-    const response = await createTestApp(true).app.request("/api/capabilities");
-    expect(await response.json()).toEqual({ urlImport: true });
-  });
-
-  test("reports URL import as off for a DOM-capture-only deployment", async () => {
-    const response = await createTestApp(false).app.request("/api/capabilities");
-    expect(await response.json()).toEqual({ urlImport: false });
-  });
-});
 
 describe("product API", () => {
   test("POST /api/snapshots stores the capture and GET returns it", async () => {
@@ -69,28 +51,17 @@ describe("product API", () => {
     expect(logger.entries.map((entry) => entry.event)).toContain("product.deleted");
   });
 
-  test("POST /api/imports reads every supported site and lists the products", async () => {
-    const { app } = createTestApp();
-    for (const fixture of fixtures) {
-      expect((await app.request(postJson("/api/imports", { url: fixture.url }))).status).toBe(201);
-    }
-    const listed = (await (await app.request("/api/products")).json()) as { products: { source: string }[] };
-    expect(new Set(listed.products.map((product) => product.source))).toEqual(new Set(["amazon.in", "flipkart.com"]));
-    expect(listed.products).toHaveLength(fixtures.length);
-  });
-
-  test("rejects malformed JSON and bad import bodies with 400", async () => {
+  test("rejects malformed JSON with 400", async () => {
     const { app } = createTestApp();
     const malformed = new Request("http://api.test/api/snapshots", { method: "POST", body: "{nope" });
     expect((await app.request(malformed)).status).toBe(400);
-    expect((await app.request(postJson("/api/imports", { url: "nope" }))).status).toBe(400);
   });
 
   test("returns 404 for unknown products and routes, and logs failures", async () => {
     const { app, logger } = createTestApp();
     expect((await app.request("/api/products/missing")).status).toBe(404);
     expect((await app.request("/nowhere")).status).toBe(404);
-    expect((await app.request(postJson("/api/imports", { url: "https://example.com/x" }))).status).toBe(422);
+    expect((await app.request(postJson("/api/snapshots", { title: "" }))).status).toBe(400);
     expect(logger.entries.at(-1)).toMatchObject({ level: "error", event: "request.failed" });
   });
 

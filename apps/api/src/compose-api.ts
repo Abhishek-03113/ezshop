@@ -7,38 +7,27 @@ import type { Logger } from "./logging/json-logger.ts";
 import { PostgresComparisonRepository } from "./comparisons/postgres-comparison-repository.ts";
 import { PostgresProductRepository } from "./products/postgres-product-repository.ts";
 import { ProductIngestion } from "./products/product-ingestion.ts";
-import { DisabledHtmlFetcher } from "./scraping/disabled-html-fetcher.ts";
-import { FirecrawlHtmlFetcher } from "./scraping/firecrawl-html-fetcher.ts";
-import type { HtmlFetcher } from "./scraping/html-fetcher.ts";
 
 /**
- * Wires the real repositories and the optional add-ons (Firecrawl URL import, Laya) into the HTTP app.
+ * Wires the real repositories and the optional Laya decision model into the HTTP app.
  * Shared by the long-running server (main.ts) and the Vercel function entry (index.ts).
  *
  * @example const app = await composeApi(loadApiConfig(Bun.env), logger, new SQL(url))
  */
 export async function composeApi(config: ApiConfig, logger: Logger, sql: SQL): Promise<Hono> {
   const repository = new PostgresProductRepository(sql);
-  const ingestion = new ProductIngestion(repository, createHtmlFetcher(config), () => new Date());
+  const ingestion = new ProductIngestion(repository);
   const decisionModel = await loadDecisionModel(config.decisionModelDir);
   logger.info("decisions.model", { dir: config.decisionModelDir, loaded: decisionModel !== undefined });
   const comparisons = new PostgresComparisonRepository(sql);
-  const urlImportEnabled = config.firecrawlUrl !== null;
   return createApp({
     repository,
     comparisons,
     ingestion,
     logger,
     webOrigin: config.webOrigin,
-    urlImportEnabled,
     decisionModel,
   });
-}
-
-// DOM capture by the extension is the default; Firecrawl URL import is an opt-in add-on.
-function createHtmlFetcher(config: ApiConfig): HtmlFetcher {
-  if (config.firecrawlUrl === null) return new DisabledHtmlFetcher();
-  return new FirecrawlHtmlFetcher(config.firecrawlUrl, fetch, config.firecrawlApiKey);
 }
 
 // Imported lazily so deployments without a model (Vercel) never load onnxruntime-node's native binary.

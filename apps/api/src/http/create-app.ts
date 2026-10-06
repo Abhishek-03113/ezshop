@@ -10,8 +10,6 @@ import { createProductRoutes, type ProductRouteDependencies } from "./product-ro
 export interface AppDependencies extends ProductRouteDependencies {
   comparisons: ComparisonRepository;
   webOrigin: string;
-  /** False when no Firecrawl is configured; the web app greys out its paste-a-link form. */
-  urlImportEnabled: boolean;
   /** Absent when no Laya model is configured; /api/decisions is then not mounted. */
   decisionModel?: DecisionModel;
 }
@@ -26,7 +24,6 @@ export function createApp(deps: AppDependencies): Hono {
   const app = new Hono();
   app.use("/api/*", cors({ origin: deps.webOrigin }));
   app.get("/health", (c) => c.json({ status: "ok" }));
-  app.get("/api/capabilities", (c) => c.json({ urlImport: deps.urlImportEnabled }));
   app.route("/api", createProductRoutes(deps));
   app.route("/api", createComparisonRoutes(deps));
   if (deps.decisionModel) {
