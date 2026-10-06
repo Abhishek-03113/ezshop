@@ -1,5 +1,4 @@
-import type { SpecGroup } from "@ezshop/catalog";
-import { specGroupAnchor } from "../specs/filter-spec-groups.ts";
+import { type SpecGroup, specGroupAnchor } from "@ezshop/catalog";
 
 /** Chips that jump to each visible group, with its spec count. */
 export function SpecGroupNav({ groups }: { groups: readonly SpecGroup[] }) {

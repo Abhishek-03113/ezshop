@@ -1,5 +1,4 @@
-import type { ProductSource } from "@ezshop/catalog";
-import { sourceLabel } from "../format/source-label.ts";
+import { type ProductSource, sourceLabel } from "@ezshop/catalog";
 import { ExternalLinkIcon } from "./icons.tsx";
 
 /** "View on Amazon.in" pill that opens the original product page. */

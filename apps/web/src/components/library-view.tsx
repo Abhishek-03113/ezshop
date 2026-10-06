@@ -1,7 +1,6 @@
-import type { CatalogComparisonSummary, CatalogProductSummary } from "@ezshop/catalog";
+import { type CatalogComparisonSummary, type CatalogProductSummary, pluralize } from "@ezshop/catalog";
 import { useState } from "react";
 import { useLibrarySelection } from "../hooks/use-library-selection.ts";
-import { pluralize } from "../format/format-count.ts";
 import type { StoreFilter } from "../format/source-label.ts";
 import { filterProductsByStore } from "../library/filter-products.ts";
 import type { GroupKey } from "../library/group-options.ts";

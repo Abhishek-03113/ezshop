@@ -1,5 +1,4 @@
-import type { CatalogProductSummary } from "@ezshop/catalog";
-import { pluralize } from "../format/format-count.ts";
+import { type CatalogProductSummary, pluralize } from "@ezshop/catalog";
 
 /**
  * A new selection with the id flipped; the input set is left alone so React state stays immutable.

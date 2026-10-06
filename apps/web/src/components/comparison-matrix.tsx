@@ -1,6 +1,11 @@
-import { flipkartSearchUrl, type CatalogProduct, type ComparisonGroup, type ComparisonMatrix } from "@ezshop/catalog";
+import {
+  type CatalogProduct,
+  type ComparisonGroup,
+  type ComparisonMatrix,
+  flipkartSearchUrl,
+  pluralize,
+} from "@ezshop/catalog";
 import type { CSSProperties } from "react";
-import { pluralize } from "../format/format-count.ts";
 import { ExternalLinkIcon } from "./icons.tsx";
 import { MatrixRow } from "./comparison-cells.tsx";
 import { ComparisonProductHeader } from "./comparison-product-header.tsx";

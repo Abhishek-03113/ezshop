@@ -1,9 +1,7 @@
-import type { CatalogProductSummary } from "@ezshop/catalog";
+import { type CatalogProductSummary, formatMoney, sourceLabel } from "@ezshop/catalog";
 import { Link } from "@tanstack/react-router";
 import type { MouseEvent } from "react";
 import { formatCapturedLabel } from "../format/format-relative-date.ts";
-import { formatMoney } from "../format/format-money.ts";
-import { sourceLabel } from "../format/source-label.ts";
 import { BoxIcon, CheckIcon } from "./icons.tsx";
 
 interface ProductCardProps {

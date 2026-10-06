@@ -1,6 +1,4 @@
-import type { CatalogProduct } from "@ezshop/catalog";
-import { pluralize } from "../format/format-count.ts";
-import { sourceLabel } from "../format/source-label.ts";
+import { type CatalogProduct, pluralize, sourceLabel } from "@ezshop/catalog";
 
 const LIST_FORMAT = new Intl.ListFormat("en", { type: "conjunction" });
 

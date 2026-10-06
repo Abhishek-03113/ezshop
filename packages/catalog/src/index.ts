@@ -20,3 +20,10 @@ export type {
   ComparisonOptions,
   ComparisonRow,
 } from "./compare/types.ts";
+export { availabilityTone, type AvailabilityTone } from "./present/availability-tone.ts";
+export { discountPercent, formatMoney, savingsAmount } from "./present/money-format.ts";
+export { pluralize } from "./present/pluralize.ts";
+export { countSpecs, filterSpecGroups, specCountLabel, specGroupAnchor } from "./present/spec-search.ts";
+export { formatCaptureTime } from "./present/capture-time.ts";
+export { sourceLabel } from "./present/source-label.ts";
+export { ratingCountLabel } from "./present/rating-label.ts";
