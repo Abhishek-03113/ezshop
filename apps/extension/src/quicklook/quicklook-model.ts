@@ -1,6 +1,9 @@
 import type { CatalogProduct, ProductSnapshot } from "@ezshop/catalog";
 import type { QuickLookState } from "../messaging/messages.ts";
 
+/** Which body the overlay shows: the comparison matrix or the open page's own spec sheet. */
+export type QuickLookView = "compare" | "specs";
+
 /** Everything the overlay renders from; the controller replaces it wholesale on each change. */
 export interface QuickLookModel {
   status: "loading" | "ready" | "failed";
@@ -10,6 +13,7 @@ export interface QuickLookModel {
   /** Live snapshot of the open tab, or null when it is not a product page. */
   pageSnapshot: ProductSnapshot | null;
   differencesOnly: boolean;
+  view: QuickLookView;
   busy: boolean;
 }
 
@@ -19,8 +23,38 @@ export const INITIAL_MODEL: QuickLookModel = {
   state: null,
   pageSnapshot: null,
   differencesOnly: true,
+  view: "specs",
   busy: false,
 };
+
+/**
+ * The view the overlay really shows. Specs is primary, but a "specs" request without a page snapshot
+ * (nothing to show) falls back to compare, so a stale view value can never render an empty sheet.
+ *
+ * @example effectiveView({ ...INITIAL_MODEL, view: "specs", pageSnapshot: null }) // "compare"
+ */
+export function effectiveView(model: QuickLookModel): QuickLookView {
+  return model.view === "specs" && model.pageSnapshot === null ? "compare" : model.view;
+}
+
+/**
+ * True when the overlay is showing the open page's spec sheet.
+ *
+ * @example showsSpecs({ ...INITIAL_MODEL, view: "specs", pageSnapshot: null }) // false
+ */
+export function showsSpecs(model: QuickLookModel): boolean {
+  return effectiveView(model) === "specs";
+}
+
+/**
+ * Maps a manifest command name to the Quick Look view it opens; null for commands that are not ours.
+ * `_execute_action` arrives as chrome.action.onClicked instead, so it is not handled here.
+ *
+ * @example viewForCommand("open-comparison") // "compare"
+ */
+export function viewForCommand(command: string): QuickLookView | null {
+  return command === "open-comparison" ? "compare" : null;
+}
 
 function isSameProduct(product: CatalogProduct, snapshot: ProductSnapshot): boolean {
   return product.snapshot.source === snapshot.source && product.snapshot.externalId === snapshot.externalId;

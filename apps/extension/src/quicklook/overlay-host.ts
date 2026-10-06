@@ -3,6 +3,7 @@ import { capturePage } from "../capture-page.ts";
 import { ChromeQuickLookApi } from "./chrome-quicklook-api.ts";
 import { QuickLookController } from "./quicklook-controller.ts";
 import type { QuickLookApi } from "./quicklook-api.ts";
+import type { QuickLookView } from "./quicklook-model.ts";
 
 const HOST_TAG = "ezshop-quick-look";
 
@@ -10,6 +11,13 @@ export interface OverlayHostDependencies {
   document: Document;
   stylesheet: string;
   api: QuickLookApi;
+  /** Reads the live tab; defaults to the real page, injectable so tests need no product page. */
+  readPage?: () => ProductSnapshot | null;
+}
+
+/** The document's own window (not the global), so the overlay works in any document, including test ones. */
+function windowOf(document: Document): Window & typeof globalThis {
+  return (document.defaultView ?? window) as Window & typeof globalThis;
 }
 
 /** A closed shadow root, so Amazon/Flipkart CSS and scripts can neither style nor reach the overlay. */
@@ -20,7 +28,7 @@ function mountShadowContainer(
   const host = document.createElement(HOST_TAG);
   const root = host.attachShadow({ mode: "closed" });
   // adoptedStyleSheets (not a <style> element) so a strict page CSP cannot block our styles.
-  const sheet = new CSSStyleSheet();
+  const sheet = new (windowOf(document).CSSStyleSheet)();
   sheet.replaceSync(stylesheet);
   root.adoptedStyleSheets = [sheet];
   const container = document.createElement("div");
@@ -31,43 +39,54 @@ function mountShadowContainer(
 /**
  * Shows or hides the Quick Look overlay on the page. Calling it while open closes it.
  *
- * @example const overlay = new QuickLookOverlay(deps); overlay.toggle()
+ * @example const overlay = new QuickLookOverlay(deps); overlay.toggle("specs")
  */
 export class QuickLookOverlay {
-  private open: { host: HTMLElement; close: () => void } | null = null;
+  private open: { host: HTMLElement; close: () => void; controller: QuickLookController } | null = null;
 
   constructor(private readonly deps: OverlayHostDependencies) {}
 
-  toggle(): void {
-    if (this.open === null) this.show();
-    else this.open.close();
+  /**
+   * Closed: opens on `view`. Open on `view`: closes. Open on the other view: switches to it and stays open,
+   * so each shortcut is a toggle for its own view and a jump from the other one.
+   *
+   * @example overlay.toggle("compare")
+   */
+  toggle(view: QuickLookView): void {
+    if (this.open === null) return this.show(view);
+    const before = this.open.controller.currentView();
+    this.open.controller.setView(view);
+    // Unchanged view means "same shortcut again", including Alt+Shift+S off a product page, where specs
+    // falls back to compare and setView ignores it; comparing against `view` would leave the overlay stuck open.
+    if (this.open.controller.currentView() === before) this.open.close();
   }
 
-  private show(): void {
+  private show(view: QuickLookView): void {
     const { document } = this.deps;
     const { host, root, container } = mountShadowContainer(document, this.deps.stylesheet);
     const previouslyFocused = document.activeElement;
     const releaseScroll = lockPageScroll(document);
+    const pageWindow = windowOf(document);
     let onKey: (event: KeyboardEvent) => void = () => {};
     const close = (): void => {
-      window.removeEventListener("keydown", onKey, true);
+      pageWindow.removeEventListener("keydown", onKey, true);
       host.remove();
       releaseScroll();
       this.open = null;
-      if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+      if (previouslyFocused instanceof pageWindow.HTMLElement) previouslyFocused.focus();
     };
     const controller = new QuickLookController({
       container,
       api: this.deps.api,
-      readPage: () => readThisPage(document),
+      readPage: this.deps.readPage ?? (() => readThisPage(document)),
       onClose: close,
       activeElement: () => root.activeElement,
     });
     onKey = keyForwarder(controller);
-    window.addEventListener("keydown", onKey, true);
+    pageWindow.addEventListener("keydown", onKey, true);
     document.documentElement.append(host);
-    this.open = { host, close };
-    void controller.open();
+    this.open = { host, close, controller };
+    void controller.open(view);
   }
 }
 
@@ -100,7 +119,7 @@ function readThisPage(document: Document): ProductSnapshot | null {
 }
 
 /** The toggle the service worker calls through executeScript; injected once, reused on later clicks. */
-export function installQuickLook(document: Document, stylesheet: string): () => void {
+export function installQuickLook(document: Document, stylesheet: string): (view: QuickLookView) => void {
   const overlay = new QuickLookOverlay({ document, stylesheet, api: new ChromeQuickLookApi() });
-  return () => overlay.toggle();
+  return (view) => overlay.toggle(view);
 }

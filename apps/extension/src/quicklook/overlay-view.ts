@@ -4,9 +4,12 @@ import { headerView } from "./header-view.ts";
 import { matrixView } from "./matrix-view.ts";
 import { emptyComparisonView, emptyView, failedView, loadingView } from "./notice-view.ts";
 import type { OverlayActions } from "./overlay-actions.ts";
-import { thisPageColumn, type QuickLookModel } from "./quicklook-model.ts";
+import { renderSpecSheetContent } from "../popup/specs/spec-sheet-view.ts";
+import { showsSpecs, thisPageColumn, type QuickLookModel } from "./quicklook-model.ts";
 
 function bodyContent(dom: Dom, model: QuickLookModel, actions: OverlayActions): HTMLElement {
+  // The page snapshot is already in the model, so specs render without waiting for the comparison API.
+  if (model.pageSnapshot !== null && showsSpecs(model)) return renderSpecSheetContent(dom, model.pageSnapshot);
   if (model.status === "loading") return loadingView(dom);
   if (model.status === "failed") return failedView(dom, model.message ?? "unknown error", actions);
   const state = model.state;
@@ -16,7 +19,7 @@ function bodyContent(dom: Dom, model: QuickLookModel, actions: OverlayActions): 
 }
 
 function errorBanner(dom: Dom, model: QuickLookModel): HTMLElement[] {
-  if (model.status !== "ready" || model.message === null) return [];
+  if (model.status !== "ready" || model.message === null || showsSpecs(model)) return [];
   return [dom.el("p", { className: "banner", text: model.message, attrs: { role: "alert" } })];
 }
 

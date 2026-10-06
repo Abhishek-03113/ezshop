@@ -4,6 +4,7 @@ export type PopupState =
   | { kind: "welcome" }
   | { kind: "capturing"; phase: CapturePhase }
   | { kind: "saved"; summary: SavedSummary }
+  | { kind: "specs"; summary: SavedSummary }
   | { kind: "unsupported" }
   | { kind: "failed"; message: string };
 

@@ -9,8 +9,10 @@ import { apiHostPermission, resolveCaptureConfig } from "./src/capture-config.ts
 // EZSHOP_API_URL / EZSHOP_WEB_URL point it at a non-local stack.
 const OUT_DIR = join(import.meta.dir, "dist");
 const config = resolveCaptureConfig(Bun.env);
-const quickLookCss = await shadowStylesheet("src/quicklook/quicklook.css");
-const toastCss = await shadowStylesheet("src/toast/toast.css");
+// Quick Look also renders the shared spec sheet, so its shadow root carries that CSS too.
+const SPEC_SHEET_CSS_PATHS = ["src/popup/spec-sheet.css", "src/popup/spec-sheet-wide.css"] as const;
+const quickLookCss = await shadowStylesheet(["src/quicklook/quicklook.css", ...SPEC_SHEET_CSS_PATHS]);
+const toastCss = await shadowStylesheet(["src/toast/toast.css"]);
 
 // The service worker is an ES module (manifest "type": "module"); files given to
 // chrome.scripting.executeScript must be classic scripts, hence IIFE.
@@ -25,10 +27,10 @@ const BUNDLES = [
 ] as const;
 
 // Shadow-DOM surfaces (Quick Look, toasts) ship their own stylesheet as a string baked into the bundle.
-async function shadowStylesheet(ownCssPath: string): Promise<string> {
+async function shadowStylesheet(ownCssPaths: readonly string[]): Promise<string> {
   const tokensPath = fileURLToPath(import.meta.resolve("@ezshop/ui-tokens/tokens.css"));
-  const ownCss = await Bun.file(join(import.meta.dir, ownCssPath)).text();
-  return buildShadowStylesheet(await Bun.file(tokensPath).text(), ownCss);
+  const ownCss = await Promise.all(ownCssPaths.map((path) => Bun.file(join(import.meta.dir, path)).text()));
+  return buildShadowStylesheet(await Bun.file(tokensPath).text(), ...ownCss);
 }
 
 async function buildBundle(bundle: (typeof BUNDLES)[number]): Promise<void> {
@@ -47,11 +49,15 @@ async function buildBundle(bundle: (typeof BUNDLES)[number]): Promise<void> {
   if (!result.success) throw new AggregateError(result.logs, `Bundling ${bundle.entry} failed`);
 }
 
-// popup.html links one stylesheet: the shared design tokens followed by the popup's own rules.
+// popup.html links one stylesheet: the shared design tokens, the popup's own rules, then the spec view's.
 async function writePopupStylesheet(): Promise<void> {
   const tokensPath = fileURLToPath(import.meta.resolve("@ezshop/ui-tokens/tokens.css"));
   const popupCss = await Bun.file(join(import.meta.dir, "src/popup/popup.css")).text();
-  await Bun.write(join(OUT_DIR, "popup.css"), `${await Bun.file(tokensPath).text()}\n${popupCss}`);
+  const specSheetCss = await Promise.all(
+    SPEC_SHEET_CSS_PATHS.map((path) => Bun.file(join(import.meta.dir, path)).text()),
+  );
+  const tokensCss = await Bun.file(tokensPath).text();
+  await Bun.write(join(OUT_DIR, "popup.css"), [tokensCss, popupCss, ...specSheetCss].join("\n"));
 }
 
 async function writeManifest(): Promise<void> {

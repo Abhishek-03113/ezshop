@@ -1,5 +1,11 @@
 import { describe, expect, test } from "bun:test";
-import { INITIAL_MODEL, neighbourComparisonId, thisPageColumn } from "../../src/quicklook/quicklook-model.ts";
+import {
+  INITIAL_MODEL,
+  effectiveView,
+  neighbourComparisonId,
+  thisPageColumn,
+  viewForCommand,
+} from "../../src/quicklook/quicklook-model.ts";
 import { buildCatalogProduct, buildSnapshot } from "../support/build-snapshot.ts";
 import { stateWith } from "../support/quicklook-state.ts";
 
@@ -28,5 +34,26 @@ describe("neighbourComparisonId", () => {
   test("is null with a single comparison or none selected", () => {
     expect(neighbourComparisonId(stateWith("c1", []), 1)).toBeNull();
     expect(neighbourComparisonId({ ...state, selectedId: null }, 1)).toBeNull();
+  });
+});
+
+describe("viewForCommand", () => {
+  test("maps open-comparison to the compare view", () => {
+    expect(viewForCommand("open-comparison")).toBe("compare");
+  });
+  test("ignores _execute_action (a click event) and unknown commands", () => {
+    expect(viewForCommand("_execute_action")).toBeNull();
+    expect(viewForCommand("nope")).toBeNull();
+  });
+});
+
+describe("effectiveView", () => {
+  test("keeps the requested view on a product page", () => {
+    const page = buildSnapshot();
+    expect(effectiveView({ ...INITIAL_MODEL, pageSnapshot: page })).toBe("specs");
+    expect(effectiveView({ ...INITIAL_MODEL, pageSnapshot: page, view: "compare" })).toBe("compare");
+  });
+  test("falls back to compare without a page snapshot", () => {
+    expect(effectiveView(INITIAL_MODEL)).toBe("compare");
   });
 });

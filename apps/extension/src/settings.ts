@@ -5,7 +5,7 @@ export interface KeyValueStorage {
 }
 
 export interface ExtensionSettings {
-  /** Open the spec sheet tab as soon as a capture is saved. */
+  /** Open the spec sheet tab as soon as a capture is saved. Off by default: the popup's own "View specs" is the primary path. */
   autoOpenSheet: boolean;
   /** True once the user pressed "Got it" on the first-run screen. */
   firstRunDismissed: boolean;
@@ -14,7 +14,7 @@ export interface ExtensionSettings {
 }
 
 const SETTINGS_KEY = "ezshop.settings";
-const DEFAULT_SETTINGS: ExtensionSettings = { autoOpenSheet: true, firstRunDismissed: false, lastComparisonId: null };
+const DEFAULT_SETTINGS: ExtensionSettings = { autoOpenSheet: false, firstRunDismissed: false, lastComparisonId: null };
 
 function parseSettings(stored: unknown): ExtensionSettings {
   if (typeof stored !== "object" || stored === null) return DEFAULT_SETTINGS;
@@ -29,7 +29,7 @@ function parseSettings(stored: unknown): ExtensionSettings {
 
 /**
  * Persisted popup preferences. Unreadable or missing storage falls back to the defaults
- * (auto-open ON, first run not yet seen).
+ * (auto-open OFF, first run not yet seen).
  *
  * @example await new SettingsStore(storage).setAutoOpenSheet(false)
  */

@@ -5,6 +5,10 @@ export interface ShellOptions {
   hostLabel?: string;
   /** When set, the header shows the library icon button linking here. */
   libraryUrl?: string;
+  /** When set, the header leads with a back chevron (calls this) and shows `title` instead of the brand. */
+  onBack?: () => void;
+  /** Header title shown next to the back button; ignored without onBack. */
+  title?: string;
 }
 
 /**
@@ -18,15 +22,23 @@ export function renderShell(dom: Dom, options: ShellOptions, body: HTMLElement):
 }
 
 function renderHeader(dom: Dom, options: ShellOptions): HTMLElement {
-  const header = dom.el("header", { className: "header" }, [
-    dom.icon("logo", "logo"),
-    dom.el("span", { className: "brand", text: "ezshop" }),
-  ]);
+  const header = dom.el("header", { className: "header" }, renderHeaderLead(dom, options));
   if (options.hostLabel !== undefined) {
     header.append(dom.el("span", { className: "header-host", text: options.hostLabel }));
   }
   if (options.libraryUrl !== undefined) header.append(renderLibraryLink(dom, options.libraryUrl));
   return header;
+}
+
+function renderHeaderLead(dom: Dom, options: ShellOptions): Node[] {
+  if (options.onBack === undefined)
+    return [dom.icon("logo", "logo"), dom.el("span", { className: "brand", text: "ezshop" })];
+  const back = dom.el("button", { className: "back-button", attrs: { type: "button" } }, [
+    dom.icon("chevronLeft", "icon-md"),
+    "Back",
+  ]);
+  back.addEventListener("click", options.onBack);
+  return [back, dom.el("span", { className: "brand", text: options.title ?? "" })];
 }
 
 function renderLibraryLink(dom: Dom, libraryUrl: string): HTMLElement {

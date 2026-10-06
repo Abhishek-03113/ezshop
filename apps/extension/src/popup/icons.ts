@@ -37,6 +37,13 @@ export const ICONS = {
   close: { viewBox: "0 0 24 24", shapes: [path("M6 6l12 12M18 6L6 18")] },
   plus: { viewBox: "0 0 24 24", shapes: [path("M12 5v14M5 12h14")] },
   chevronDown: { viewBox: "0 0 24 24", shapes: [path("M6 9l6 6 6-6")] },
+  chevronLeft: { viewBox: "0 0 24 24", shapes: [path("M15 6l-6 6 6 6")] },
+  search: { viewBox: "0 0 24 24", shapes: [circle(7), path("M20 20l-3.5-3.5")] },
+  star: {
+    viewBox: "0 0 24 24",
+    shapes: [path("M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1L3.2 9.4l6.1-.8z")],
+  },
+  box: { viewBox: "0 0 24 24", shapes: [path("M3 7.5L12 3l9 4.5v9L12 21l-9-4.5zM3 7.5l9 4.5 9-4.5M12 12v9")] },
   pending: { viewBox: "0 0 24 24", shapes: [circle(8)] },
 } as const satisfies Record<string, IconDefinition>;
 

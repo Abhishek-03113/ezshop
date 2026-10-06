@@ -10,6 +10,7 @@ export interface SavedModel {
 
 export interface SavedHandlers {
   onAutoOpenChange: (checked: boolean) => void;
+  onViewSpecs: () => void;
 }
 
 const AUTO_OPEN_LABEL_ID = "auto-open-label";
@@ -21,8 +22,8 @@ export function describeSpecCount(specCount: number, groupCount: number): string
 }
 
 /**
- * Saved body: confirmation, product card (links to the sheet), primary "Open spec sheet"
- * button and the "Open sheet automatically" switch.
+ * Saved body: confirmation, product card (links to the sheet), primary "View specs"
+ * button, the secondary "Open in ezshop" link and the "Open sheet automatically" switch.
  *
  * @example renderSavedView(dom, { summary, webBaseUrl: "http://localhost:5173", autoOpen: true }, handlers)
  */
@@ -31,7 +32,8 @@ export function renderSavedView(dom: Dom, model: SavedModel, handlers: SavedHand
   return dom.el("main", { className: "body body-tight" }, [
     renderConfirmation(dom, model.summary),
     renderProductCard(dom, model.summary, sheetUrl),
-    renderOpenButton(dom, sheetUrl),
+    renderViewSpecsButton(dom, handlers),
+    renderOpenLink(dom, sheetUrl),
     renderAutoOpenRow(dom, model.autoOpen, handlers),
   ]);
 }
@@ -76,12 +78,19 @@ function renderPrices(dom: Dom, summary: SavedSummary): HTMLElement {
   return prices;
 }
 
-function renderOpenButton(dom: Dom, sheetUrl: string): HTMLElement {
+function renderViewSpecsButton(dom: Dom, handlers: SavedHandlers): HTMLElement {
+  const button = dom.el("button", {
+    className: "button button-primary button-tall",
+    attrs: { type: "button" },
+    text: "View specs",
+  });
+  button.addEventListener("click", handlers.onViewSpecs);
+  return button;
+}
+
+function renderOpenLink(dom: Dom, sheetUrl: string): HTMLElement {
   const attrs = { href: sheetUrl, target: "_blank", rel: "noopener" };
-  return dom.el("a", { className: "button button-primary button-tall", attrs }, [
-    "Open spec sheet",
-    dom.icon("arrowUpRight", "icon-xs"),
-  ]);
+  return dom.el("a", { className: "button button-secondary", attrs }, ["Open in ezshop ↗"]);
 }
 
 function renderAutoOpenRow(dom: Dom, autoOpen: boolean, handlers: SavedHandlers): HTMLElement {

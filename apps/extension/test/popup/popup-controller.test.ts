@@ -82,7 +82,18 @@ describe("PopupController", () => {
     await controller.start();
     (root.querySelector('[role="switch"]') as HTMLButtonElement).click();
     await new Promise((resolve) => setTimeout(resolve, 0));
-    expect(await new SettingsStore(storage).isAutoOpenEnabled()).toBe(false);
+    expect(await new SettingsStore(storage).isAutoOpenEnabled()).toBe(true);
+  });
+
+  test("View specs swaps to the spec sheet and Back returns to the saved card", async () => {
+    const { root, controller } = createController(new FakeKeyValueStorage(SEEN_BEFORE), new FakeCaptureService(SAVED));
+    await controller.start();
+    (root.querySelector("button.button-primary") as HTMLButtonElement).click();
+    expect(root.querySelector("main.spec-body")).not.toBeNull();
+    expect(root.textContent).not.toContain("Saved to your library");
+    (root.querySelector("button.back-button") as HTMLButtonElement).click();
+    expect(root.textContent).toContain("Saved to your library");
+    expect(root.querySelector("main.spec-body")).toBeNull();
   });
 });
 

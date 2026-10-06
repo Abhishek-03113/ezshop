@@ -1,0 +1,135 @@
+/* Spec view, wide layout: mirrors apps/web/src/styles/product.css. A container query (not a media
+   query) because the same markup lives in a 360px popup and in the up-to-1100px Quick Look card:
+   what matters is the width the view is given, not the viewport's. Narrow hosts never match. */
+@container (min-width: 720px) {
+  .spec-view .spec-content {
+    --spec-pad: var(--ez-space-24);
+    gap: var(--ez-space-20);
+  }
+
+  .spec-view .summary {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--ez-space-32);
+  }
+  .spec-view .gallery-main {
+    flex: 0 0 280px;
+    width: 280px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    border-radius: 24px;
+  }
+  .spec-view .summary-heading {
+    flex: 1 1 0;
+    min-width: 0;
+    gap: 10px;
+  }
+  .spec-view .summary-brand {
+    font-size: 15px;
+  }
+  .spec-view .summary h1 {
+    font-size: 28px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+  .spec-view .rating-note {
+    font-size: 15px;
+  }
+
+  .spec-view .price-card {
+    padding: 22px;
+    gap: 14px;
+  }
+  .spec-view .price-block {
+    gap: 10px;
+  }
+  .spec-view .price {
+    font-size: 34px;
+  }
+  .spec-view .list-price {
+    font-size: 17px;
+  }
+  .spec-view .discount-chip {
+    font-size: 14px;
+    padding: 3px 10px;
+  }
+  .spec-view .price-missing {
+    font-size: 17px;
+  }
+  .spec-view .availability {
+    font-size: 15px;
+  }
+  .spec-view .price-card-note {
+    font-size: 13px;
+    padding-top: var(--ez-space-12);
+  }
+
+  .spec-view .highlights {
+    padding: 22px;
+    gap: var(--ez-space-12);
+  }
+  .spec-view .highlights h2 {
+    font-size: 17px;
+  }
+  .spec-view .highlights ul {
+    gap: 10px;
+  }
+  .spec-view .highlights li {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .spec-view .spec-sheet {
+    gap: var(--ez-space-20);
+  }
+  .spec-view .spec-sheet-head {
+    flex-wrap: wrap;
+  }
+  .spec-view .spec-sheet h2 {
+    font-size: 28px;
+  }
+  .spec-view .search-box {
+    padding: 0 14px;
+  }
+  .spec-view .search-box input {
+    font-size: 16px;
+  }
+  .spec-view .group-chips {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+  .spec-view .group-chips button {
+    min-height: 34px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+  .spec-view .empty-state {
+    padding: 48px var(--ez-space-24);
+  }
+  .spec-view .empty-state strong {
+    font-size: 17px;
+  }
+
+  .spec-view .spec-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+    gap: var(--ez-space-20);
+    align-items: start;
+  }
+  .spec-view .spec-group {
+    padding: 8px 22px 6px;
+  }
+  .spec-view .spec-group h3 {
+    padding: 14px 0 var(--ez-space-8);
+    font-size: 13px;
+  }
+  .spec-view .spec-row {
+    grid-template-columns: minmax(120px, 2fr) 3fr;
+    gap: var(--ez-space-16);
+    padding: var(--ez-space-12) 0;
+  }
+  .spec-view .spec-row dt,
+  .spec-view .spec-row dd {
+    font-size: 15px;
+  }
+}
