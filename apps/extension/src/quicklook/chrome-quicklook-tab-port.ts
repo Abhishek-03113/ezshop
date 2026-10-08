@@ -1,3 +1,4 @@
+import type { ProductSnapshot } from "@picky/catalog";
 import type { QuickLookTabPort } from "./quicklook-launcher.ts";
 import type { QuickLookView } from "./quicklook-model.ts";
 
@@ -20,8 +21,23 @@ export class ChromeQuickLookTabPort implements QuickLookTabPort {
       // The page-side function receives the view as an argument: executeScript cannot close over `view`.
       args: [view],
       func: (requested: QuickLookView): boolean => {
-        globalThis.pickyQuickLookToggle?.(requested);
-        return globalThis.pickyQuickLookToggle !== undefined;
+        globalThis.pickyQuickLook?.toggle(requested);
+        return globalThis.pickyQuickLook !== undefined;
+      },
+    });
+    if (injection?.result !== true) throw new Error(`Picky Quick Look script did not load in tab ${tabId}`);
+  }
+
+  /** Opens Quick Look on the specs of `snapshot`, a product that is not this tab's page. */
+  async injectAndShowProduct(tabId: number, snapshot: ProductSnapshot): Promise<void> {
+    await chrome.scripting.executeScript({ target: { tabId }, files: [this.overlayScriptFile] });
+    const [injection] = await chrome.scripting.executeScript({
+      target: { tabId },
+      // As JSON text: executeScript drops null-valued properties from object args (heading: null → missing).
+      args: [JSON.stringify(snapshot)],
+      func: (productJson: string): boolean => {
+        globalThis.pickyQuickLook?.showProduct(JSON.parse(productJson) as ProductSnapshot);
+        return globalThis.pickyQuickLook !== undefined;
       },
     });
     if (injection?.result !== true) throw new Error(`Picky Quick Look script did not load in tab ${tabId}`);

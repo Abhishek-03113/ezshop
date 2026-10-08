@@ -38,7 +38,7 @@ describe("import field views", () => {
     expect(html).toContain("is-unavailable");
     expect(html).toMatch(/<input[^>]*disabled/);
     expect(html).toMatch(/<button[^>]*disabled/);
-    expect(html).toContain("Use the Picky extension on a product page");
+    expect(html).toContain("Adding by link needs the Picky extension");
     expect(html).not.toContain("Amazon.in and Flipkart product pages");
   });
 
@@ -47,6 +47,6 @@ describe("import field views", () => {
     expect(html).toContain('class="import-pill is-unavailable"');
     expect(html).toContain("Add products with the extension");
     expect(html).toMatch(/<input[^>]*disabled/);
-    expect(html).toContain("isn&#x27;t set up on this server");
+    expect(html).toContain("Adding by link needs the Picky extension");
   });
 });

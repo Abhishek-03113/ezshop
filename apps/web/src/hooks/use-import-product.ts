@@ -5,19 +5,19 @@ import { productQueryKeys } from "../api/product-queries.ts";
 const rootRouteApi = getRouteApi("__root__");
 
 /**
- * Mutation that imports a product URL, refreshes the list and opens the new spec sheet.
+ * Mutation that imports a product URL through the extension, refreshes the list and opens the new spec sheet.
  *
  * @example const importProduct = useImportProduct(); importProduct.mutate(url)
  */
 export function useImportProduct() {
-  const { productsClient } = rootRouteApi.useRouteContext();
+  const { extensionBridge } = rootRouteApi.useRouteContext();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: (productUrl: string) => productsClient.importProduct(productUrl),
-    onSuccess: async (product) => {
+    mutationFn: (productUrl: string) => extensionBridge.importLink(productUrl),
+    onSuccess: async (productId) => {
       await queryClient.invalidateQueries({ queryKey: productQueryKeys.list });
-      await navigate({ to: "/products/$productId", params: { productId: product.id } });
+      await navigate({ to: "/products/$productId", params: { productId } });
     },
   });
 }

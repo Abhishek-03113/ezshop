@@ -4,7 +4,7 @@ import { LinkCaptureService } from "../../src/link-capture/link-capture-service.
 import { SettingsStore } from "../../src/settings.ts";
 import { FakeComparisonsClient } from "../fakes/fake-comparisons-client.ts";
 import { FakeKeyValueStorage } from "../fakes/fake-key-value-storage.ts";
-import { FakeBadgeText, FakeHtmlFetcher, FakeSnapshotReader, FakeToastPort } from "../fakes/fake-link-capture-ports.ts";
+import { FakeBadgeText, FakeHtmlFetcher, FakeProductReader, FakeToastPort } from "../fakes/fake-link-capture-ports.ts";
 import { buildSnapshot } from "../support/build-snapshot.ts";
 
 const URL_OK = "https://www.amazon.in/dp/B0FQG1YHYR";
@@ -21,7 +21,7 @@ const SNAPSHOT = {
   ],
 };
 
-function setup(options: { reader?: FakeSnapshotReader; lastUsed?: string; seed?: boolean } = {}) {
+function setup(options: { reader?: FakeProductReader; lastUsed?: string; seed?: boolean } = {}) {
   const client = new FakeComparisonsClient(
     options.seed === false
       ? []
@@ -37,10 +37,18 @@ function setup(options: { reader?: FakeSnapshotReader; lastUsed?: string; seed?:
   );
   const fetcher = new FakeHtmlFetcher({ [URL_OK]: "<html></html>" });
   const changes = { count: 0 };
+  const reader = options.reader ?? new FakeProductReader(SNAPSHOT);
+  const sentSnapshots: string[] = [];
+  const quickLooks: { tabId: number; externalId: string }[] = [];
   const service = new LinkCaptureService({
     fetcher,
-    reader: options.reader ?? new FakeSnapshotReader(SNAPSHOT),
-    sendSnapshot: async () => "p-new",
+    reader,
+    capturePage: reader.capturePage,
+    sendSnapshot: async (snapshot) => {
+      sentSnapshots.push(snapshot.externalId);
+      return "p-new";
+    },
+    showQuickLook: async (tabId, snapshot) => void quickLooks.push({ tabId, externalId: snapshot.externalId }),
     comparisons: client,
     settings,
     toasts,
@@ -49,14 +57,17 @@ function setup(options: { reader?: FakeSnapshotReader; lastUsed?: string; seed?:
     onComparisonsChanged: () => void (changes.count += 1),
     log: () => {},
   });
-  return { service, client, toasts, badge, settings, fetcher, changes };
+  return { service, client, toasts, badge, settings, fetcher, reader, sentSnapshots, quickLooks, changes };
 }
 
-const job = (target: Parameters<LinkCaptureService["add"]>[0]["target"], url = URL_OK) => ({
+type AddJob = Parameters<LinkCaptureService["add"]>[0];
+
+const job = (target: AddJob["target"], url = URL_OK, source: AddJob["source"] = "link"): AddJob => ({
   url,
   label: "",
   target,
   tabId: 7,
+  source,
 });
 
 describe("LinkCaptureService", () => {
@@ -74,6 +85,71 @@ describe("LinkCaptureService", () => {
     });
     expect(toasts.shown.every((entry) => entry.tabId === 7)).toBe(true);
     expect(await settings.lastComparisonId()).toBe("c2");
+  });
+
+  test("a link is downloaded, parsed here and sent as a snapshot, never captured from the tab", async () => {
+    const { service, fetcher, reader, sentSnapshots } = setup();
+    await service.add(job({ kind: "library" }));
+    expect(fetcher.fetched).toEqual([URL_OK]);
+    expect(reader.parsed).toEqual([{ url: URL_OK, html: "<html></html>" }]);
+    expect(reader.capturedTabs).toEqual([]);
+    expect(sentSnapshots).toEqual([SNAPSHOT.externalId]);
+  });
+
+  test("the open product page is read from its DOM and sent as a snapshot, without fetching", async () => {
+    const { service, fetcher, reader, sentSnapshots, client } = setup();
+    await service.add(job({ kind: "comparison", comparisonId: "c1" }, URL_OK, "page"));
+    expect(reader.capturedTabs).toEqual([7]);
+    expect(fetcher.fetched).toEqual([]);
+    expect(sentSnapshots).toEqual([SNAPSHOT.externalId]);
+    expect(client.calls).toContain("add c1 p-new");
+  });
+
+  test("a failed DOM capture ends in an error toast with its message", async () => {
+    const { service, toasts } = setup({ reader: new FakeProductReader(SNAPSHOT, new Error("No #productTitle")) });
+    await service.add(job({ kind: "library" }, URL_OK, "page"));
+    expect(toasts.shown[1]?.message).toEqual({ kind: "failed", id: "t1", reason: "No #productTitle" });
+  });
+
+  test("importLink saves to the library only, without toasts or badge", async () => {
+    const { service, client, toasts, badge } = setup();
+    expect(await service.importLink(URL_OK)).toBe("p-new");
+    expect(client.calls).toEqual([]);
+    expect(toasts.shown).toEqual([]);
+    expect(badge.texts).toEqual([]);
+  });
+
+  test("importLink refuses unsupported links before fetching", async () => {
+    const { service, fetcher } = setup();
+    await expect(service.importLink("https://evil.example/dp/B0FQG1YHYR")).rejects.toThrow("is not a product link");
+    expect(fetcher.fetched).toEqual([]);
+  });
+
+  test("Quick Look on a link parses it and shows it in the tab without saving or toasting", async () => {
+    const { service, fetcher, sentSnapshots, quickLooks, client, toasts, badge } = setup();
+    await service.quickLook(URL_OK, 7);
+    expect(fetcher.fetched).toEqual([URL_OK]);
+    expect(quickLooks).toEqual([{ tabId: 7, externalId: SNAPSHOT.externalId }]);
+    expect(sentSnapshots).toEqual([]);
+    expect(client.calls).toEqual([]);
+    expect(toasts.shown).toEqual([]);
+    expect(badge.texts).toEqual(["1", ""]);
+  });
+
+  test("a failed Quick Look ends in an error toast", async () => {
+    const { service, quickLooks, toasts } = setup({
+      reader: new FakeProductReader(SNAPSHOT, new Error("No #productTitle")),
+    });
+    await service.quickLook(URL_OK, 7);
+    expect(quickLooks).toEqual([]);
+    expect(toasts.shown[0]?.message).toEqual({ kind: "failed", id: "t1", reason: "No #productTitle" });
+  });
+
+  test("Quick Look refuses unsupported links before fetching", async () => {
+    const { service, fetcher, toasts } = setup();
+    await service.quickLook("https://evil.example/dp/B0FQG1YHYR", 7);
+    expect(fetcher.fetched).toEqual([]);
+    expect(toasts.kinds).toEqual(["failed"]);
   });
 
   test("badge counts while in flight and clears afterwards", async () => {
@@ -105,7 +181,7 @@ describe("LinkCaptureService", () => {
   });
 
   test("New comparison is named after the category", async () => {
-    const { service, client } = setup({ reader: new FakeSnapshotReader({ ...SNAPSHOT, category: "Monitors" }) });
+    const { service, client } = setup({ reader: new FakeProductReader({ ...SNAPSHOT, category: "Monitors" }) });
     await service.add(job({ kind: "new" }));
     expect(client.calls).toContain("create Monitors [p-new]");
   });
@@ -118,7 +194,7 @@ describe("LinkCaptureService", () => {
 
   test("a parse failure ends in an error toast with the reason and a cleared badge", async () => {
     const { service, toasts, badge } = setup({
-      reader: new FakeSnapshotReader(SNAPSHOT, new Error("not a product page")),
+      reader: new FakeProductReader(SNAPSHOT, new Error("not a product page")),
     });
     await service.add(job({ kind: "last" }));
     expect(toasts.shown[1]?.message).toEqual({ kind: "failed", id: "t1", reason: "not a product page" });

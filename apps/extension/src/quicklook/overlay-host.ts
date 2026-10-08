@@ -61,7 +61,17 @@ export class QuickLookOverlay {
     if (this.open.controller.currentView() === before) this.open.close();
   }
 
-  private show(view: QuickLookView): void {
+  /**
+   * Opens on the specs of a product that is not this page (Quick Look on a link), replacing any open overlay.
+   *
+   * @example overlay.showProduct(linkedSnapshot)
+   */
+  showProduct(snapshot: ProductSnapshot): void {
+    this.open?.close();
+    this.show("specs", () => snapshot);
+  }
+
+  private show(view: QuickLookView, readPage = this.deps.readPage ?? (() => readThisPage(this.deps.document))): void {
     const { document } = this.deps;
     const { host, root, container } = mountShadowContainer(document, this.deps.stylesheet);
     const previouslyFocused = document.activeElement;
@@ -78,7 +88,7 @@ export class QuickLookOverlay {
     const controller = new QuickLookController({
       container,
       api: this.deps.api,
-      readPage: this.deps.readPage ?? (() => readThisPage(document)),
+      readPage,
       onClose: close,
       activeElement: () => root.activeElement,
     });
@@ -118,8 +128,14 @@ function readThisPage(document: Document): ProductSnapshot | null {
   return result.ok ? result.snapshot : null;
 }
 
-/** The toggle the service worker calls through executeScript; injected once, reused on later clicks. */
-export function installQuickLook(document: Document, stylesheet: string): (view: QuickLookView) => void {
+/** What the service worker calls through executeScript; injected once, reused on later clicks. */
+export interface QuickLookPageHooks {
+  toggle: (view: QuickLookView) => void;
+  showProduct: (snapshot: ProductSnapshot) => void;
+}
+
+/** Installs the overlay in this page and returns the hooks the service worker calls. */
+export function installQuickLook(document: Document, stylesheet: string): QuickLookPageHooks {
   const overlay = new QuickLookOverlay({ document, stylesheet, api: new ChromeQuickLookApi() });
-  return (view) => overlay.toggle(view);
+  return { toggle: (view) => overlay.toggle(view), showProduct: (snapshot) => overlay.showProduct(snapshot) };
 }

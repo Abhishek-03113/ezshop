@@ -71,3 +71,23 @@ describe("QuickLookOverlay.toggle", () => {
     expect(isOpen(document)).toBe(true);
   });
 });
+
+describe("QuickLookOverlay.showProduct", () => {
+  test("opens on a linked product's specs even off a product page", async () => {
+    const { document, overlay } = setup(false);
+    overlay.showProduct(buildSpecSnapshot());
+    await settle();
+    expect(isOpen(document)).toBe(true);
+    // Specs are on screen, so the compare shortcut switches (stays open) instead of closing.
+    overlay.toggle("compare");
+    expect(isOpen(document)).toBe(true);
+  });
+
+  test("replaces an open overlay instead of stacking a second one", async () => {
+    const { document, overlay } = openOn("compare");
+    await settle();
+    overlay.showProduct(buildSpecSnapshot());
+    await settle();
+    expect(document.querySelectorAll("picky-quick-look")).toHaveLength(1);
+  });
+});

@@ -4,11 +4,13 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createAuthClient } from "./api/auth-client.ts";
 import { createComparisonsClient } from "./api/comparisons-client.ts";
+import { createWindowExtensionBridge } from "./api/extension-bridge.ts";
 import { createProductsClient } from "./api/products-client.ts";
 import { createSessionExpiryHandler } from "./auth/session-expiry.ts";
 import { readAppConfig } from "./config/app-config.ts";
 import { createPickyRouter } from "./router.tsx";
 import "@picky/ui-tokens/tokens.css";
+import "@picky/ui-tokens/credit-footer.css";
 import "./styles.css";
 
 // Composition root for the browser: real fetch, same-origin API (Vite proxies /api in dev), so the
@@ -24,6 +26,7 @@ const router = createPickyRouter({
   authClient: createAuthClient(fetch.bind(window), ""),
   productsClient: createProductsClient(fetch.bind(window), ""),
   comparisonsClient: createComparisonsClient(fetch.bind(window), ""),
+  extensionBridge: createWindowExtensionBridge(window, () => crypto.randomUUID()),
   config: readAppConfig(import.meta.env),
 });
 const onApiError = createSessionExpiryHandler(queryClient, router);

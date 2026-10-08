@@ -6,7 +6,8 @@
     ".": "./src/index.ts",
     "./cheerio": "./src/page/cheerio-page.ts",
     "./dom": "./src/page/dom-page.ts",
-    "./testing": "./src/testing/index.ts"
+    "./testing": "./src/testing/index.ts",
+    "./web-bridge": "./src/web-bridge-protocol.ts"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json",

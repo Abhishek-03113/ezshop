@@ -3,7 +3,8 @@ import { createRootRouteWithContext, createRoute, createRouter, type RouterHisto
 import type { AuthClient } from "./api/auth-client.ts";
 import { comparisonDetailQuery, comparisonListQuery, productComparisonsQuery } from "./api/comparison-queries.ts";
 import type { ComparisonsClient } from "./api/comparisons-client.ts";
-import { apiCapabilitiesQuery, productDetailQuery, productListQuery } from "./api/product-queries.ts";
+import type { ExtensionBridge } from "./api/extension-bridge.ts";
+import { productDetailQuery, productListQuery } from "./api/product-queries.ts";
 import type { ProductsClient } from "./api/products-client.ts";
 import { SIGN_IN_PATH, requireSignedIn, skipSignInWhenSignedIn } from "./auth/route-guards.ts";
 import { parseSignInSearch } from "./auth/sign-in-search.ts";
@@ -23,20 +24,18 @@ export interface PickyRouterContext {
   authClient: AuthClient;
   productsClient: ProductsClient;
   comparisonsClient: ComparisonsClient;
+  /** Paste-a-link import goes through the Picky extension, which can fetch store pages. */
+  extensionBridge: ExtensionBridge;
   config: AppConfig;
 }
 
 const rootRoute = createRootRouteWithContext<PickyRouterContext>()({
   beforeLoad: ({ context, location }) => requireSignedIn(context, location),
   // Every signed-in page shows the comparison count in the app bar, so the list is loaded once at the root.
-  // Capabilities load here too, so the import form renders greyed out (or not) without a flash.
   loader: ({ context, location }) =>
     location.pathname === SIGN_IN_PATH
       ? undefined
-      : Promise.all([
-          context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient)),
-          context.queryClient.ensureQueryData(apiCapabilitiesQuery(context.productsClient)),
-        ]),
+      : context.queryClient.ensureQueryData(comparisonListQuery(context.comparisonsClient)),
   component: AppLayout,
   errorComponent: RouteErrorPanel,
 });
@@ -98,7 +97,7 @@ const routeTree = rootRoute.addChildren([
  *
  * `history` defaults to the browser history; tests pass a memory history.
  *
- * @example createPickyRouter({ queryClient, authClient: createAuthClient(fetch, ""), productsClient: createProductsClient(fetch, ""), comparisonsClient: createComparisonsClient(fetch, ""), config: readAppConfig(import.meta.env) })
+ * @example createPickyRouter({ queryClient, authClient: createAuthClient(fetch, ""), productsClient, comparisonsClient, extensionBridge, config: readAppConfig(import.meta.env) })
  */
 export function createPickyRouter(context: PickyRouterContext, history?: RouterHistory) {
   return createRouter({ routeTree, context, history, defaultPreload: "intent", defaultPreloadStaleTime: 0 });

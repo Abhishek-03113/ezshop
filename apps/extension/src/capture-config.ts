@@ -32,6 +32,16 @@ export function apiHostPermission(config: CaptureConfig): string {
   return `${new URL(config.apiBaseUrl).origin}/*`;
 }
 
+/**
+ * The manifest content script that bridges the Picky web app to the worker (paste-a-link import).
+ * document_start, so the "extension present" marker is set before the web app renders.
+ *
+ * @example webBridgeContentScript(resolveCaptureConfig({})).matches // ["http://localhost:5173/*"]
+ */
+export function webBridgeContentScript(config: CaptureConfig): { matches: string[]; js: string[]; run_at: string } {
+  return { matches: [`${new URL(config.webBaseUrl).origin}/*`], js: ["web-bridge.js"], run_at: "document_start" };
+}
+
 function requireOrigin(name: string, raw: string): string {
   const url = URL.parse(raw);
   if (url !== null && (url.protocol === "http:" || url.protocol === "https:")) return url.origin;

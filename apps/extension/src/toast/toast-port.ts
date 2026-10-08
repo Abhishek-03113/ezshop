@@ -23,8 +23,10 @@ export class ChromeToastPort implements ToastPort {
       await chrome.scripting.executeScript({ target: { tabId }, files: [this.toastScriptFile] });
       await chrome.scripting.executeScript({
         target: { tabId },
-        func: (toast: ToastMessage) => globalThis.pickyToast?.(toast),
-        args: [message],
+        // As JSON text: executeScript drops null-valued properties from object args, and "Library only"
+        // toasts carry placement: null / undo: null.
+        func: (toastJson: string) => globalThis.pickyToast?.(JSON.parse(toastJson) as ToastMessage),
+        args: [JSON.stringify(message)],
       });
     } catch (error) {
       this.log("toast.failed", {

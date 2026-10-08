@@ -1,5 +1,7 @@
 import { describe, expect, test } from "bun:test";
+import { FakeAuthClient } from "./fakes/fake-auth-client.ts";
 import { FakeComparisonsClient } from "./fakes/fake-comparisons-client.ts";
+import { FakeExtensionBridge } from "./fakes/fake-extension-bridge.ts";
 import { FakeProductsClient } from "./fakes/fake-products-client.ts";
 import { inr, makeProduct, makeSummary } from "./fakes/product-fixtures.ts";
 import { renderAppAt } from "./fakes/render-app.tsx";
@@ -29,11 +31,12 @@ describe("library route", () => {
     expect(html).toContain("Paste a product link to add it");
   });
 
-  test("prefills the import field from ?import= without calling the API during render", async () => {
-    const client = populated();
-    const html = await renderAppAt(`/?import=${encodeURIComponent("https://www.amazon.in/dp/B0FQG1YHYR")}`, client);
+  test("prefills the import field from ?import= without importing during render", async () => {
+    const bridge = new FakeExtensionBridge();
+    const url = `/?import=${encodeURIComponent("https://www.amazon.in/dp/B0FQG1YHYR")}`;
+    const html = await renderAppAt(url, populated(), new FakeComparisonsClient(), new FakeAuthClient(), bridge);
     expect(html).toContain('value="https://www.amazon.in/dp/B0FQG1YHYR"');
-    expect(client.importedUrls).toEqual([]);
+    expect(bridge.importedUrls).toEqual([]);
   });
 
   test("prefills the welcome card from ?import= too", async () => {
@@ -51,17 +54,25 @@ describe("library route", () => {
 });
 
 describe("URL import availability", () => {
-  test("greys out the welcome card and ignores ?import= when the API has URL import off", async () => {
-    const client = new FakeProductsClient([], [], { urlImport: false });
-    const html = await renderAppAt(`/?import=${encodeURIComponent("https://www.flipkart.com/p/x")}`, client);
+  const noExtension = () => new FakeExtensionBridge(false);
+
+  test("greys out the welcome card and ignores ?import= without the extension", async () => {
+    const url = `/?import=${encodeURIComponent("https://www.flipkart.com/p/x")}`;
+    const html = await renderAppAt(
+      url,
+      new FakeProductsClient(),
+      new FakeComparisonsClient(),
+      new FakeAuthClient(),
+      noExtension(),
+    );
     expect(html).not.toContain('value="https://www.flipkart.com/p/x"');
     expect(html).toContain("card import-card is-unavailable");
-    expect(html).toContain("isn&#x27;t set up on this server");
+    expect(html).toContain("Adding by link needs the Picky extension");
   });
 
-  test("greys out the import field when the capabilities probe fails", async () => {
-    const client = new FakeProductsClient([makeSummary()], [makeProduct("p1")], new Error("network down"));
-    const html = await renderAppAt("/", client);
+  test("greys out the app bar import field without the extension", async () => {
+    const client = new FakeProductsClient([makeSummary()], [makeProduct("p1")]);
+    const html = await renderAppAt("/", client, new FakeComparisonsClient(), new FakeAuthClient(), noExtension());
     expect(html).toContain('class="import-pill is-unavailable"');
     expect(html).toContain("Add products with the extension");
   });
