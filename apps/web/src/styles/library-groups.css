@@ -169,7 +169,7 @@
 .selection-bar {
   position: fixed;
   left: 50%;
-  bottom: 24px;
+  bottom: calc(24px + var(--ez-credit-footer-height));
   transform: translateX(-50%);
   z-index: 10;
   display: flex;

@@ -1,0 +1,47 @@
+/* Credit strip pinned to the bottom of every page in web and landing. */
+:root {
+  --ez-credit-footer-height: 40px;
+}
+
+body {
+  /* Keeps the last bit of content scrollable out from under the pinned strip. */
+  padding-bottom: var(--ez-credit-footer-height);
+}
+
+.credit-footer {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 20;
+  height: var(--ez-credit-footer-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ez-space-8);
+  padding: 0 var(--ez-space-16);
+  background: var(--ez-bar);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-top: 1px solid var(--ez-separator);
+  color: var(--ez-label-secondary);
+  font-family: var(--ez-font-sans);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.credit-footer a {
+  color: var(--ez-label);
+  font-weight: 600;
+  text-decoration: none;
+}
+.credit-footer a:hover {
+  color: var(--ez-blue);
+}
+
+.credit-footer-github {
+  display: inline-flex;
+  align-items: center;
+}
+
+.credit-footer-divider {
+  color: var(--ez-separator);
+}

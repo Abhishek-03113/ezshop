@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
+import { CreditFooter } from "../src/components/credit-footer.tsx";
 import { BeforeAfter } from "../src/components/before-after.tsx";
 import { ComparePreview } from "../src/components/compare-preview.tsx";
 import { FinalCta } from "../src/components/final-cta.tsx";
@@ -101,5 +102,15 @@ describe("LandingPage", () => {
     expect(html).toContain("<header");
     expect(html).toContain("<main>");
     expect(html).toContain("<footer");
+  });
+});
+
+describe("CreditFooter", () => {
+  test("shows the year and links to the portfolio and GitHub", () => {
+    const html = renderToStaticMarkup(<CreditFooter year={2026} />);
+    expect(html).toContain("2026");
+    expect(html).toContain('href="https://abhishek-3113.vercel.app/"');
+    expect(html).toContain(">AP3X</a>");
+    expect(html).toContain('href="https://github.com/Abhishek-03113"');
   });
 });

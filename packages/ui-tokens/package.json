@@ -4,6 +4,7 @@
   "type": "module",
   "exports": {
     "./tokens.css": "./src/tokens.css",
+    "./credit-footer.css": "./src/credit-footer.css",
     "./theme.ts": "./src/theme.ts"
   },
   "scripts": {
