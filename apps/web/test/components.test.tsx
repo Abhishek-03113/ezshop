@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
+import { CreditFooter } from "../src/components/credit-footer.tsx";
 import { HighlightList } from "../src/components/highlight-list.tsx";
 import { ImageGallery } from "../src/components/image-gallery.tsx";
 import { PriceBlock } from "../src/components/price-block.tsx";
@@ -145,5 +146,15 @@ describe("ProductSummary", () => {
     expect(html).not.toContain("rating-note");
     expect(html).not.toContain("Highlights");
     expect(html).not.toContain("summary-brand");
+  });
+});
+
+describe("CreditFooter", () => {
+  test("shows the year and links to the portfolio and GitHub", () => {
+    const html = renderToStaticMarkup(<CreditFooter year={2026} />);
+    expect(html).toContain("2026");
+    expect(html).toContain('href="https://abhishek-3113.vercel.app/"');
+    expect(html).toContain(">AP3X</a>");
+    expect(html).toContain('href="https://github.com/Abhishek-03113"');
   });
 });

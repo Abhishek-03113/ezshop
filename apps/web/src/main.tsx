@@ -8,6 +8,7 @@ import { createProductsClient } from "./api/products-client.ts";
 import { readAppConfig } from "./config/app-config.ts";
 import { createPickyRouter } from "./router.tsx";
 import "@picky/ui-tokens/tokens.css";
+import "@picky/ui-tokens/credit-footer.css";
 import "./styles.css";
 
 // Composition root for the browser: real fetch, same-origin API (Vite proxies /api in dev).

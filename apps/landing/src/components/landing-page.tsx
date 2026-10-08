@@ -3,6 +3,7 @@ import type { LandingLinks } from "../lib/links.ts";
 import type { Navigator } from "../lib/product-link.ts";
 import { BeforeAfter } from "./before-after.tsx";
 import { ComparePreview } from "./compare-preview.tsx";
+import { CreditFooter } from "./credit-footer.tsx";
 import { FinalCta } from "./final-cta.tsx";
 import { Features } from "./features.tsx";
 import { Hero } from "./hero.tsx";
@@ -33,6 +34,7 @@ export function LandingPage({ links, navigator }: LandingPageProps): ReactElemen
         <FinalCta links={links} />
       </main>
       <SiteFooter links={links} />
+      <CreditFooter />
     </>
   );
 }

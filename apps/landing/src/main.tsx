@@ -1,4 +1,5 @@
 import "@picky/ui-tokens/tokens.css";
+import "@picky/ui-tokens/credit-footer.css";
 import "./styles/base.css";
 import "./styles/sections.css";
 import { StrictMode } from "react";
